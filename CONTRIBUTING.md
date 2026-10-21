@@ -57,6 +57,11 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 - **Tests e2e en local** : installer une fois le navigateur de test avec
   `npx playwright install chromium`, puis `npm run test:e2e` (`CI=1` pour reproduire la CI).
 
+- **Page affichée mais boutons sans effet en développement** : ouvrir le site avec
+  `http://localhost:3000`, pas avec l'adresse « Network » affichée par `npm run dev` (ex.
+  `169.254.x.x`). Next.js y bloque le JavaScript de développement par sécurité ; pour tester
+  depuis un téléphone, ajouter son adresse dans `allowedDevOrigins` (`next.config.ts`).
+
 ## Journal
 
 | Date       | Changement                                                                                                                                                                              |
