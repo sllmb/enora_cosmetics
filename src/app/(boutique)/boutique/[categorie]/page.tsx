@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FiltresCategories } from "@/app/_composants/FiltresCategories";
-import {
-  CatalogueFiltrable,
-  lireCategorie,
-  listerCategories,
-  listerProduits,
-} from "@/features/catalogue";
+import { CatalogueFiltrable } from "@/features/catalogue";
+import { lireCategorie, listerCategories, listerProduits } from "@/features/catalogue/serveur";
 
 export async function generateStaticParams() {
   const categories = await listerCategories();

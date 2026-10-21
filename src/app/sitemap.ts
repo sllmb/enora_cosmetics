@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { listerCategories, listerProduits } from "@/features/catalogue";
+import { listerCategories, listerProduits } from "@/features/catalogue/serveur";
 import { env } from "@/shared/config/env";
 
 // Pages réellement publiées seulement : les pages « Bientôt disponible »

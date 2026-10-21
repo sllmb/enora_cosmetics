@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FiltresCategories } from "@/app/_composants/FiltresCategories";
-import { CatalogueFiltrable, listerCategories, listerProduits } from "@/features/catalogue";
+import { CatalogueFiltrable } from "@/features/catalogue";
+import { listerCategories, listerProduits } from "@/features/catalogue/serveur";
 
 export const metadata: Metadata = {
   title: "Boutique",
