@@ -28,15 +28,15 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ terminé
 
 ## Sprint 2 — Panier et commande
 
-| Id    | Tâche                                                                         | État                                            |
-| ----- | ----------------------------------------------------------------------------- | ----------------------------------------------- |
-| S2-01 | `features/panier` : contexte + localStorage, compteur dans l'en-tête          | ✅                                              |
-| S2-02 | Page panier (quantités, retrait, produits devenus épuisés)                    | ✅                                              |
-| S2-03 | Tunnel : coordonnées, zone de livraison, mode de paiement, récapitulatif      | ✅ une seule page, mobile d'abord               |
-| S2-04 | Server Action `creerCommande` + fonction SQL transactionnelle (RM-05 à RM-08) | 🟦 écrite, migration à exécuter dans Supabase   |
-| S2-05 | Confirmation : instructions Wave / Orange Money, lien WhatsApp                | ✅ (numéros Wave / OM à renseigner)             |
-| S2-06 | Page « Livraison et paiement »                                                | ✅                                              |
-| S2-07 | e2e P1 et P2                                                                  | 🟦 panier et formulaire ; envoi testé à la main |
+| Id    | Tâche                                                                         | État                                                             |
+| ----- | ----------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| S2-01 | `features/panier` : contexte + localStorage, compteur dans l'en-tête          | ✅                                                               |
+| S2-02 | Page panier (quantités, retrait, produits devenus épuisés)                    | ✅                                                               |
+| S2-03 | Tunnel : coordonnées, zone de livraison, mode de paiement, récapitulatif      | ✅ une seule page, mobile d'abord                                |
+| S2-04 | Server Action `creerCommande` + fonction SQL transactionnelle (RM-05 à RM-08) | ✅ migration appliquée, commande réelle testée                   |
+| S2-05 | Confirmation : instructions Wave / Orange Money, lien WhatsApp                | ✅ (numéros Wave / OM à renseigner)                              |
+| S2-06 | Page « Livraison et paiement »                                                | ✅                                                               |
+| S2-07 | e2e P1 et P2                                                                  | ✅ panier et formulaire en e2e ; envoi vérifié sur la vraie base |
 
 ## Sprint 3 — Comptes
 
