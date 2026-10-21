@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { EnteteAdmin } from "@/app/_composants/EnteteAdmin";
-import { DetailCommandeAdmin } from "@/features/commande";
+import { DetailCommandeAdmin } from "@/features/commande/admin";
 import { lireCommandeAdmin } from "@/features/commande/serveur";
 
 export const metadata: Metadata = { title: "Commande" };

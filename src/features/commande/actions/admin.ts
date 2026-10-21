@@ -4,6 +4,8 @@ import { updateTag } from "next/cache";
 import { z } from "zod";
 import { TAG_CATALOGUE } from "@/features/catalogue/serveur";
 import { exigerAdmin } from "@/features/compte/serveur";
+import { TAG_LIVRAISON } from "../queries/commande";
+import { zoneAdminSchema } from "../schemas/commande";
 
 export type ResultatAdmin = { ok: true } | { ok: false; message: string };
 
@@ -48,5 +50,34 @@ export async function marquerPaiement(reference: string, recu: boolean): Promise
     console.error("marquerPaiement :", error);
     return { ok: false, message: "Le paiement n'a pas pu être enregistré." };
   }
+  return { ok: true };
+}
+
+export async function enregistrerZone(id: number | null, donnees: unknown): Promise<ResultatAdmin> {
+  const { supabase } = await exigerAdmin();
+  const saisie = zoneAdminSchema.safeParse(donnees);
+  if (!saisie.success) {
+    return { ok: false, message: saisie.error.issues[0]?.message ?? "Saisie invalide." };
+  }
+  const { error } = id
+    ? await supabase.from("zones_livraison").update(saisie.data).eq("id", id)
+    : await supabase.from("zones_livraison").insert(saisie.data);
+  if (error) {
+    console.error("enregistrerZone :", error);
+    return { ok: false, message: "La zone n'a pas pu être enregistrée." };
+  }
+  updateTag(TAG_LIVRAISON);
+  return { ok: true };
+}
+
+export async function supprimerZone(id: number): Promise<ResultatAdmin> {
+  const { supabase } = await exigerAdmin();
+  // Les commandes gardent une copie du nom et des frais de la zone (zone_nom, frais_livraison).
+  const { error } = await supabase.from("zones_livraison").delete().eq("id", id);
+  if (error) {
+    console.error("supprimerZone :", error);
+    return { ok: false, message: "La zone n'a pas pu être supprimée." };
+  }
+  updateTag(TAG_LIVRAISON);
   return { ok: true };
 }

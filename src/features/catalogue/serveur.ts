@@ -1,6 +1,15 @@
 import "server-only";
 
-// Lectures du catalogue (Supabase, mises en cache) : Server Components et Server Actions uniquement.
+// Lectures du catalogue : Server Components et Server Actions uniquement.
+export {
+  lireProduitAdmin,
+  listerCategoriesAdmin,
+  listerProduitsAdmin,
+  listerStocksBas,
+  type CategorieAdmin,
+  type ImageAdmin,
+  type ProduitAdmin,
+} from "./queries/admin";
 export {
   lireCategorie,
   lireProduit,

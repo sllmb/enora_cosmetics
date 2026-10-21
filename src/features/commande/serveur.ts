@@ -5,6 +5,7 @@ export {
   lireFiltreCommandes,
   listerCommandesAdmin,
   lireStatistiques,
+  listerZonesAdmin,
   type FiltreCommandes,
   type Statistiques,
 } from "./queries/admin";

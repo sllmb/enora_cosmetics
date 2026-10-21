@@ -159,3 +159,21 @@ export async function lireStatistiques(): Promise<Statistiques> {
     commandesDuMois: mois.data.length,
   };
 }
+
+/** Toutes les zones, y compris masquées (administration). */
+export async function listerZonesAdmin() {
+  const { supabase } = await exigerAdmin();
+  const { data, error } = await supabase
+    .from("zones_livraison")
+    .select("id, nom, frais, delai, ordre, active")
+    .order("ordre");
+  if (error) throw new Error(`Lecture des zones : ${error.message}`);
+  return data as {
+    id: number;
+    nom: string;
+    frais: number;
+    delai: string;
+    ordre: number;
+    active: boolean;
+  }[];
+}
