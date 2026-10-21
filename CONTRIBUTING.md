@@ -2,10 +2,10 @@
 
 ## Mise en route
 
-Prérequis : Node.js ≥ 20.9, npm, un projet Supabase (à partir du Sprint 1).
+Prérequis : Node.js ≥ 22 (24 recommandé, voir `.nvmrc`), npm, un projet Supabase (à partir du Sprint 1).
 
 ```bash
-npm install
+npm ci
 cp .env.example .env.local
 npm run dev
 ```
@@ -44,9 +44,19 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 - **`duration-*` personnalisés** : Tailwind 4 n'a pas d'espace de thème pour les durées ; utiliser
   `duration-150` / `duration-220`.
 
+- **CI en échec en quelques secondes (`npm ci`, « Missing: … from lock file »)** : le
+  `package-lock.json` a été produit par une version de npm qui omet certaines dépendances
+  optionnelles. Le régénérer avec `npx npm@10 install --package-lock-only` puis vérifier
+  `npx npm@10 ci --dry-run`.
+
+- **Après un `git pull`** : utiliser `npm ci`, pas `npm install` (qui peut réécrire
+  `package-lock.json` et casser la CI).
+
 ## Journal
 
 | Date       | Changement                                                                                                                                                                              |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-10-21 | Sprint 0 : initialisation Next.js 16, outillage, jetons de design et logo, couche `shared/`, layouts, toutes les routes, documentation, schéma SQL initial + RLS, CI.                   |
+| 2026-10-21 | CI : Node 24, `package-lock.json` complété pour npm 10 et 11 (échec de `npm ci`).                                                                                                       |
 | 2026-10-21 | Maquette catalogue : module features/catalogue (données de démo, règles RM-03/04/05), illustrations produits, accueil, boutique, catégories, fiche produit (notes olfactives, JSON-LD). |
+| 2026-10-21 | Supabase relié (S0-07) : schéma et données installés, RLS vérifiée ; catalogue lu dans Supabase avec cache et repli sur la démo.                                                        |
