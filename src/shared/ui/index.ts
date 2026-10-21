@@ -1,6 +1,7 @@
 export { Badge } from "./Badge";
 export { Button, ButtonLink } from "./Button";
 export { ChampMotDePasse } from "./ChampMotDePasse";
+export { DialogueConfirmation } from "./DialogueConfirmation";
 export { EmptyState } from "./EmptyState";
 export { FormField } from "./FormField";
 export { IconButton } from "./IconButton";

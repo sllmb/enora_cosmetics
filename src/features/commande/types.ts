@@ -29,3 +29,11 @@ export type ResultatCommande =
       /** Produit en cause (stock, indisponible) : la cliente est renvoyée vers son panier. */
       produit?: string;
     };
+
+/** Commande vue par l'administration : coordonnées complètes et suivi du paiement. */
+export type CommandeAdmin = CommandeConfirmee & {
+  email: string | null;
+  note: string | null;
+  paiementRecuLe: string | null;
+  avecCompte: boolean;
+};
