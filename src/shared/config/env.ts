@@ -7,6 +7,11 @@ import { z } from "zod";
  * même si le projet Supabase n'est pas encore configuré.
  */
 
+const numeroMarchand = z
+  .string()
+  .regex(/^d{9}$/, "Numéro marchand sénégalais sur 9 chiffres, sans indicatif (ex. 771234567).")
+  .optional();
+
 const publicSchema = z.object({
   siteUrl: z.url().default("http://localhost:3000"),
   whatsappNumero: z
@@ -16,6 +21,9 @@ const publicSchema = z.object({
       "Numéro WhatsApp au format international sans + ni espaces (ex. 221771234567).",
     )
     .optional(),
+  /** Numéros marchands affichés dans les instructions de paiement (9 chiffres, ex. 771234567). */
+  waveNumero: numeroMarchand,
+  orangeMoneyNumero: numeroMarchand,
 });
 
 const supabasePublicSchema = z.object({
@@ -32,6 +40,8 @@ const vide = (v: string | undefined) => (v === "" ? undefined : v);
 export const env = publicSchema.parse({
   siteUrl: vide(process.env.NEXT_PUBLIC_SITE_URL),
   whatsappNumero: vide(process.env.NEXT_PUBLIC_WHATSAPP_NUMERO),
+  waveNumero: vide(process.env.NEXT_PUBLIC_WAVE_NUMERO),
+  orangeMoneyNumero: vide(process.env.NEXT_PUBLIC_ORANGE_MONEY_NUMERO),
 });
 
 /** Faux tant que les clés Supabase ne sont pas renseignées (CI, nouvelle installation). */

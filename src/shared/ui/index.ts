@@ -8,3 +8,4 @@ export { JsonLd } from "./JsonLd";
 export { Logo } from "./Logo";
 export { Prix } from "./Prix";
 export { SelecteurQuantite } from "./SelecteurQuantite";
+export { Textarea } from "./Textarea";

@@ -23,20 +23,20 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ terminé
 | S1-02 | Carte produit, grille, badges (nouveauté, promo, épuisé)                     | ✅                                                     |
 | S1-03 | Accueil définitif (hero, univers, nouveautés, promos)                        | ✅                                                     |
 | S1-04 | Page catégorie (tri prix / nouveauté, filtre famille olfactive)              | ✅ tri, familles, disponibilité (dans l’URL)           |
-| S1-05 | Fiche produit (galerie, notes olfactives, conseils, ajout au panier)         | 🟦 ajout au panier au Sprint 2                         |
+| S1-05 | Fiche produit (galerie, notes olfactives, conseils, ajout au panier)         | ✅                                                     |
 | S1-06 | SEO : métadonnées, `sitemap.ts`, JSON-LD Product, images OpenGraph           | ✅ sitemap, canoniques, partage, JSON-LD               |
 
 ## Sprint 2 — Panier et commande
 
-| Id    | Tâche                                                                         | État |
-| ----- | ----------------------------------------------------------------------------- | ---- |
-| S2-01 | `features/panier` : contexte + localStorage, compteur dans l'en-tête          | ⬜   |
-| S2-02 | Page panier (quantités, retrait, produits devenus épuisés)                    | ⬜   |
-| S2-03 | Tunnel : coordonnées, zone de livraison, mode de paiement, récapitulatif      | ⬜   |
-| S2-04 | Server Action `creerCommande` + fonction SQL transactionnelle (RM-05 à RM-08) | ⬜   |
-| S2-05 | Confirmation : instructions Wave / Orange Money, lien WhatsApp                | ⬜   |
-| S2-06 | Page « Livraison et paiement »                                                | ⬜   |
-| S2-07 | e2e P1 et P2                                                                  | ⬜   |
+| Id    | Tâche                                                                         | État                                            |
+| ----- | ----------------------------------------------------------------------------- | ----------------------------------------------- |
+| S2-01 | `features/panier` : contexte + localStorage, compteur dans l'en-tête          | ✅                                              |
+| S2-02 | Page panier (quantités, retrait, produits devenus épuisés)                    | ✅                                              |
+| S2-03 | Tunnel : coordonnées, zone de livraison, mode de paiement, récapitulatif      | ✅ une seule page, mobile d'abord               |
+| S2-04 | Server Action `creerCommande` + fonction SQL transactionnelle (RM-05 à RM-08) | 🟦 écrite, migration à exécuter dans Supabase   |
+| S2-05 | Confirmation : instructions Wave / Orange Money, lien WhatsApp                | ✅ (numéros Wave / OM à renseigner)             |
+| S2-06 | Page « Livraison et paiement »                                                | ✅                                              |
+| S2-07 | e2e P1 et P2                                                                  | 🟦 panier et formulaire ; envoi testé à la main |
 
 ## Sprint 3 — Comptes
 
