@@ -20,7 +20,7 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 | `src/app/admin`                | Back-office                                                               |
 | `src/app/_composants`          | En-tête, pied de page, `ListeLiens`, `PageAVenir`, `BoutonWhatsApp`       |
 | `src/app/_navigation/menus.ts` | Source unique des menus                                                   |
-| `src/features/*`               | Modules métier (à partir du Sprint 1)                                     |
+| `src/features/catalogue`       | Catalogue : lectures, cartes produit, fiche produit, illustrations        |
 | `src/shared/config/env.ts`     | Variables d'environnement validées                                        |
 | `src/shared/supabase`          | Clients Supabase (session, navigateur, service_role)                      |
 | `src/shared/lib`               | `cn`, format FCFA / dates, validation (téléphone SN, email, mot de passe) |
@@ -46,6 +46,7 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 
 ## Journal
 
-| Date       | Changement                                                                                                                                                            |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-10-21 | Sprint 0 : initialisation Next.js 16, outillage, jetons de design et logo, couche `shared/`, layouts, toutes les routes, documentation, schéma SQL initial + RLS, CI. |
+| Date       | Changement                                                                                                                                                                              |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-10-21 | Sprint 0 : initialisation Next.js 16, outillage, jetons de design et logo, couche `shared/`, layouts, toutes les routes, documentation, schéma SQL initial + RLS, CI.                   |
+| 2026-10-21 | Maquette catalogue : module features/catalogue (données de démo, règles RM-03/04/05), illustrations produits, accueil, boutique, catégories, fiche produit (notes olfactives, JSON-LD). |

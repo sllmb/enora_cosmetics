@@ -12,7 +12,9 @@ Tailwind CSS 4 et Supabase (Postgres + Auth + Storage).
 adresses du site (pages « Bientôt disponible »), schéma SQL avec RLS. Voir
 [`docs/plan-developpement.md`](docs/plan-developpement.md).
 
-Prochaine étape : créer le projet Supabase (S0-07), valider la maquette (S0-08), puis le catalogue.
+**Maquette du catalogue : en ligne, à valider.** Accueil, boutique, catégories et fiches produit fonctionnent avec des produits de démonstration (illustrations en attendant les photos).
+
+Prochaine étape : valider la maquette (S0-08), puis relier Supabase (S0-07).
 
 ## Démarrage
 

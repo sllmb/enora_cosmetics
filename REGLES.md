@@ -11,7 +11,10 @@ pages et règles RM-xx. Tout écart demande un accord et une mise à jour du doc
 suppression de données). Chaque décision est inscrite, datée, dans le README.
 
 **R4 — Git.** Un commit par changement cohérent (Conventional Commits en français). Branche dédiée
-pour tout travail risqué ou expérimental. Rien n'est poussé ni fusionné sur `main` sans accord.
+pour tout travail risqué ou expérimental. Branches : `main` (stable), `develop` (travail courant),
+`feat/<module>-<sujet>` depuis `develop`. Les commits ne portent que l'auteur du dépôt : aucune
+ligne `Co-Authored-By` ni mention d'outil. Seul le responsable du dépôt pousse et fusionne sur
+GitHub ; les contributeurs lui fournissent les commandes.
 
 **R5 — Une fonctionnalité est terminée** quand : la règle est comprise, le code serveur et
 l'interface sont faits, les cas normaux, vides et d'erreur sont gérés, les droits et le responsive
