@@ -1,4 +1,4 @@
-# Règles de travail (humains et assistant IA)
+# Règles de travail
 
 Adaptées du modèle SavoirLAB. Elles s'appliquent à toute contribution.
 

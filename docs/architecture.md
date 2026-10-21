@@ -1,6 +1,6 @@
 # Architecture — Énora Cosmetics
 
-Inspirée de l'architecture SavoirLAB (`docs/reference/architecture-savoirlab.txt`), dont on garde
+Inspirée de l'architecture du projet SavoirLAB, dont on garde
 les principes — découpage par domaine, règles métier côté serveur, jetons de design, validation
 unique, tests, documentation vivante — sur une stack plus légère, adaptée à une boutique.
 
