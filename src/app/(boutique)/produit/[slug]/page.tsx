@@ -2,6 +2,7 @@ import { MessageCircle, Truck, Wallet } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { OPEN_GRAPH_BASE } from "@/app/_seo";
 import {
   BadgesProduit,
   BlocAchat,
@@ -18,7 +19,7 @@ import {
   VisuelProduit,
 } from "@/features/catalogue";
 import { env } from "@/shared/config/env";
-import { Prix } from "@/shared/ui";
+import { JsonLd, Prix } from "@/shared/ui";
 
 export async function generateStaticParams() {
   const produits = await listerProduits();
@@ -29,9 +30,21 @@ export async function generateMetadata({
   params,
 }: PageProps<"/produit/[slug]">): Promise<Metadata> {
   const produit = await lireProduit((await params).slug);
-  return produit
-    ? { title: produit.nom, description: `${produit.accroche}. ${produit.description}` }
-    : {};
+  if (!produit) return {};
+  const description = [produit.accroche, produit.description].filter(Boolean).join(". ");
+  const photo = produit.images[0];
+  return {
+    title: produit.nom,
+    description,
+    alternates: { canonical: `/produit/${produit.slug}` },
+    openGraph: {
+      ...OPEN_GRAPH_BASE,
+      title: produit.nom,
+      description,
+      url: `/produit/${produit.slug}`,
+      images: photo ? [{ url: photo.url, alt: photo.alt }] : OPEN_GRAPH_BASE.images,
+    },
+  };
 }
 
 const REASSURANCE = [
@@ -48,11 +61,13 @@ export default async function ProduitPage({ params }: PageProps<"/produit/[slug]
     listerProduitsSimilaires(produit),
   ]);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
+  const urlProduit = `${env.siteUrl}/produit/${produit.slug}`;
+  const jsonLdProduit = {
     "@type": "Product",
     name: produit.nom,
     description: produit.description,
+    sku: produit.slug,
+    ...(produit.images.length > 0 && { image: produit.images.map((i) => i.url) }),
     brand: { "@type": "Brand", name: "Énora Cosmetics" },
     offers: {
       "@type": "Offer",
@@ -61,17 +76,29 @@ export default async function ProduitPage({ params }: PageProps<"/produit/[slug]
       availability: estEpuise(produit)
         ? "https://schema.org/OutOfStock"
         : "https://schema.org/InStock",
-      url: `${env.siteUrl}/produit/${produit.slug}`,
+      url: urlProduit,
     },
+  };
+  const jsonLdFilAriane = {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { name: "Boutique", url: `${env.siteUrl}/boutique` },
+      ...(categorie
+        ? [{ name: categorie.nom, url: `${env.siteUrl}/boutique/${categorie.slug}` }]
+        : []),
+      { name: produit.nom, url: urlProduit },
+    ].map((etape, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: etape.name,
+      item: etape.url,
+    })),
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        // Données structurées pour Google ; « < » échappé pour empêcher toute injection.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
+      <JsonLd donnees={jsonLdProduit} />
+      <JsonLd donnees={jsonLdFilAriane} />
       <div className="conteneur py-8 sm:py-12">
         <nav aria-label="Fil d'Ariane" className="mb-6 text-sm text-texte-attenue">
           <ol className="flex flex-wrap items-center gap-2">

@@ -12,14 +12,14 @@ Tailwind CSS 4 et Supabase (Postgres + Auth + Storage).
 adresses du site (pages « Bientôt disponible »), schéma SQL avec RLS. Voir
 [`docs/plan-developpement.md`](docs/plan-developpement.md).
 
-**Maquette du catalogue : en ligne, à valider.** Accueil, boutique, catégories et fiches produit fonctionnent avec des produits de démonstration (illustrations en attendant les photos).
+**Catalogue relié à Supabase.** Accueil, boutique, catégories et fiches produit lisent la base (illustrations en attendant les photos). Tri et filtres par famille olfactive, plan du site et référencement en place. Sans clés Supabase, le site affiche le catalogue de démonstration.
 
-Prochaine étape : valider la maquette (S0-08), puis relier Supabase (S0-07).
+Prochaine étape : panier et commande (Sprint 2).
 
 ## Démarrage
 
 ```bash
-npm install
+npm ci                       # installe exactement le package-lock.json
 cp .env.example .env.local   # renseigner les variables (voir ci-dessous)
 npm run dev                  # http://localhost:3000
 ```
@@ -30,7 +30,7 @@ Le site démarre sans Supabase tant qu'aucune page ne lit de données.
 
 | Variable                                                    | Où                     | Rôle                                                                                |
 | ----------------------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`                                      | public                 | URL du site (métadonnées, sitemap)                                                  |
+| `NEXT_PUBLIC_SITE_URL`                                      | public                 | URL du site (sitemap, partage) : **le vrai domaine en production**                  |
 | `NEXT_PUBLIC_WHATSAPP_NUMERO`                               | public                 | Numéro WhatsApp international sans `+` (ex. `221771234567`) ; bouton masqué si vide |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public                 | Supabase → _Project Settings → API_                                                 |
 | `SUPABASE_SERVICE_ROLE_KEY`                                 | **serveur uniquement** | Création des commandes (RM-08). Jamais de préfixe `NEXT_PUBLIC_`.                   |
@@ -73,6 +73,5 @@ Le site démarre sans Supabase tant qu'aucune page ne lit de données.
 
 ## Limites connues
 
-- Supabase pas encore relié : migration SQL écrite mais **non exécutée** sur un vrai projet.
 - Logo en PNG détouré à partir d'un WebP : une version SVG serait préférable.
 - La garde serveur de `/admin` arrive au Sprint 4 (les pages admin ne contiennent aucune donnée d'ici là).

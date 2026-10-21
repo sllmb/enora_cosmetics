@@ -7,7 +7,23 @@ import {
   listerNouveautes,
   VisuelProduit,
 } from "@/features/catalogue";
-import { ButtonLink } from "@/shared/ui";
+import type { Metadata } from "next";
+import { env } from "@/shared/config/env";
+import { ButtonLink, JsonLd } from "@/shared/ui";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
+
+const JSON_LD_BOUTIQUE = {
+  "@type": "OnlineStore",
+  name: "Énora Cosmetics",
+  url: env.siteUrl,
+  logo: `${env.siteUrl}/icon.png`,
+  description: "Déodorants, huiles parfumées et savons : l'hygiène corporelle raffinée.",
+  areaServed: { "@type": "Country", name: "Sénégal" },
+  currenciesAccepted: "XOF",
+  paymentAccepted: "Espèces à la livraison, Wave, Orange Money",
+  ...(env.whatsappNumero && { telephone: `+${env.whatsappNumero}` }),
+};
 
 const ENGAGEMENTS = [
   { Icone: Truck, titre: "Livraison partout au Sénégal", texte: "En 24 h à Dakar." },
@@ -33,6 +49,7 @@ export default async function AccueilPage() {
 
   return (
     <>
+      <JsonLd donnees={JSON_LD_BOUTIQUE} />
       <section className="overflow-hidden bg-surface-douce">
         <div className="conteneur grid items-center gap-10 py-14 md:grid-cols-2 md:py-24">
           <div className="flex animate-apparition flex-col items-start gap-6">

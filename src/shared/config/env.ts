@@ -34,6 +34,11 @@ export const env = publicSchema.parse({
   whatsappNumero: vide(process.env.NEXT_PUBLIC_WHATSAPP_NUMERO),
 });
 
+/** Faux tant que les clés Supabase ne sont pas renseignées (CI, nouvelle installation). */
+export function supabaseEstConfiguree(): boolean {
+  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+}
+
 export function lireEnvSupabase() {
   return supabasePublicSchema.parse({
     url: vide(process.env.NEXT_PUBLIC_SUPABASE_URL),

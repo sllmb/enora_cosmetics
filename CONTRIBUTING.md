@@ -5,7 +5,7 @@
 Prérequis : Node.js ≥ 22 (24 recommandé, voir `.nvmrc`), npm, un projet Supabase (à partir du Sprint 1).
 
 ```bash
-npm install
+npm ci
 cp .env.example .env.local
 npm run dev
 ```
@@ -49,6 +49,9 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
   optionnelles. Le régénérer avec `npx npm@10 install --package-lock-only` puis vérifier
   `npx npm@10 ci --dry-run`.
 
+- **Après un `git pull`** : utiliser `npm ci`, pas `npm install` (qui peut réécrire
+  `package-lock.json` et casser la CI).
+
 ## Journal
 
 | Date       | Changement                                                                                                                                                                              |
@@ -56,3 +59,5 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 | 2026-10-21 | Sprint 0 : initialisation Next.js 16, outillage, jetons de design et logo, couche `shared/`, layouts, toutes les routes, documentation, schéma SQL initial + RLS, CI.                   |
 | 2026-10-21 | CI : Node 24, `package-lock.json` complété pour npm 10 et 11 (échec de `npm ci`).                                                                                                       |
 | 2026-10-21 | Maquette catalogue : module features/catalogue (données de démo, règles RM-03/04/05), illustrations produits, accueil, boutique, catégories, fiche produit (notes olfactives, JSON-LD). |
+| 2026-10-21 | Supabase relié (S0-07) : schéma et données installés, RLS vérifiée ; catalogue lu dans Supabase avec cache et repli sur la démo.                                                        |
+| 2026-10-21 | Fin du Sprint 1 : tri et filtres du catalogue (URL partageable), sitemap, URL canoniques, image de partage, JSON-LD boutique / produit / fil d’Ariane.                                  |
