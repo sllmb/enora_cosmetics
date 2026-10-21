@@ -72,8 +72,9 @@ supabase/
 
 ## Flux
 
-**Lecture publique** : Server Component → `features/<m>/queries` (`"use cache"` + `cacheLife`) →
-Supabase (clé anon, RLS) → composant.
+**Lecture publique** : Server Component → `features/<m>/queries` (`"use cache"` + `cacheLife` +
+`cacheTag`) → Supabase via `shared/supabase/public.ts` (clé publique, sans cookies, RLS) → lignes
+validées par Zod (`lib/lignes.ts`) → composant. Sans clés Supabase, repli sur les données de démo.
 
 **Écriture** : formulaire (RHF + Zod) → Server Action → re-validation Zod → règles métier (RM-xx) →
 Supabase (client de session ; service_role seulement si la règle l'exige, ex. RM-08) →
