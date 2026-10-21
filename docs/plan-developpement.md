@@ -1,30 +1,30 @@
-# Plan de développement
+🟦 ajout au panier au Sprint 2
 
 Légende : ⬜ à faire · 🟦 en cours · ✅ terminé
 
 ## Sprint 0 — Fondations
 
-| Id    | Tâche                                                                    | État                         |
-| ----- | ------------------------------------------------------------------------ | ---------------------------- |
-| S0-01 | Projet Next.js 16 TypeScript strict, Tailwind 4, React Compiler          | ✅                           |
-| S0-02 | Outillage : ESLint (frontières), Prettier, Vitest, Playwright, CI        | ✅                           |
-| S0-03 | Jetons de design, polices, déclinaisons du logo, icônes                  | ✅                           |
-| S0-04 | `shared/` : env, clients Supabase, format, validation, composants UI     | ✅                           |
-| S0-05 | Layout boutique et admin, toutes les routes en `PageAVenir`, 404, erreur | ✅                           |
-| S0-06 | Documentation, règles, schéma SQL initial + RLS, données de démo         | ✅                           |
-| S0-07 | Créer le projet Supabase, appliquer la migration, générer les types      | ⬜ (attend l'accès Supabase) |
-| S0-08 | Maquette d'accueil et de fiche produit à valider                         | ⬜                           |
+| Id    | Tâche                                                                    | État                            |
+| ----- | ------------------------------------------------------------------------ | ------------------------------- |
+| S0-01 | Projet Next.js 16 TypeScript strict, Tailwind 4, React Compiler          | ✅                              |
+| S0-02 | Outillage : ESLint (frontières), Prettier, Vitest, Playwright, CI        | ✅                              |
+| S0-03 | Jetons de design, polices, déclinaisons du logo, icônes                  | ✅                              |
+| S0-04 | `shared/` : env, clients Supabase, format, validation, composants UI     | ✅                              |
+| S0-05 | Layout boutique et admin, toutes les routes en `PageAVenir`, 404, erreur | ✅                              |
+| S0-06 | Documentation, règles, schéma SQL initial + RLS, données de démo         | ✅                              |
+| S0-07 | Créer le projet Supabase, appliquer la migration, générer les types      | ⬜ (attend l'accès Supabase)    |
+| S0-08 | Maquette d'accueil et de fiche produit à valider                         | 🟦 maquette en ligne, à valider |
 
 ## Sprint 1 — Catalogue
 
-| Id    | Tâche                                                                        | État |
-| ----- | ---------------------------------------------------------------------------- | ---- |
-| S1-01 | `features/catalogue` : lectures catégories / produits / images (`use cache`) | ⬜   |
-| S1-02 | Carte produit, grille, badges (nouveauté, promo, épuisé)                     | ⬜   |
-| S1-03 | Accueil définitif (hero, univers, nouveautés, promos)                        | ⬜   |
-| S1-04 | Page catégorie (tri prix / nouveauté, filtre famille olfactive)              | ⬜   |
-| S1-05 | Fiche produit (galerie, notes olfactives, conseils, ajout au panier)         | ⬜   |
-| S1-06 | SEO : métadonnées, `sitemap.ts`, JSON-LD Product, images OpenGraph           | ⬜   |
+| Id    | Tâche                                                                        | État                                    |
+| ----- | ---------------------------------------------------------------------------- | --------------------------------------- |
+| S1-01 | `features/catalogue` : lectures catégories / produits / images (`use cache`) | 🟦 données de démo, Supabase à brancher |
+| S1-02 | Carte produit, grille, badges (nouveauté, promo, épuisé)                     | ✅                                      |
+| S1-03 | Accueil définitif (hero, univers, nouveautés, promos)                        | 🟦 à valider                            |
+| S1-04 | Page catégorie (tri prix / nouveauté, filtre famille olfactive)              | 🟦 sans tri ni filtre                   |
+| S1-05 | Fiche produit (galerie, notes olfactives, conseils, ajout au panier)         | 🟦 ajout au panier au Sprint 2          |
+| S1-06 | SEO : métadonnées, `sitemap.ts`, JSON-LD Product, images OpenGraph           | ⬜                                      |
 
 ## Sprint 2 — Panier et commande
 
