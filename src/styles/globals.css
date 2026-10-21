@@ -28,6 +28,14 @@
   --color-avertissement: #8a5a00;
   --color-avertissement-doux: #fbf1dc;
 
+  /* Teintes des illustrations produits (par famille olfactive), décoratives. */
+  --color-teinte-floral: #e9c4c8;
+  --color-teinte-oriental: #d9b58a;
+  --color-teinte-frais: #c9dcd6;
+  --color-teinte-musque: #e6d6c8;
+  --color-teinte-gourmand: #e3c7a4;
+  --color-teinte-boise: #c8b29c;
+
   --font-titre: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   --font-sans: var(--font-jost), "Jost", system-ui, sans-serif;
 

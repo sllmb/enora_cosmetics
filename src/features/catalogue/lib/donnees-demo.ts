@@ -1,0 +1,210 @@
+import type { Categorie, Produit } from "../types";
+
+/*
+ * Catalogue de démonstration, identique à supabase/seed.sql. Source des
+ * lectures tant que le projet Supabase n'est pas relié (S0-07) ; seules les
+ * fonctions de queries/catalogue.ts y accèdent. Noms, textes et prix indicatifs.
+ */
+
+export const CATEGORIES_DEMO: Categorie[] = [
+  {
+    slug: "deodorants",
+    nom: "Déodorants",
+    description: "Une fraîcheur qui dure, en douceur pour la peau.",
+    forme: "stick",
+  },
+  {
+    slug: "huiles-parfumees",
+    nom: "Huiles parfumées",
+    description: "Le parfum en petit flacon, à emporter partout.",
+    forme: "flacon",
+  },
+  {
+    slug: "savons",
+    nom: "Savons",
+    description: "Des savons délicatement parfumés pour chaque jour.",
+    forme: "savon",
+  },
+];
+
+const CONSEILS_DEO =
+  "Appliquer sur une peau propre et sèche, matin et soir si besoin. Laisser sécher quelques secondes avant de s'habiller.";
+const CONSEILS_HUILE =
+  "Déposer une à deux gouttes sur les points de pulsation : poignets, cou, derrière les oreilles. Ne pas frotter pour préserver le sillage.";
+const CONSEILS_SAVON =
+  "Faire mousser entre les mains humides, appliquer sur le corps puis rincer. Conserver au sec entre deux utilisations.";
+
+export const PRODUITS_DEMO: Produit[] = [
+  {
+    slug: "deodorant-fleur-de-coton",
+    nom: "Déodorant Fleur de coton",
+    categorieSlug: "deodorants",
+    accroche: "Fraîcheur douce, sans traces",
+    description:
+      "Un déodorant à bille au parfum propre et lumineux de fleur de coton. Sa formule légère sèche vite et ne laisse pas de traces sur les vêtements.",
+    conseilsUtilisation: CONSEILS_DEO,
+    composition: "Formule sans alcool. Liste complète des ingrédients sur l'emballage.",
+    contenance: "50 ml",
+    prix: 4500,
+    prixPromo: null,
+    stock: 30,
+    estNouveaute: true,
+    familleOlfactive: "frais",
+    notesOlfactives: null,
+    forme: "stick",
+    images: [],
+  },
+  {
+    slug: "deodorant-musc-blanc",
+    nom: "Déodorant Musc blanc",
+    categorieSlug: "deodorants",
+    accroche: "Un sillage poudré et rassurant",
+    description:
+      "Le musc blanc dans sa version la plus douce : un voile poudré qui accompagne toute la journée.",
+    conseilsUtilisation: CONSEILS_DEO,
+    composition: "Formule sans alcool. Liste complète des ingrédients sur l'emballage.",
+    contenance: "50 ml",
+    prix: 4500,
+    prixPromo: 3900,
+    stock: 20,
+    estNouveaute: false,
+    familleOlfactive: "musque",
+    notesOlfactives: null,
+    forme: "stick",
+    images: [],
+  },
+  {
+    slug: "deodorant-brume-fraiche",
+    nom: "Déodorant Brume fraîche",
+    categorieSlug: "deodorants",
+    accroche: "Le spray qui réveille",
+    description:
+      "Un spray léger aux notes vertes et agrumes, idéal après le sport ou par forte chaleur.",
+    conseilsUtilisation: "Vaporiser à 15 cm sur une peau propre et sèche.",
+    composition: "Liste complète des ingrédients sur l'emballage.",
+    contenance: "150 ml",
+    prix: 5000,
+    prixPromo: null,
+    stock: 12,
+    estNouveaute: false,
+    familleOlfactive: "frais",
+    notesOlfactives: null,
+    forme: "spray",
+    images: [],
+  },
+  {
+    slug: "huile-parfumee-ambre-oud",
+    nom: "Huile parfumée Ambre & Oud",
+    categorieSlug: "huiles-parfumees",
+    accroche: "Chaude, boisée, envoûtante",
+    description:
+      "Un accord intense d'ambre et de oud, adouci par la rose. Une huile concentrée qui tient longtemps sur la peau, dans un flacon à glisser dans le sac.",
+    conseilsUtilisation: CONSEILS_HUILE,
+    composition: "Huile parfumée concentrée. Liste complète des ingrédients sur l'emballage.",
+    contenance: "10 ml",
+    prix: 7500,
+    prixPromo: null,
+    stock: 15,
+    estNouveaute: true,
+    familleOlfactive: "oriental",
+    notesOlfactives: { tete: ["Bergamote"], coeur: ["Rose"], fond: ["Ambre", "Oud"] },
+    forme: "flacon",
+    images: [],
+  },
+  {
+    slug: "huile-parfumee-jasmin",
+    nom: "Huile parfumée Jasmin",
+    categorieSlug: "huiles-parfumees",
+    accroche: "Florale et lumineuse",
+    description:
+      "Le jasmin en pleine floraison, éclairé de néroli et posé sur un fond de musc. Féminine et solaire.",
+    conseilsUtilisation: CONSEILS_HUILE,
+    composition: "Huile parfumée concentrée. Liste complète des ingrédients sur l'emballage.",
+    contenance: "10 ml",
+    prix: 6500,
+    prixPromo: null,
+    stock: 25,
+    estNouveaute: false,
+    familleOlfactive: "floral",
+    notesOlfactives: { tete: ["Néroli"], coeur: ["Jasmin"], fond: ["Musc"] },
+    forme: "flacon",
+    images: [],
+  },
+  {
+    slug: "huile-parfumee-santal-vanille",
+    nom: "Huile parfumée Santal & Vanille",
+    categorieSlug: "huiles-parfumees",
+    accroche: "Douce, crémeuse, enveloppante",
+    description:
+      "Le bois de santal crémeux rencontre une vanille gourmande. Un parfum de peau, intime et réconfortant.",
+    conseilsUtilisation: CONSEILS_HUILE,
+    composition: "Huile parfumée concentrée. Liste complète des ingrédients sur l'emballage.",
+    contenance: "10 ml",
+    prix: 7000,
+    prixPromo: 6000,
+    stock: 8,
+    estNouveaute: true,
+    familleOlfactive: "boise",
+    notesOlfactives: { tete: ["Cardamome"], coeur: ["Santal"], fond: ["Vanille", "Tonka"] },
+    forme: "flacon",
+    images: [],
+  },
+  {
+    slug: "savon-karite-vanille",
+    nom: "Savon Karité & Vanille",
+    categorieSlug: "savons",
+    accroche: "Doux et nourrissant",
+    description:
+      "Un savon riche en beurre de karité, au parfum gourmand de vanille. Il nettoie en douceur sans dessécher.",
+    conseilsUtilisation: CONSEILS_SAVON,
+    composition:
+      "Savon solide au beurre de karité. Liste complète des ingrédients sur l'emballage.",
+    contenance: "100 g",
+    prix: 2500,
+    prixPromo: null,
+    stock: 40,
+    estNouveaute: false,
+    familleOlfactive: "gourmand",
+    notesOlfactives: null,
+    forme: "savon",
+    images: [],
+  },
+  {
+    slug: "savon-fleur-oranger",
+    nom: "Savon Fleur d'oranger",
+    categorieSlug: "savons",
+    accroche: "Une mousse légère et parfumée",
+    description:
+      "La fleur d'oranger dans un savon tendre à la mousse fine. Un parfum frais qui reste sur la peau.",
+    conseilsUtilisation: CONSEILS_SAVON,
+    composition: "Savon solide. Liste complète des ingrédients sur l'emballage.",
+    contenance: "100 g",
+    prix: 2500,
+    prixPromo: 2000,
+    stock: 0,
+    estNouveaute: false,
+    familleOlfactive: "floral",
+    notesOlfactives: null,
+    forme: "savon",
+    images: [],
+  },
+  {
+    slug: "savon-ambre-noir",
+    nom: "Savon Ambre noir",
+    categorieSlug: "savons",
+    accroche: "Intense et raffiné",
+    description:
+      "Un savon au parfum profond d'ambre noir, pour transformer la douche en moment de luxe.",
+    conseilsUtilisation: CONSEILS_SAVON,
+    composition: "Savon solide. Liste complète des ingrédients sur l'emballage.",
+    contenance: "100 g",
+    prix: 3000,
+    prixPromo: null,
+    stock: 18,
+    estNouveaute: true,
+    familleOlfactive: "oriental",
+    notesOlfactives: null,
+    forme: "savon",
+    images: [],
+  },
+];

@@ -17,12 +17,16 @@ insert into public.produits
 select c.id, p.nom, p.slug, p.accroche, p.contenance, p.prix, p.prix_promo, p.stock, p.nouveaute, p.famille, p.notes::jsonb
 from (values
   ('deodorants', 'Déodorant Fleur de coton', 'deodorant-fleur-de-coton', 'Fraîcheur douce, sans traces', '50 ml', 4500, null, 30, true, 'frais', null),
-  ('deodorants', 'Déodorant Musc blanc', 'deodorant-musc-blanc', 'Un sillage poudré et rassurant', '50 ml', 4500, 3900, 20, false, 'musqué', null),
+  ('deodorants', 'Déodorant Musc blanc', 'deodorant-musc-blanc', 'Un sillage poudré et rassurant', '50 ml', 4500, 3900, 20, false, 'musque', null),
+  ('deodorants', 'Déodorant Brume fraîche', 'deodorant-brume-fraiche', 'Le spray qui réveille', '150 ml', 5000, null, 12, false, 'frais', null),
   ('huiles-parfumees', 'Huile parfumée Ambre & Oud', 'huile-parfumee-ambre-oud', 'Chaude, boisée, envoûtante', '10 ml', 7500, null, 15, true, 'oriental',
-    '{"tete":["bergamote"],"coeur":["rose"],"fond":["ambre","oud"]}'),
+    '{"tete":["Bergamote"],"coeur":["Rose"],"fond":["Ambre","Oud"]}'),
   ('huiles-parfumees', 'Huile parfumée Jasmin', 'huile-parfumee-jasmin', 'Florale et lumineuse', '10 ml', 6500, null, 25, false, 'floral',
-    '{"tete":["néroli"],"coeur":["jasmin"],"fond":["musc"]}'),
+    '{"tete":["Néroli"],"coeur":["Jasmin"],"fond":["Musc"]}'),
+  ('huiles-parfumees', 'Huile parfumée Santal & Vanille', 'huile-parfumee-santal-vanille', 'Douce, crémeuse, enveloppante', '10 ml', 7000, 6000, 8, true, 'boise',
+    '{"tete":["Cardamome"],"coeur":["Santal"],"fond":["Vanille","Tonka"]}'),
   ('savons', 'Savon Karité & Vanille', 'savon-karite-vanille', 'Doux et nourrissant', '100 g', 2500, null, 40, false, 'gourmand', null),
-  ('savons', 'Savon Fleur d''oranger', 'savon-fleur-oranger', 'Une mousse légère et parfumée', '100 g', 2500, 2000, 0, false, 'floral', null)
+  ('savons', 'Savon Fleur d''oranger', 'savon-fleur-oranger', 'Une mousse légère et parfumée', '100 g', 2500, 2000, 0, false, 'floral', null),
+  ('savons', 'Savon Ambre noir', 'savon-ambre-noir', 'Intense et raffiné', '100 g', 3000, null, 18, true, 'oriental', null)
 ) as p(categorie, nom, slug, accroche, contenance, prix, prix_promo, stock, nouveaute, famille, notes)
 join public.categories c on c.slug = p.categorie;
