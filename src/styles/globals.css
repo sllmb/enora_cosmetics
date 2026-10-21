@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+/*
+ * Jetons de design Énora. Les composants n'utilisent QUE ces noms sémantiques
+ * (bg-fond, text-texte, bg-primaire…) : aucune valeur hexadécimale ailleurs.
+ * Bordeaux échantillonné sur le logo : #690817.
+ * Contrastes (sur fond ivoire) : texte 15:1, texte-attenue 6:1, primaire 11:1, bordure-forte 3.4:1 (contours de champs).
+ * L'or (accent) est décoratif : jamais pour du texte courant.
+ */
+@theme {
+  --color-fond: #faf6f1;
+  --color-surface: #ffffff;
+  --color-surface-douce: #f4ebe5;
+  --color-surface-poudre: #ecdcd6;
+  --color-texte: #2a1a1c;
+  --color-texte-attenue: #6b585b;
+  --color-bordure: #e6d9d2;
+  --color-bordure-forte: #94807a;
+  --color-primaire: #690817;
+  --color-primaire-survol: #4f0611;
+  --color-primaire-doux: #f6e7e8;
+  --color-sur-primaire: #ffffff;
+  --color-accent: #b08d57;
+  --color-succes: #2f6b3f;
+  --color-succes-doux: #e7f2ea;
+  --color-danger: #b42318;
+  --color-danger-doux: #fbeae8;
+  --color-avertissement: #8a5a00;
+  --color-avertissement-doux: #fbf1dc;
+
+  --font-titre: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-jost), "Jost", system-ui, sans-serif;
+
+  --radius-controle: 0.75rem;
+  --radius-carte: 1.25rem;
+
+  --shadow-carte: 0 1px 2px rgb(105 8 23 / 0.04), 0 8px 24px -12px rgb(105 8 23 / 0.12);
+  --shadow-flottant: 0 12px 32px -12px rgb(105 8 23 / 0.28);
+
+  /* Durées : 150 ms (survol), 220 ms (transitions), 280 ms (apparitions). */
+  --ease-douce: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-apparition: apparition 280ms var(--ease-douce) both;
+
+  @keyframes apparition {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-fond font-sans text-texte antialiased;
+    min-height: 100dvh;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-titre font-medium text-balance;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primaire;
+  }
+
+  ::selection {
+    @apply bg-primaire text-sur-primaire;
+  }
+}
+
+@utility titre-espace {
+  /* Capitales espacées, écho à « COSMETICS » du logo. */
+  @apply text-xs font-medium tracking-[0.3em] uppercase;
+}
+
+@utility conteneur {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

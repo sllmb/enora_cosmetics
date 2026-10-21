@@ -1,0 +1,7 @@
+.next
+node_modules
+package-lock.json
+src/shared/supabase/database.types.ts
+docs/reference
+playwright-report
+test-results
