@@ -5,19 +5,21 @@ import { notFound } from "next/navigation";
 import { OPEN_GRAPH_BASE } from "@/app/_seo";
 import {
   BadgesProduit,
-  BlocAchat,
   DetailsProduit,
   estEpuise,
   GrilleProduits,
   LIBELLES_FAMILLE,
-  lireCategorie,
-  lireProduit,
-  listerProduits,
-  listerProduitsSimilaires,
   NotesOlfactives,
   prixEffectif,
   VisuelProduit,
 } from "@/features/catalogue";
+import {
+  lireCategorie,
+  lireProduit,
+  listerProduits,
+  listerProduitsSimilaires,
+} from "@/features/catalogue/serveur";
+import { AjoutPanier } from "@/features/panier";
 import { env } from "@/shared/config/env";
 import { JsonLd, Prix } from "@/shared/ui";
 
@@ -158,7 +160,7 @@ export default async function ProduitPage({ params }: PageProps<"/produit/[slug]
               </p>
             )}
 
-            <BlocAchat nom={produit.nom} stock={produit.stock} />
+            <AjoutPanier produit={{ slug: produit.slug, nom: produit.nom, stock: produit.stock }} />
 
             <ul className="flex flex-col gap-3 rounded-carte border border-bordure p-5 text-sm">
               {REASSURANCE.map(({ Icone, texte }) => (

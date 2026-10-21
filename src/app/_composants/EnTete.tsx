@@ -1,9 +1,10 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { Menu, ShoppingBag, User, X } from "lucide-react";
+import { Menu, User, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { CompteurPanier } from "@/features/panier";
 import { cn } from "@/shared/lib/cn";
 import { IconButton, Logo } from "@/shared/ui";
 import { MENU_PRINCIPAL } from "../_navigation/menus";
@@ -79,13 +80,7 @@ export function EnTete() {
           >
             <User aria-hidden className="size-5" strokeWidth={1.5} />
           </Link>
-          <Link
-            href="/panier"
-            aria-label="Panier"
-            className="inline-flex size-11 items-center justify-center rounded-full hover:bg-surface-douce"
-          >
-            <ShoppingBag aria-hidden className="size-5" strokeWidth={1.5} />
-          </Link>
+          <CompteurPanier />
         </div>
       </div>
     </header>

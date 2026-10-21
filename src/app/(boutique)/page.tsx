@@ -1,12 +1,7 @@
 import { MessageCircle, Truck, Wallet } from "lucide-react";
 import Link from "next/link";
-import {
-  GrilleProduits,
-  lireProduit,
-  listerCategories,
-  listerNouveautes,
-  VisuelProduit,
-} from "@/features/catalogue";
+import { GrilleProduits, VisuelProduit } from "@/features/catalogue";
+import { lireProduit, listerCategories, listerNouveautes } from "@/features/catalogue/serveur";
 import type { Metadata } from "next";
 import { env } from "@/shared/config/env";
 import { ButtonLink, JsonLd } from "@/shared/ui";

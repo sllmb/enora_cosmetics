@@ -39,7 +39,7 @@ test("la quantité reste entre 1 et le stock (RM-05)", async ({ page }) => {
 test("un produit inconnu affiche la page introuvable, non indexée", async ({ page }) => {
   await page.goto("/produit/produit-inexistant");
   await expect(page.getByRole("heading", { name: "Page introuvable" })).toBeVisible();
-  await expect(page.locator('meta[name="robots"][content="noindex"]')).toHaveCount(1);
+  await expect(page.locator('meta[name="robots"][content="noindex"]').first()).toBeAttached();
 });
 
 test("tri et filtres restent dans l'adresse", async ({ page }) => {

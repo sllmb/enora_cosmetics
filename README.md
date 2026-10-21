@@ -14,7 +14,11 @@ adresses du site (pages « Bientôt disponible »), schéma SQL avec RLS. Voir
 
 **Catalogue relié à Supabase.** Accueil, boutique, catégories et fiches produit lisent la base (illustrations en attendant les photos). Tri et filtres par famille olfactive, plan du site et référencement en place. Sans clés Supabase, le site affiche le catalogue de démonstration.
 
-Prochaine étape : panier et commande (Sprint 2).
+**Panier et commande (Sprint 2).** Panier enregistré dans le navigateur, commande en une page
+(livraison, Wave, Orange Money ou WhatsApp), total recalculé et stock décrémenté en base dans une
+seule transaction, page de confirmation privée.
+
+Prochaine étape : comptes clients (Sprint 3).
 
 ## Démarrage
 
@@ -38,7 +42,7 @@ Le site démarre sans Supabase tant qu'aucune page ne lit de données.
 ### Base de données
 
 1. Créer un projet sur [supabase.com](https://supabase.com).
-2. Exécuter `supabase/migrations/20261021000000_schema_initial.sql` dans le SQL Editor
+2. Exécuter **dans l'ordre** les fichiers de `supabase/migrations/` dans le SQL Editor
    (ou `supabase db push` avec la CLI), puis `supabase/seed.sql` pour les données de démo.
 3. Se déclarer administrateur : `insert into admins (user_id) values ('<uuid du compte>');`
 4. Générer les types : `npm run db:types` (CLI Supabase liée au projet).
@@ -69,6 +73,7 @@ Le site démarre sans Supabase tant qu'aucune page ne lit de données.
 | 2026-10-21 | Stack Next.js + Supabase (plutôt que Spring Boot + React + Docker du modèle SavoirLAB) : une seule application, hébergement gratuit au départ, mise en ligne rapide. Principes du modèle conservés. |
 | 2026-10-21 | Paiement V1 : à la livraison, Wave / Orange Money avec validation manuelle, commande WhatsApp. Paiement automatisé en V2.                                                                           |
 | 2026-10-21 | Commandes créées uniquement côté serveur (service_role) après recalcul des prix (RM-08).                                                                                                            |
+| 2026-10-22 | Création de commande dans une fonction SQL (verrous, stock, prix relus) appelée uniquement par le serveur ; page de confirmation protégée par une clé secrète.                                      |
 | 2026-10-21 | Thème clair uniquement ; palette tirée du logo (bordeaux `#690817`, ivoire).                                                                                                                        |
 
 ## Limites connues
