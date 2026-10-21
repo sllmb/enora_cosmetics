@@ -4,6 +4,7 @@ import { revalidateTag } from "next/cache";
 import { z } from "zod";
 import { TAG_CATALOGUE } from "@/features/catalogue/serveur";
 import { supabaseEstConfiguree } from "@/shared/config/env";
+import { creerClientServeur } from "@/shared/supabase/serveur";
 import { creerClientService } from "@/shared/supabase/service";
 import { traduireErreurCommande } from "../lib/erreurs";
 import { coordonneesSchema, lignesCommandeSchema } from "../schemas/commande";
@@ -41,12 +42,17 @@ export async function creerCommande(
   }
 
   const { nom, telephone, email, adresse, note, zoneId, modePaiement } = saisie.data;
+  // Cliente connectée : la commande apparaîtra dans « Mes commandes ».
+  const {
+    data: { user },
+  } = await (await creerClientServeur()).auth.getUser();
   const { data, error } = await creerClientService()
     .rpc("creer_commande", {
       p_client: { nom, telephone, email: email ?? "", adresse, note: note ?? "" },
       p_zone_id: zoneId,
       p_mode: modePaiement,
       p_lignes: panier.data,
+      p_user_id: user?.id ?? null,
     })
     .single();
   if (error) {

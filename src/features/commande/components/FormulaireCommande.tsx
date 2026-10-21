@@ -15,9 +15,14 @@ import { coordonneesSchema, type Coordonnees, type CoordonneesSaisies } from "..
 import type { ZoneLivraison } from "../types";
 import { ChoixModePaiement, ChoixZone } from "./ChoixCommande";
 
-type Props = { produits: Produit[]; zones: ZoneLivraison[] };
+type Props = {
+  produits: Produit[];
+  zones: ZoneLivraison[];
+  /** Coordonnées du profil de la cliente connectée. */
+  valeursInitiales?: Partial<CoordonneesSaisies>;
+};
 
-export function FormulaireCommande({ produits, zones }: Props) {
+export function FormulaireCommande({ produits, zones, valeursInitiales }: Props) {
   const router = useRouter();
   const panier = usePanier();
   const [envoi, demarrer] = useTransition();
@@ -26,7 +31,15 @@ export function FormulaireCommande({ produits, zones }: Props) {
 
   const formulaire = useForm<CoordonneesSaisies, unknown, Coordonnees>({
     resolver: zodResolver(coordonneesSchema),
-    defaultValues: { nom: "", telephone: "", email: "", adresse: "", note: "", siteWeb: "" },
+    defaultValues: {
+      nom: "",
+      telephone: "",
+      email: "",
+      adresse: "",
+      note: "",
+      siteWeb: "",
+      ...valeursInitiales,
+    },
   });
   const { register, handleSubmit, setError, control, formState } = formulaire;
   const zoneChoisie = useWatch({ control, name: "zoneId" });
