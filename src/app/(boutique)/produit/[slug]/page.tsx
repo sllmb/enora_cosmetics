@@ -2,6 +2,7 @@ import { MessageCircle, Truck, Wallet } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { OPEN_GRAPH_BASE } from "@/app/_seo";
 import {
   BadgesProduit,
@@ -55,7 +56,30 @@ const REASSURANCE = [
   { Icone: MessageCircle, texte: "Une question ? Écrivez-nous sur WhatsApp" },
 ];
 
-export default async function ProduitPage({ params }: PageProps<"/produit/[slug]">) {
+// L'adresse (slug) n'est lue que sous Suspense : la structure de la page s'affiche
+// tout de suite pendant la navigation, le produit arrive juste après.
+export default function ProduitPage({ params }: PageProps<"/produit/[slug]">) {
+  return (
+    <Suspense fallback={<SqueletteProduit />}>
+      <ContenuProduit params={params} />
+    </Suspense>
+  );
+}
+
+function SqueletteProduit() {
+  return (
+    <div aria-busy className="conteneur grid gap-10 py-8 sm:py-12 md:grid-cols-2 lg:gap-16">
+      <div className="aspect-square animate-pulse rounded-carte bg-surface-douce" />
+      <div className="flex flex-col gap-4 pt-8">
+        <div className="h-4 w-40 animate-pulse rounded-full bg-surface-douce" />
+        <div className="h-12 w-3/4 animate-pulse rounded-controle bg-surface-douce" />
+        <div className="h-8 w-32 animate-pulse rounded-controle bg-surface-douce" />
+      </div>
+    </div>
+  );
+}
+
+async function ContenuProduit({ params }: Pick<PageProps<"/produit/[slug]">, "params">) {
   const produit = await lireProduit((await params).slug);
   if (!produit) notFound();
   const [categorie, similaires] = await Promise.all([
