@@ -4,5 +4,6 @@ export { EmptyState } from "./EmptyState";
 export { FormField } from "./FormField";
 export { IconButton } from "./IconButton";
 export { Input } from "./Input";
+export { JsonLd } from "./JsonLd";
 export { Logo } from "./Logo";
 export { Prix } from "./Prix";

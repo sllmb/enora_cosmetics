@@ -60,3 +60,4 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 | 2026-10-21 | CI : Node 24, `package-lock.json` complété pour npm 10 et 11 (échec de `npm ci`).                                                                                                       |
 | 2026-10-21 | Maquette catalogue : module features/catalogue (données de démo, règles RM-03/04/05), illustrations produits, accueil, boutique, catégories, fiche produit (notes olfactives, JSON-LD). |
 | 2026-10-21 | Supabase relié (S0-07) : schéma et données installés, RLS vérifiée ; catalogue lu dans Supabase avec cache et repli sur la démo.                                                        |
+| 2026-10-21 | Fin du Sprint 1 : tri et filtres du catalogue (URL partageable), sitemap, URL canoniques, image de partage, JSON-LD boutique / produit / fil d’Ariane.                                  |

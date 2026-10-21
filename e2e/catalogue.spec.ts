@@ -41,3 +41,28 @@ test("un produit inconnu affiche la page introuvable, non indexée", async ({ pa
   await expect(page.getByRole("heading", { name: "Page introuvable" })).toBeVisible();
   await expect(page.locator('meta[name="robots"][content="noindex"]')).toHaveCount(1);
 });
+
+test("tri et filtres restent dans l'adresse", async ({ page }) => {
+  await page.goto("/boutique");
+  await page.getByLabel("Trier par").selectOption("prix-croissant");
+  await page.getByRole("button", { name: "Floral" }).click();
+  await expect(page).toHaveURL(/\?tri=prix-croissant&famille=floral$/);
+  await expect(page.getByText(/^2\sproduits$/)).toBeVisible();
+
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Floral" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await page.getByLabel("Disponibles uniquement").check();
+  await expect(page.getByText(/^1\sproduit$/)).toBeVisible();
+
+  await page.getByRole("button", { name: "Tout effacer" }).click();
+  await expect(page).toHaveURL(/\/boutique$/);
+});
+
+test("le plan du site liste les produits", async ({ request }) => {
+  const plan = await (await request.get("/sitemap.xml")).text();
+  expect(plan).toContain("/produit/huile-parfumee-jasmin");
+  expect(plan).toContain("/boutique/savons");
+});

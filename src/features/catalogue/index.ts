@@ -1,5 +1,6 @@
 export { BadgesProduit } from "./components/BadgesProduit";
 export { BlocAchat } from "./components/BlocAchat";
+export { CatalogueFiltrable } from "./components/CatalogueFiltrable";
 export { CarteProduit } from "./components/CarteProduit";
 export { DetailsProduit } from "./components/DetailsProduit";
 export { GrilleProduits } from "./components/GrilleProduits";

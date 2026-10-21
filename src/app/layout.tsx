@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Jost } from "next/font/google";
 import { Toaster } from "sonner";
 import { env } from "@/shared/config/env";
 import "@/styles/globals.css";
+import { OPEN_GRAPH_BASE } from "./_seo";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   title: { default: "Énora Cosmetics — Hygiène corporelle", template: "%s · Énora Cosmetics" },
   description:
     "Déodorants, huiles parfumées et savons Énora : l'hygiène corporelle raffinée, livrée à Dakar et partout au Sénégal.",
-  openGraph: { type: "website", locale: "fr_SN", siteName: "Énora Cosmetics" },
+  openGraph: OPEN_GRAPH_BASE,
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = { themeColor: "#690817" };

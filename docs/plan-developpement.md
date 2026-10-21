@@ -21,10 +21,10 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ terminé
 | ----- | ---------------------------------------------------------------------------- | ------------------------------------------------------ |
 | S1-01 | `features/catalogue` : lectures catégories / produits / images (`use cache`) | ✅ Supabase (cache 1 h, tag catalogue), démo sans clés |
 | S1-02 | Carte produit, grille, badges (nouveauté, promo, épuisé)                     | ✅                                                     |
-| S1-03 | Accueil définitif (hero, univers, nouveautés, promos)                        | 🟦 à valider                                           |
-| S1-04 | Page catégorie (tri prix / nouveauté, filtre famille olfactive)              | 🟦 sans tri ni filtre                                  |
+| S1-03 | Accueil définitif (hero, univers, nouveautés, promos)                        | ✅                                                     |
+| S1-04 | Page catégorie (tri prix / nouveauté, filtre famille olfactive)              | ✅ tri, familles, disponibilité (dans l’URL)           |
 | S1-05 | Fiche produit (galerie, notes olfactives, conseils, ajout au panier)         | 🟦 ajout au panier au Sprint 2                         |
-| S1-06 | SEO : métadonnées, `sitemap.ts`, JSON-LD Product, images OpenGraph           | ⬜                                                     |
+| S1-06 | SEO : métadonnées, `sitemap.ts`, JSON-LD Product, images OpenGraph           | ✅ sitemap, canoniques, partage, JSON-LD               |
 
 ## Sprint 2 — Panier et commande
 

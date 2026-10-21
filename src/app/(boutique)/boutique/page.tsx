@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { GrilleProduits, listerCategories, listerProduits } from "@/features/catalogue";
 import { FiltresCategories } from "@/app/_composants/FiltresCategories";
+import { CatalogueFiltrable, listerCategories, listerProduits } from "@/features/catalogue";
 
 export const metadata: Metadata = {
   title: "Boutique",
   description: "Déodorants, huiles parfumées et savons Énora, livrés partout au Sénégal.",
+  alternates: { canonical: "/boutique" },
 };
 
 export default async function BoutiquePage() {
@@ -19,7 +20,7 @@ export default async function BoutiquePage() {
         </p>
       </header>
       <FiltresCategories categories={categories} />
-      <GrilleProduits produits={produits} />
+      <CatalogueFiltrable produits={produits} />
     </div>
   );
 }

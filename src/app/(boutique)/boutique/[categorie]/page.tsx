@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { FiltresCategories } from "@/app/_composants/FiltresCategories";
 import {
-  GrilleProduits,
+  CatalogueFiltrable,
   lireCategorie,
   listerCategories,
   listerProduits,
 } from "@/features/catalogue";
-import { FiltresCategories } from "@/app/_composants/FiltresCategories";
 
 export async function generateStaticParams() {
   const categories = await listerCategories();
@@ -17,7 +17,12 @@ export async function generateMetadata({
   params,
 }: PageProps<"/boutique/[categorie]">): Promise<Metadata> {
   const categorie = await lireCategorie((await params).categorie);
-  return categorie ? { title: categorie.nom, description: categorie.description } : {};
+  if (!categorie) return {};
+  return {
+    title: categorie.nom,
+    description: categorie.description,
+    alternates: { canonical: `/boutique/${categorie.slug}` },
+  };
 }
 
 export default async function CategoriePage({ params }: PageProps<"/boutique/[categorie]">) {
@@ -37,7 +42,7 @@ export default async function CategoriePage({ params }: PageProps<"/boutique/[ca
         <p className="max-w-lg text-texte-attenue">{categorie.description}</p>
       </header>
       <FiltresCategories categories={categories} />
-      <GrilleProduits produits={produits} />
+      <CatalogueFiltrable produits={produits} />
     </div>
   );
 }
