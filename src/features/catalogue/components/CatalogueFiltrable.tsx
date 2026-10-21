@@ -2,7 +2,7 @@
 
 import { SearchX } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useOptimistic, useTransition } from "react";
 import { pluriel } from "@/shared/lib/format";
 import { Button, EmptyState } from "@/shared/ui";
 import {
@@ -36,12 +36,20 @@ function VueSelonUrl({ produits }: Props) {
   const params = useSearchParams();
   const chemin = usePathname();
   const router = useRouter();
+  // La nouvelle sélection s'affiche tout de suite, sans attendre la mise à
+  // jour de l'URL : pas de case qui reste décochée sur un téléphone lent, et
+  // deux choix rapprochés se cumulent au lieu de s'écraser.
+  const [selection, afficher] = useOptimistic(lireSelection(params));
+  const [, demarrer] = useTransition();
   return (
     <Vue
       produits={produits}
-      selection={lireSelection(params)}
-      changer={(selection) =>
-        router.replace(`${chemin}${ecrireSelection(selection)}`, { scroll: false })
+      selection={selection}
+      changer={(nouvelle) =>
+        demarrer(() => {
+          afficher(nouvelle);
+          router.replace(`${chemin}${ecrireSelection(nouvelle)}`, { scroll: false });
+        })
       }
     />
   );

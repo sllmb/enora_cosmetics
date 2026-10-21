@@ -18,7 +18,7 @@ test("l'accueil présente la marque et mène à la boutique", async ({ page }) =
 
   await page.getByRole("link", { name: "Découvrir la boutique" }).click();
   await expect(page).toHaveURL(/\/boutique$/);
-  await expect(page.getByRole("heading", { name: "Boutique" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Boutique" })).toBeVisible();
 });
 
 test("la navigation mobile s'ouvre et marque la page courante", async ({ page, isMobile }) => {
