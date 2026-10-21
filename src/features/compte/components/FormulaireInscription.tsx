@@ -9,11 +9,13 @@ import { inscriptionSchema, type InscriptionSaisie } from "../schemas/compte";
 import { Message } from "./Message";
 
 export function FormulaireInscription() {
-  const { formulaire, envoyer, envoi, erreur, reussite } = useFormulaireCompte<InscriptionSaisie>(
-    inscriptionSchema,
-    sInscrire,
-    { nom: "", email: "", motDePasse: "", confirmation: "" },
-  );
+  const { formulaire, envoyer, envoi, bloque, erreur, reussite } =
+    useFormulaireCompte<InscriptionSaisie>(inscriptionSchema, sInscrire, {
+      nom: "",
+      email: "",
+      motDePasse: "",
+      confirmation: "",
+    });
   const { register, formState } = formulaire;
   const { errors } = formState;
 
@@ -28,7 +30,7 @@ export function FormulaireInscription() {
   }
 
   return (
-    <form onSubmit={envoyer} noValidate className="flex flex-col gap-5">
+    <form method="post" onSubmit={envoyer} noValidate className="flex flex-col gap-5">
       {erreur && <Message ton="erreur">{erreur}</Message>}
       <FormField libelle="Nom complet" obligatoire erreur={errors.nom?.message}>
         <Input autoComplete="name" {...register("nom")} />
@@ -51,7 +53,7 @@ export function FormulaireInscription() {
       >
         <ChampMotDePasse autoComplete="new-password" {...register("confirmation")} />
       </FormField>
-      <Button type="submit" taille="lg" disabled={envoi}>
+      <Button type="submit" taille="lg" disabled={bloque}>
         {envoi ? "Création…" : "Créer mon compte"}
       </Button>
       <p className="text-center text-sm text-texte-attenue">

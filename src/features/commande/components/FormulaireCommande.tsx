@@ -86,6 +86,7 @@ export function FormulaireCommande({ produits, zones, valeursInitiales }: Props)
   return (
     <form
       onSubmit={envoyer}
+      method="post"
       noValidate
       className="grid gap-10 lg:grid-cols-[1fr_22rem] lg:items-start"
     >

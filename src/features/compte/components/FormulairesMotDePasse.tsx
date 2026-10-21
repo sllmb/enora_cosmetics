@@ -13,7 +13,7 @@ import {
 import { Message } from "./Message";
 
 export function FormulaireMotDePasseOublie() {
-  const { formulaire, envoyer, envoi, erreur, reussite } =
+  const { formulaire, envoyer, envoi, bloque, erreur, reussite } =
     useFormulaireCompte<MotDePasseOublieSaisie>(motDePasseOublieSchema, demanderReinitialisation, {
       email: "",
     });
@@ -34,7 +34,7 @@ export function FormulaireMotDePasseOublie() {
   }
 
   return (
-    <form onSubmit={envoyer} noValidate className="flex flex-col gap-5">
+    <form method="post" onSubmit={envoyer} noValidate className="flex flex-col gap-5">
       {erreur && <Message ton="erreur">{erreur}</Message>}
       <FormField
         libelle="Email du compte"
@@ -44,7 +44,7 @@ export function FormulaireMotDePasseOublie() {
       >
         <Input type="email" autoComplete="email" {...register("email")} />
       </FormField>
-      <Button type="submit" taille="lg" disabled={envoi}>
+      <Button type="submit" taille="lg" disabled={bloque}>
         {envoi ? "Envoi…" : "Recevoir le lien"}
       </Button>
     </form>
@@ -52,14 +52,14 @@ export function FormulaireMotDePasseOublie() {
 }
 
 export function FormulaireNouveauMotDePasse() {
-  const { formulaire, envoyer, envoi, erreur } = useFormulaireCompte<NouveauMotDePasseSaisie>(
-    nouveauMotDePasseSchema,
-    changerMotDePasse,
-    { motDePasse: "", confirmation: "" },
-  );
+  const { formulaire, envoyer, envoi, bloque, erreur } =
+    useFormulaireCompte<NouveauMotDePasseSaisie>(nouveauMotDePasseSchema, changerMotDePasse, {
+      motDePasse: "",
+      confirmation: "",
+    });
   const { register, formState } = formulaire;
   return (
-    <form onSubmit={envoyer} noValidate className="flex flex-col gap-5">
+    <form method="post" onSubmit={envoyer} noValidate className="flex flex-col gap-5">
       {erreur && <Message ton="erreur">{erreur}</Message>}
       <FormField
         libelle="Nouveau mot de passe"
@@ -72,7 +72,7 @@ export function FormulaireNouveauMotDePasse() {
       <FormField libelle="Confirmer" obligatoire erreur={formState.errors.confirmation?.message}>
         <ChampMotDePasse autoComplete="new-password" {...register("confirmation")} />
       </FormField>
-      <Button type="submit" taille="lg" disabled={envoi}>
+      <Button type="submit" taille="lg" disabled={bloque}>
         {envoi ? "Enregistrement…" : "Enregistrer le mot de passe"}
       </Button>
     </form>

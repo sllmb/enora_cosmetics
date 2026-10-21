@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm, type DefaultValues, type FieldValues, type Path } from "react-hook-form";
 import type { z } from "zod";
+import { useEstPret } from "@/shared/lib/useEstPret";
 import type { ResultatAction } from "../types";
 
 /**
@@ -21,6 +22,7 @@ export function useFormulaireCompte<T extends FieldValues>(
     defaultValues: valeursInitiales,
   });
   const [envoi, demarrer] = useTransition();
+  const pret = useEstPret();
   const [erreur, setErreur] = useState<string>();
   const [reussite, setReussite] = useState<string>();
 
@@ -42,5 +44,6 @@ export function useFormulaireCompte<T extends FieldValues>(
     }),
   );
 
-  return { formulaire, envoyer, envoi, erreur, reussite };
+  // Bouton grisé pendant l'envoi et tant que la page n'a pas fini de charger.
+  return { formulaire, envoyer, envoi, bloque: envoi || !pret, erreur, reussite };
 }

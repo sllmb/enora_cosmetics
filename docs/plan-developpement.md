@@ -40,13 +40,13 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ terminé
 
 ## Sprint 3 — Comptes
 
-| Id    | Tâche                                                                             | État |
-| ----- | --------------------------------------------------------------------------------- | ---- |
-| S3-01 | Inscription / connexion (Supabase Auth email + mot de passe), mot de passe oublié | ⬜   |
-| S3-02 | `proxy.ts` : rafraîchissement de session                                          | ⬜   |
-| S3-03 | Profil (nom, téléphone, adresse et zone par défaut) pré-remplissant la commande   | ⬜   |
-| S3-04 | Mes commandes (liste, détail, statut)                                             | ⬜   |
-| S3-05 | e2e P3                                                                            | ⬜   |
+| Id    | Tâche                                                                             | État                                         |
+| ----- | --------------------------------------------------------------------------------- | -------------------------------------------- |
+| S3-01 | Inscription / connexion (Supabase Auth email + mot de passe), mot de passe oublié | ✅ email + mot de passe, mot de passe oublié |
+| S3-02 | `proxy.ts` : rafraîchissement de session                                          | ✅                                           |
+| S3-03 | Profil (nom, téléphone, adresse et zone par défaut) pré-remplissant la commande   | ✅                                           |
+| S3-04 | Mes commandes (liste, détail, statut)                                             | ✅                                           |
+| S3-05 | e2e P3                                                                            | ✅ (avec identifiants de test, ignoré en CI) |
 
 ## Sprint 4 — Administration
 

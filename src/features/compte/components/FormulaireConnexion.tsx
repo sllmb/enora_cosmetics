@@ -10,7 +10,7 @@ import { Message } from "./Message";
 type Props = { suite?: string; lienExpire?: boolean };
 
 export function FormulaireConnexion({ suite, lienExpire }: Props) {
-  const { formulaire, envoyer, envoi, erreur } = useFormulaireCompte<ConnexionSaisie>(
+  const { formulaire, envoyer, envoi, bloque, erreur } = useFormulaireCompte<ConnexionSaisie>(
     connexionSchema,
     (donnees) => seConnecter(donnees, suite),
     { email: "", motDePasse: "" },
@@ -21,7 +21,7 @@ export function FormulaireConnexion({ suite, lienExpire }: Props) {
     : "/compte/inscription";
 
   return (
-    <form onSubmit={envoyer} noValidate className="flex flex-col gap-5">
+    <form method="post" onSubmit={envoyer} noValidate className="flex flex-col gap-5">
       {lienExpire && !erreur && (
         <Message ton="erreur">
           Ce lien n&apos;est plus valable. Connectez-vous, ou demandez un nouveau lien.
@@ -40,7 +40,7 @@ export function FormulaireConnexion({ suite, lienExpire }: Props) {
       >
         Mot de passe oublié ?
       </Link>
-      <Button type="submit" taille="lg" disabled={envoi}>
+      <Button type="submit" taille="lg" disabled={bloque}>
         {envoi ? "Connexion…" : "Se connecter"}
       </Button>
       <p className="text-center text-sm text-texte-attenue">

@@ -52,7 +52,8 @@ export async function sInscrire(donnees: unknown): Promise<ResultatAction> {
 
 export async function seDeconnecter(): Promise<void> {
   const supabase = await creerClientServeur();
-  await supabase.auth.signOut();
+  // Déconnecte cet appareil seulement, pas les autres sessions de la cliente.
+  await supabase.auth.signOut({ scope: "local" });
   redirect("/");
 }
 

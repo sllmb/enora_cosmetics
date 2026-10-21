@@ -14,7 +14,7 @@ type Props = {
 
 /** Coordonnées enregistrées : elles pré-remplissent le formulaire de commande. */
 export function FormulaireProfil({ utilisatrice, zones }: Props) {
-  const { formulaire, envoyer, envoi, erreur, reussite } = useFormulaireCompte<ProfilSaisi>(
+  const { formulaire, envoyer, envoi, bloque, erreur, reussite } = useFormulaireCompte<ProfilSaisi>(
     profilSchema,
     mettreAJourProfil,
     {
@@ -28,7 +28,7 @@ export function FormulaireProfil({ utilisatrice, zones }: Props) {
   const { errors } = formState;
 
   return (
-    <form onSubmit={envoyer} noValidate className="flex flex-col gap-5">
+    <form method="post" onSubmit={envoyer} noValidate className="flex flex-col gap-5">
       {erreur && <Message ton="erreur">{erreur}</Message>}
       {reussite && <Message ton="reussite">{reussite}</Message>}
       <FormField libelle="Nom complet" obligatoire erreur={errors.nom?.message}>
@@ -59,7 +59,7 @@ export function FormulaireProfil({ utilisatrice, zones }: Props) {
       <FormField libelle="Adresse de livraison" erreur={errors.adresse?.message}>
         <Textarea autoComplete="street-address" {...register("adresse")} />
       </FormField>
-      <Button type="submit" disabled={envoi} className="self-start">
+      <Button type="submit" disabled={bloque} className="self-start">
         {envoi ? "Enregistrement…" : "Enregistrer"}
       </Button>
     </form>
