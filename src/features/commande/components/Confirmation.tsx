@@ -1,8 +1,9 @@
 import { CheckCircle2, MessageCircle } from "lucide-react";
 import { env } from "@/shared/config/env";
 import { formaterDate, formaterPrix } from "@/shared/lib/format";
-import { ButtonLink } from "@/shared/ui";
+import { Badge, ButtonLink } from "@/shared/ui";
 import { lienWhatsApp, messageCommande } from "../lib/whatsapp";
+import { STATUTS } from "../lib/statuts";
 import { MODES_PAIEMENT } from "../schemas/commande";
 import type { CommandeConfirmee } from "../types";
 
@@ -46,7 +47,16 @@ function Instructions({ commande }: { commande: CommandeConfirmee }) {
   }
 }
 
-export function Confirmation({ commande }: { commande: CommandeConfirmee }) {
+type Props = {
+  commande: CommandeConfirmee;
+  /** « confirmation » juste après la commande, « historique » depuis Mes commandes. */
+  contexte?: "confirmation" | "historique";
+};
+
+export function Confirmation({ commande, contexte = "confirmation" }: Props) {
+  const historique = contexte === "historique";
+  // RM-09 : les instructions n'ont de sens que tant que la commande est en attente.
+  const enAttente = commande.statut === "en_attente";
   const whatsapp = env.whatsappNumero
     ? lienWhatsApp(env.whatsappNumero, messageCommande(commande))
     : null;
@@ -65,41 +75,53 @@ export function Confirmation({ commande }: { commande: CommandeConfirmee }) {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-8">
-      <header className="flex flex-col items-center gap-3 text-center">
-        <CheckCircle2 aria-hidden className="size-12 text-succes" strokeWidth={1.5} />
-        <h1 className="text-4xl sm:text-5xl">Merci {commande.nom.split(" ")[0]} !</h1>
-        <p className="text-texte-attenue">
-          Votre commande <strong className="text-texte">{commande.reference}</strong> est
-          enregistrée.
-        </p>
-      </header>
+      {historique ? (
+        <header className="flex flex-col items-start gap-3">
+          <h1 className="text-4xl sm:text-5xl">Commande {commande.reference}</h1>
+          <p className="flex items-center gap-3 text-texte-attenue">
+            <Badge ton={STATUTS[commande.statut].ton}>{STATUTS[commande.statut].libelle}</Badge>
+            Passée le {formaterDate(commande.creeLe)}
+          </p>
+        </header>
+      ) : (
+        <header className="flex flex-col items-center gap-3 text-center">
+          <CheckCircle2 aria-hidden className="size-12 text-succes" strokeWidth={1.5} />
+          <h1 className="text-4xl sm:text-5xl">Merci {commande.nom.split(" ")[0]} !</h1>
+          <p className="text-texte-attenue">
+            Votre commande <strong className="text-texte">{commande.reference}</strong> est
+            enregistrée.
+          </p>
+        </header>
+      )}
 
-      <section
-        aria-labelledby="suite"
-        className="flex flex-col gap-4 rounded-carte bg-primaire-doux p-6"
-      >
-        <h2 id="suite" className="text-2xl">
-          La suite
-        </h2>
-        <div className="leading-relaxed">
-          <Instructions commande={commande} />
-        </div>
-        {whatsapp && (
-          <a
-            href={whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={
-              whatsappPrincipal
-                ? "inline-flex h-13 items-center justify-center gap-2 rounded-full bg-primaire px-8 font-medium text-sur-primaire hover:bg-primaire-survol"
-                : "inline-flex items-center gap-2 text-sm font-medium text-primaire hover:underline"
-            }
-          >
-            <MessageCircle aria-hidden className="size-5" strokeWidth={1.5} />
-            {libelleWhatsapp}
-          </a>
-        )}
-      </section>
+      {enAttente && (
+        <section
+          aria-labelledby="suite"
+          className="flex flex-col gap-4 rounded-carte bg-primaire-doux p-6"
+        >
+          <h2 id="suite" className="text-2xl">
+            La suite
+          </h2>
+          <div className="leading-relaxed">
+            <Instructions commande={commande} />
+          </div>
+          {whatsapp && (
+            <a
+              href={whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={
+                whatsappPrincipal
+                  ? "inline-flex h-13 items-center justify-center gap-2 rounded-full bg-primaire px-8 font-medium text-sur-primaire hover:bg-primaire-survol"
+                  : "inline-flex items-center gap-2 text-sm font-medium text-primaire hover:underline"
+              }
+            >
+              <MessageCircle aria-hidden className="size-5" strokeWidth={1.5} />
+              {libelleWhatsapp}
+            </a>
+          )}
+        </section>
+      )}
 
       <section aria-labelledby="recap" className="flex flex-col gap-4">
         <h2 id="recap" className="text-2xl">
@@ -143,14 +165,20 @@ export function Confirmation({ commande }: { commande: CommandeConfirmee }) {
             <dd>{formaterDate(commande.creeLe)}</dd>
           </div>
         </dl>
-        <p className="text-xs text-texte-attenue">
-          Gardez cette page dans vos favoris : son adresse est personnelle et permet de retrouver
-          votre commande.
-        </p>
+        {!historique && (
+          <p className="text-xs text-texte-attenue">
+            Gardez cette page dans vos favoris : son adresse est personnelle et permet de retrouver
+            votre commande.
+          </p>
+        )}
       </section>
 
-      <ButtonLink href="/boutique" variante="secondaire" className="self-center">
-        Continuer mes achats
+      <ButtonLink
+        href={historique ? "/compte/commandes" : "/boutique"}
+        variante="secondaire"
+        className="self-center"
+      >
+        {historique ? "Toutes mes commandes" : "Continuer mes achats"}
       </ButtonLink>
     </div>
   );

@@ -1,3 +1,9 @@
 import "server-only";
 
-export { lireCommandeConfirmee, listerZones, TAG_LIVRAISON } from "./queries/commande";
+export {
+  lireCommandeConfirmee,
+  lireCommandeUtilisatrice,
+  listerCommandesUtilisatrice,
+  listerZones,
+  TAG_LIVRAISON,
+} from "./queries/commande";

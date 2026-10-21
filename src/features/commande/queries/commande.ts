@@ -3,6 +3,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import { z } from "zod";
 import { supabaseEstConfiguree } from "@/shared/config/env";
 import { creerClientPublic } from "@/shared/supabase/public";
+import { creerClientServeur } from "@/shared/supabase/serveur";
 import { creerClientService } from "@/shared/supabase/service";
 import type { CommandeConfirmee, ZoneLivraison } from "../types";
 
@@ -59,28 +60,12 @@ const commandeSchema = z.object({
   ),
 });
 
-/**
- * Commande affichée sur la page de confirmation. La référence seule ne suffit
- * pas (elle se devine) : il faut aussi la clé secrète reçue à la création.
- */
-export async function lireCommandeConfirmee(
-  reference: string,
-  cle: string,
-): Promise<CommandeConfirmee | null> {
-  if (!supabaseEstConfiguree() || !z.uuid().safeParse(cle).success) return null;
-  const { data, error } = await creerClientService()
-    .from("commandes")
-    .select(
-      `reference, nom, telephone, adresse, zone_nom, mode_paiement, statut, sous_total,
-       frais_livraison, total, created_at,
-       commande_lignes(nom_produit, prix_unitaire, quantite, total_ligne)`,
-    )
-    .eq("reference", reference)
-    .eq("cle_suivi", cle)
-    .maybeSingle();
-  if (error) throw new Error(`Lecture de la commande : ${error.message}`);
-  if (!data) return null;
-  const c = commandeSchema.parse(data);
+const COLONNES_COMMANDE = `reference, nom, telephone, adresse, zone_nom, mode_paiement, statut,
+  sous_total, frais_livraison, total, created_at,
+  commande_lignes(nom_produit, prix_unitaire, quantite, total_ligne)`;
+
+function versCommande(donnees: unknown): CommandeConfirmee {
+  const c = commandeSchema.parse(donnees);
   return {
     reference: c.reference,
     nom: c.nom,
@@ -100,4 +85,56 @@ export async function lireCommandeConfirmee(
       total: l.total_ligne,
     })),
   };
+}
+
+/**
+ * Commande affichée sur la page de confirmation. La référence seule ne suffit
+ * pas (elle se devine) : il faut aussi la clé secrète reçue à la création.
+ */
+export async function lireCommandeConfirmee(
+  reference: string,
+  cle: string,
+): Promise<CommandeConfirmee | null> {
+  if (!supabaseEstConfiguree() || !z.uuid().safeParse(cle).success) return null;
+  const { data, error } = await creerClientService()
+    .from("commandes")
+    .select(COLONNES_COMMANDE)
+    .eq("reference", reference)
+    .eq("cle_suivi", cle)
+    .maybeSingle();
+  if (error) throw new Error(`Lecture de la commande : ${error.message}`);
+  return data ? versCommande(data) : null;
+}
+
+/*
+ * Commandes de l'utilisatrice connectée : client de session, la RLS
+ * (user_id = auth.uid()) ne renvoie que les siennes. À appeler sous <Suspense>.
+ */
+
+export async function listerCommandesUtilisatrice(): Promise<CommandeConfirmee[]> {
+  if (!supabaseEstConfiguree()) return [];
+  const { data, error } = await (
+    await creerClientServeur()
+  )
+    .from("commandes")
+    .select(COLONNES_COMMANDE)
+    .order("created_at", { ascending: false })
+    .limit(50);
+  if (error) throw new Error(`Lecture des commandes : ${error.message}`);
+  return data.map(versCommande);
+}
+
+export async function lireCommandeUtilisatrice(
+  reference: string,
+): Promise<CommandeConfirmee | null> {
+  if (!supabaseEstConfiguree()) return null;
+  const { data, error } = await (
+    await creerClientServeur()
+  )
+    .from("commandes")
+    .select(COLONNES_COMMANDE)
+    .eq("reference", reference)
+    .maybeSingle();
+  if (error) throw new Error(`Lecture de la commande : ${error.message}`);
+  return data ? versCommande(data) : null;
 }

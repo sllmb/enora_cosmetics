@@ -18,7 +18,10 @@ adresses du site (pages « Bientôt disponible »), schéma SQL avec RLS. Voir
 (livraison, Wave, Orange Money ou WhatsApp), total recalculé et stock décrémenté en base dans une
 seule transaction, page de confirmation privée.
 
-Prochaine étape : comptes clients (Sprint 3).
+**Comptes clientes (Sprint 3).** Inscription, connexion, mot de passe oublié, coordonnées
+enregistrées qui pré-remplissent la commande, historique « Mes commandes ».
+
+Prochaine étape : administration (Sprint 4).
 
 ## Démarrage
 
