@@ -44,6 +44,25 @@ describe("resumeArticle", () => {
     expect(resumeArticle({ extrait: "Mon résumé", contenu: "..." })).toBe("Mon résumé");
   });
 
+  it("raccourcit un long extrait sans toucher à sa ponctuation", () => {
+    const extrait = `Un conseil de grand-mère : ${"très doux ".repeat(40)}`;
+    const resume = resumeArticle({ extrait, contenu: "..." });
+    expect(resume.startsWith("Un conseil de grand-mère :")).toBe(true);
+    expect(resume.endsWith("…")).toBe(true);
+    expect(resume.length).toBeLessThanOrEqual(161);
+  });
+
+  it("accepte un extrait de 600 caractères, pas au-delà", () => {
+    const article = {
+      titre: "Titre",
+      contenu: "x".repeat(30),
+      publie: false,
+      policeTitre: "classique",
+    };
+    expect(articleSchema.safeParse({ ...article, extrait: "a".repeat(600) }).success).toBe(true);
+    expect(articleSchema.safeParse({ ...article, extrait: "a".repeat(601) }).success).toBe(false);
+  });
+
   it("sinon nettoie le Markdown et coupe proprement", () => {
     const resume = resumeArticle(
       {

@@ -100,10 +100,10 @@ export function FormulaireArticle({ article }: { article?: Article }) {
 
         <FormField
           libelle="Résumé"
-          aide="Affiché sur la couverture, dans la liste des conseils et sur Google. Facultatif."
+          aide="Affiché en entier sur la page de garde, raccourci dans la liste des conseils et sur Google. 600 caractères au maximum, facultatif."
           erreur={errors.extrait?.message}
         >
-          <Textarea rows={2} {...register("extrait")} />
+          <Textarea rows={3} maxLength={600} {...register("extrait")} />
         </FormField>
 
         <div className="flex flex-col gap-1.5">

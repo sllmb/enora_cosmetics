@@ -10,7 +10,7 @@ export const articleSchema = z.object({
   extrait: z
     .string()
     .trim()
-    .max(300, "300 caractères au maximum.")
+    .max(600, "600 caractères au maximum.")
     .optional()
     .transform((v) => v || null),
   contenu: z
@@ -25,14 +25,18 @@ export const articleSchema = z.object({
 export type ArticleSaisi = z.input<typeof articleSchema>;
 export type ArticleValide = z.output<typeof articleSchema>;
 
-/** Résumé affiché dans les listes : l'extrait, sinon le début du texte sans Markdown. */
+/**
+ * Résumé court des cartes et de Google : l'extrait, sinon le début du texte sans
+ * Markdown, coupé à « longueur » caractères (la page de garde affiche l'extrait entier).
+ */
 export function resumeArticle(article: { extrait: string; contenu: string }, longueur = 160) {
-  if (article.extrait) return article.extrait;
-  const texte = article.contenu
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/[#>*_`~-]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+  const texte = article.extrait
+    ? article.extrait.replace(/\s+/g, " ").trim()
+    : article.contenu
+        .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+        .replace(/[#>*_`~-]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
   return texte.length > longueur ? `${texte.slice(0, longueur).replace(/\s+\S*$/, "")}…` : texte;
 }
