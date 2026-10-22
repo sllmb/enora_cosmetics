@@ -4,5 +4,6 @@ export { ContenuArticle } from "./components/ContenuArticle";
 export { CouvertureArticle } from "./components/CouvertureArticle";
 export { FormulaireCommentaire } from "./components/FormulaireCommentaire";
 export { ListeCommentaires } from "./components/ListeCommentaires";
+export { slugsProduits } from "./lib/contenu";
 export { resumeArticle } from "./schemas/article";
 export type { Article, Commentaire, StatutCommentaire } from "./types";

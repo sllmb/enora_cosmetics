@@ -79,3 +79,52 @@ export function appliquerMiseEnForme(
     fin: debutLigne + bloc.length,
   };
 }
+
+/**
+ * Plus petite portion qui change entre deux textes : seule cette portion est
+ * remplacée dans le champ, comme une frappe, pour garder l'historique Ctrl+Z.
+ */
+export function ecartMinimal(ancien: string, nouveau: string) {
+  let debut = 0;
+  const maxDebut = Math.min(ancien.length, nouveau.length);
+  while (debut < maxDebut && ancien[debut] === nouveau[debut]) debut++;
+  let finAncien = ancien.length;
+  let finNouveau = nouveau.length;
+  while (
+    finAncien > debut &&
+    finNouveau > debut &&
+    ancien[finAncien - 1] === nouveau[finNouveau - 1]
+  ) {
+    finAncien--;
+    finNouveau--;
+  }
+  return { debut, fin: finAncien, insere: nouveau.slice(debut, finNouveau) };
+}
+
+/** Raccourcis clavier de l'éditeur (Ctrl ou Cmd + touche). */
+export const RACCOURCIS: Record<string, ActionMiseEnForme> = {
+  b: "gras",
+  i: "italique",
+  k: "lien",
+};
+
+/**
+ * Insère un bloc (image, carte produit) à la place de la sélection, isolé par
+ * des lignes vides. « choisi » : portion du bloc à sélectionner ensuite.
+ */
+export function insererBloc(
+  { texte, debut, fin }: Edition,
+  bloc: string,
+  choisi?: { debut: number; fin: number },
+): Edition {
+  const avant = texte.slice(0, debut);
+  const apres = texte.slice(fin);
+  const ouverture = !avant || avant.endsWith("\n\n") ? "" : avant.endsWith("\n") ? "\n" : "\n\n";
+  const fermeture = apres.startsWith("\n\n") ? "" : apres.startsWith("\n") ? "\n" : "\n\n";
+  const origine = debut + ouverture.length;
+  return {
+    texte: `${avant}${ouverture}${bloc}${fermeture}${apres}`,
+    debut: origine + (choisi?.debut ?? bloc.length),
+    fin: origine + (choisi?.fin ?? bloc.length),
+  };
+}

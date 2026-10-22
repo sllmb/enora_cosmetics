@@ -44,6 +44,25 @@ describe("resumeArticle", () => {
     expect(resumeArticle({ extrait: "Mon résumé", contenu: "..." })).toBe("Mon résumé");
   });
 
+  it("raccourcit un long extrait sans toucher à sa ponctuation", () => {
+    const extrait = `Un conseil de grand-mère : ${"très doux ".repeat(40)}`;
+    const resume = resumeArticle({ extrait, contenu: "..." });
+    expect(resume.startsWith("Un conseil de grand-mère :")).toBe(true);
+    expect(resume.endsWith("…")).toBe(true);
+    expect(resume.length).toBeLessThanOrEqual(161);
+  });
+
+  it("accepte un extrait de 600 caractères, pas au-delà", () => {
+    const article = {
+      titre: "Titre",
+      contenu: "x".repeat(30),
+      publie: false,
+      policeTitre: "classique",
+    };
+    expect(articleSchema.safeParse({ ...article, extrait: "a".repeat(600) }).success).toBe(true);
+    expect(articleSchema.safeParse({ ...article, extrait: "a".repeat(601) }).success).toBe(false);
+  });
+
   it("sinon nettoie le Markdown et coupe proprement", () => {
     const resume = resumeArticle(
       {
@@ -53,5 +72,10 @@ describe("resumeArticle", () => {
       30,
     );
     expect(resume).toBe("Titre Gras et un lien puis…");
+  });
+
+  it("n'inclut ni les cartes produit ni les images dans le résumé", () => {
+    const contenu = "[[produit:savon-ambre-noir]]\n\n![photo](https://x/y.webp)\n\nLe vrai texte.";
+    expect(resumeArticle({ extrait: "", contenu })).toBe("Le vrai texte.");
   });
 });

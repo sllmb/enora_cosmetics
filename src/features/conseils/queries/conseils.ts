@@ -55,8 +55,23 @@ export async function listerArticles(): Promise<Article[]> {
   return data.map(versArticle);
 }
 
+/**
+ * Un article publié, lu directement par son adresse (et non dans la liste en
+ * cache) : un article publié après le build est trouvé dès sa première visite.
+ */
 export async function lireArticle(slug: string): Promise<Article | null> {
-  return (await listerArticles()).find((a) => a.slug === slug) ?? null;
+  "use cache";
+  cacheLife("hours");
+  cacheTag(TAG_ARTICLES);
+  if (!supabaseEstConfiguree()) return null;
+  const { data, error } = await creerClientPublic()
+    .from("articles")
+    .select(COLONNES)
+    .eq("slug", slug)
+    .not("publie_le", "is", null)
+    .maybeSingle();
+  if (error) throw new Error(`Lecture de l'article : ${error.message}`);
+  return data ? versArticle(data) : null;
 }
 
 /** Administration : brouillons compris, jamais en cache. */
