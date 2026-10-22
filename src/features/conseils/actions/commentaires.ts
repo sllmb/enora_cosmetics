@@ -38,6 +38,7 @@ export async function deposerCommentaire(
   const { error } = await supabase.from("commentaires_articles").insert({
     article_id: articleId,
     user_id: user.id,
+    // Provisoire : la base impose le nom affiché (déclencheur imposer_auteur).
     auteur: nomPublic(profil?.nom ?? ""),
     contenu: saisie.data.contenu,
     statut: "en_attente",

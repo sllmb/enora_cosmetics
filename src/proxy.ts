@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { lireEnvSupabase, supabaseEstConfiguree } from "@/shared/config/env";
+import { cheminDeRetour } from "@/shared/lib/redirection";
 
 /*
  * Avant chaque page : rafraîchit la session Supabase (cookies), renvoie vers
@@ -35,6 +36,12 @@ export async function proxy(request: NextRequest) {
   const sousChemin = (racine: string) => pathname === racine || pathname.startsWith(`${racine}/`);
   const pageProtegee =
     sousChemin("/admin") || (sousChemin("/compte") && !COMPTE_PUBLIC.includes(pathname));
+  // Déjà connecté·e : la connexion et l'inscription renvoient vers la suite prévue.
+  const DEJA_CONNECTE = ["/compte/connexion", "/compte/inscription"];
+  if (connecte && DEJA_CONNECTE.includes(pathname)) {
+    const suite = cheminDeRetour(request.nextUrl.searchParams.get("suite"));
+    return NextResponse.redirect(new URL(suite, request.url));
+  }
   if (pageProtegee && !connecte) {
     const connexion = new URL("/compte/connexion", request.url);
     connexion.searchParams.set("suite", `${pathname}${search}`);

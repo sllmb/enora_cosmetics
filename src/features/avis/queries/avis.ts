@@ -56,7 +56,8 @@ export async function lireDroitAvis(produitId: number): Promise<DroitAvis> {
   if (!user) return "connexion";
 
   const [dejaDonne, recu] = await Promise.all([
-    supabase.from("avis").select("id").eq("produit_id", produitId).eq("user_id", user.id).limit(1),
+    // user_id n'est pas lisible depuis le site : la base répond pour la cliente connectée.
+    supabase.rpc("avis_deja_donne", { p_produit_id: produitId }),
     // RLS : la cliente ne lit que ses propres commandes.
     supabase
       .from("commandes")
@@ -65,7 +66,7 @@ export async function lireDroitAvis(produitId: number): Promise<DroitAvis> {
       .eq("commande_lignes.produit_id", produitId)
       .limit(1),
   ]);
-  if (dejaDonne.data?.length) return "deja";
+  if (dejaDonne.data === true) return "deja";
   return recu.data?.length ? "eligible" : "non_eligible";
 }
 
