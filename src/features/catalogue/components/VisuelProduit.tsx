@@ -21,6 +21,9 @@ type Props = {
 /**
  * Photo du produit si elle existe, sinon une illustration de sa forme
  * (stick, spray, flacon, savon) teintée selon sa famille olfactive.
+ * La photo est montrée en entier (jamais recadrée ni agrandie), centrée avec
+ * une marge ; un fond blanc se fond dans le fond doux du cadre (multiply), et
+ * une photo détourée (fond transparent) s'y pose naturellement.
  */
 export function VisuelProduit({ produit, className, sizes, priority }: Props) {
   const photo = produit.images[0];
@@ -33,7 +36,7 @@ export function VisuelProduit({ produit, className, sizes, priority }: Props) {
           fill
           sizes={sizes ?? "(max-width: 768px) 50vw, 25vw"}
           priority={priority}
-          className="object-cover"
+          className="object-contain p-[8%] mix-blend-multiply"
         />
       ) : (
         <Illustration

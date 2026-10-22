@@ -77,7 +77,8 @@ export function GestionPhotos({ produitId, nomProduit, images }: Props) {
                 alt={image.alt}
                 width={300}
                 height={300}
-                className="aspect-square w-full object-cover"
+                // Comme sur le site : produit entier, jamais recadré.
+                className="aspect-square w-full object-contain p-[8%] mix-blend-multiply"
               />
               {index === 0 && (
                 <Badge ton="primaire" className="absolute top-2 left-2">
