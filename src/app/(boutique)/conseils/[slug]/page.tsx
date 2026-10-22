@@ -16,6 +16,8 @@ import {
   listerArticles,
   listerCommentaires,
 } from "@/features/conseils/serveur";
+import { listerProduits } from "@/features/catalogue/serveur";
+import { slugsProduits } from "@/features/conseils";
 import { env } from "@/shared/config/env";
 import { ButtonLink, JsonLd } from "@/shared/ui";
 
@@ -69,10 +71,12 @@ function SqueletteArticle() {
 async function ContenuPage({ params }: Pick<Props, "params">) {
   const article = await lireArticle((await params).slug);
   if (!article) notFound();
-  const [tous, commentaires] = await Promise.all([
+  const [tous, commentaires, catalogue] = await Promise.all([
     listerArticles(),
     listerCommentaires(article.id),
+    listerProduits(),
   ]);
+  const cites = new Set(slugsProduits(article.contenu));
   const autres = tous.filter((a) => a.id !== article.id).slice(0, 3);
 
   const jsonLd = {
@@ -93,7 +97,11 @@ async function ContenuPage({ params }: Pick<Props, "params">) {
       <article>
         <CouvertureArticle article={article} />
         <div className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
-          <ContenuArticle contenu={article.contenu} police={article.policeTitre} />
+          <ContenuArticle
+            contenu={article.contenu}
+            police={article.policeTitre}
+            produits={catalogue.filter((p) => cites.has(p.slug))}
+          />
           <div className="mt-12 flex flex-col items-start gap-4 rounded-carte bg-surface-douce p-6 sm:flex-row sm:items-center sm:justify-between">
             <p className="font-titre text-2xl">Envie de passer à la pratique ?</p>
             <ButtonLink href="/boutique">Découvrir nos produits</ButtonLink>

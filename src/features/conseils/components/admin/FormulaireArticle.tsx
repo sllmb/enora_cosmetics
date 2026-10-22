@@ -17,9 +17,16 @@ import type { Article } from "../../types";
 import { ContenuArticle } from "../ContenuArticle";
 import { CLASSES_POLICE } from "../polices";
 import { BarreMiseEnForme, useMiseEnForme } from "./BarreMiseEnForme";
+import type { Produit } from "@/features/catalogue";
 import { useBrouillonArticle } from "./useBrouillonArticle";
 
-export function FormulaireArticle({ article }: { article?: Article }) {
+type Props = {
+  article?: Article;
+  /** Produits de la boutique, pour les cartes à insérer dans le texte. */
+  produits: Produit[];
+};
+
+export function FormulaireArticle({ article, produits }: Props) {
   const router = useRouter();
   const pret = useEstPret();
   const [envoi, demarrer] = useTransition();
@@ -192,13 +199,15 @@ export function FormulaireArticle({ article }: { article?: Article }) {
               </h2>
               <ContenuArticle
                 contenu={contenu || "*Rien à afficher pour l'instant.*"}
+                produits={produits}
+                apercu
                 police={police}
               />
             </div>
           )}
           {/* Toujours présent (masqué pendant l'aperçu) : l'historique Ctrl+Z est conservé. */}
           <div hidden={apercu}>
-            <BarreMiseEnForme appliquer={miseEnForme.appliquer} />
+            <BarreMiseEnForme miseEnForme={miseEnForme} produits={produits} />
             <Textarea
               rows={16}
               aria-labelledby="libelle-contenu"

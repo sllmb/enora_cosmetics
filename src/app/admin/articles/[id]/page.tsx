@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { EnteteAdmin } from "@/app/_composants/EnteteAdmin";
 import { FormulaireArticle, ImageArticle, SuppressionArticle } from "@/features/conseils/admin";
+import { listerProduits } from "@/features/catalogue/serveur";
 import { lireArticleAdmin } from "@/features/conseils/serveur";
 
 export const metadata: Metadata = { title: "Modifier l'article" };
@@ -26,7 +27,7 @@ export default function ArticleAdminPage({ params }: Props) {
 async function Contenu({ params }: Pick<Props, "params">) {
   const id = Number((await params).id);
   if (!Number.isInteger(id) || id <= 0) notFound();
-  const article = await lireArticleAdmin(id);
+  const [article, produits] = await Promise.all([lireArticleAdmin(id), listerProduits()]);
   if (!article) notFound();
 
   return (
@@ -62,7 +63,7 @@ async function Contenu({ params }: Pick<Props, "params">) {
         </h2>
         <ImageArticle articleId={article.id} imageUrl={article.imageUrl} />
       </section>
-      <FormulaireArticle article={article} />
+      <FormulaireArticle article={article} produits={produits} />
       <div className="mt-6 flex justify-end">
         <SuppressionArticle id={article.id} titre={article.titre} />
       </div>

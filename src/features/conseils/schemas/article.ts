@@ -33,6 +33,7 @@ export function resumeArticle(article: { extrait: string; contenu: string }, lon
   const texte = article.extrait
     ? article.extrait.replace(/\s+/g, " ").trim()
     : article.contenu
+        .replace(/\[\[produit:[^\]]*\]\]/g, "")
         .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
         .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
         .replace(/[#>*_`~-]+/g, " ")

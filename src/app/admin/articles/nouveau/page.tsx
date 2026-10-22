@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { EnteteAdmin } from "@/app/_composants/EnteteAdmin";
+import { listerProduits } from "@/features/catalogue/serveur";
 import { exigerAdmin } from "@/features/compte/serveur";
 import { FormulaireArticle } from "@/features/conseils/admin";
 
@@ -33,6 +34,6 @@ export default function NouvelArticlePage() {
 }
 
 async function Formulaire() {
-  await exigerAdmin();
-  return <FormulaireArticle />;
+  const [, produits] = await Promise.all([exigerAdmin(), listerProduits()]);
+  return <FormulaireArticle produits={produits} />;
 }

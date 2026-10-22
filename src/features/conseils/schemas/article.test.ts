@@ -73,4 +73,9 @@ describe("resumeArticle", () => {
     );
     expect(resume).toBe("Titre Gras et un lien puis…");
   });
+
+  it("n'inclut ni les cartes produit ni les images dans le résumé", () => {
+    const contenu = "[[produit:savon-ambre-noir]]\n\n![photo](https://x/y.webp)\n\nLe vrai texte.";
+    expect(resumeArticle({ extrait: "", contenu })).toBe("Le vrai texte.");
+  });
 });

@@ -107,3 +107,24 @@ export const RACCOURCIS: Record<string, ActionMiseEnForme> = {
   i: "italique",
   k: "lien",
 };
+
+/**
+ * Insère un bloc (image, carte produit) à la place de la sélection, isolé par
+ * des lignes vides. « choisi » : portion du bloc à sélectionner ensuite.
+ */
+export function insererBloc(
+  { texte, debut, fin }: Edition,
+  bloc: string,
+  choisi?: { debut: number; fin: number },
+): Edition {
+  const avant = texte.slice(0, debut);
+  const apres = texte.slice(fin);
+  const ouverture = !avant || avant.endsWith("\n\n") ? "" : avant.endsWith("\n") ? "\n" : "\n\n";
+  const fermeture = apres.startsWith("\n\n") ? "" : apres.startsWith("\n") ? "\n" : "\n\n";
+  const origine = debut + ouverture.length;
+  return {
+    texte: `${avant}${ouverture}${bloc}${fermeture}${apres}`,
+    debut: origine + (choisi?.debut ?? bloc.length),
+    fin: origine + (choisi?.fin ?? bloc.length),
+  };
+}
