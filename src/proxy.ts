@@ -3,9 +3,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { lireEnvSupabase, supabaseEstConfiguree } from "@/shared/config/env";
 
 /*
- * Avant chaque page : rafraîchit la session Supabase (cookies) et renvoie vers
- * la connexion quand une page du compte est ouverte sans être connecté·e.
- * Simple confort : chaque page et la RLS revérifient l'utilisateur.
+ * Avant chaque page : rafraîchit la session Supabase (cookies), renvoie vers
+ * la connexion quand une page du compte ou de l'administration est ouverte sans
+ * être connecté·e, et écarte de /admin les comptes non administrateurs.
+ * Simple confort : chaque page, chaque action et la RLS revérifient.
  */
 
 const COMPTE_PUBLIC = ["/compte/connexion", "/compte/inscription", "/compte/mot-de-passe-oublie"];
@@ -31,11 +32,23 @@ export async function proxy(request: NextRequest) {
   const connecte = Boolean(data?.claims);
 
   const { pathname, search } = request.nextUrl;
-  const pageCompte = pathname === "/compte" || pathname.startsWith("/compte/");
-  if (pageCompte && !connecte && !COMPTE_PUBLIC.includes(pathname)) {
+  const sousChemin = (racine: string) => pathname === racine || pathname.startsWith(`${racine}/`);
+  const pageProtegee =
+    sousChemin("/admin") || (sousChemin("/compte") && !COMPTE_PUBLIC.includes(pathname));
+  if (pageProtegee && !connecte) {
     const connexion = new URL("/compte/connexion", request.url);
     connexion.searchParams.set("suite", `${pathname}${search}`);
     return NextResponse.redirect(connexion);
+  }
+
+  // RM-01 : /admin réservé aux comptes de la table admins (lisible pour sa propre ligne).
+  if (sousChemin("/admin")) {
+    const { data: admin } = await supabase
+      .from("admins")
+      .select("user_id")
+      .eq("user_id", String(data?.claims?.sub))
+      .maybeSingle();
+    if (!admin) return NextResponse.redirect(new URL("/", request.url));
   }
   return reponse;
 }

@@ -52,3 +52,17 @@ export const lignesCommandeSchema = z
   .array(z.object({ slug: z.string().min(1), quantite: z.number().int().min(1).max(20) }))
   .min(1, "Votre panier est vide.")
   .max(50);
+
+/** Zone de livraison saisie dans l'administration. */
+export const zoneAdminSchema = z.object({
+  nom: z.string().trim().min(2, "Le nom est obligatoire.").max(80, "80 caractères au maximum."),
+  frais: z.coerce
+    .number({ error: "Frais en FCFA, nombre entier." })
+    .int("Frais en FCFA, nombre entier.")
+    .min(0, "Les frais ne peuvent pas être négatifs."),
+  delai: z.string().trim().min(1, "Indiquez un délai.").max(40, "40 caractères au maximum."),
+  ordre: z.coerce.number({ error: "Ordre : nombre entier." }).int("Ordre : nombre entier."),
+  active: z.boolean(),
+});
+
+export type ZoneAdminSaisie = z.input<typeof zoneAdminSchema>;

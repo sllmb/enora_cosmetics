@@ -12,7 +12,7 @@ const FORME_PAR_CATEGORIE: Record<string, FormeVisuel> = {
   savons: "savon",
 };
 
-const formeDe = (categorieSlug: string): FormeVisuel =>
+export const formeDe = (categorieSlug: string): FormeVisuel =>
   FORME_PAR_CATEGORIE[categorieSlug] ?? "flacon";
 
 const listeNotes = z.array(z.string()).catch([]);

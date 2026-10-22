@@ -3,4 +3,4 @@ export { Confirmation } from "./components/Confirmation";
 export { FormulaireCommande } from "./components/FormulaireCommande";
 export { STATUTS } from "./lib/statuts";
 export { MODES_PAIEMENT, type ModePaiement } from "./schemas/commande";
-export type { CommandeConfirmee, StatutCommande, ZoneLivraison } from "./types";
+export type { CommandeAdmin, CommandeConfirmee, StatutCommande, ZoneLivraison } from "./types";

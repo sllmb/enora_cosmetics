@@ -41,7 +41,7 @@ export function FormulaireCommande({ produits, zones, valeursInitiales }: Props)
       ...valeursInitiales,
     },
   });
-  const { register, handleSubmit, setError, control, formState } = formulaire;
+  const { register, handleSubmit, setError, getValues, control, formState } = formulaire;
   const zoneChoisie = useWatch({ control, name: "zoneId" });
   const { errors } = formState;
 
@@ -64,10 +64,11 @@ export function FormulaireCommande({ produits, zones, valeursInitiales }: Props)
   const zone = zones.find((z) => String(z.id) === String(zoneChoisie));
   const total = detail.sousTotal + (zone?.frais ?? 0);
 
-  const envoyer = handleSubmit((coordonnees) =>
+  const envoyer = handleSubmit(() =>
     demarrer(async () => {
       setErreurGenerale(undefined);
-      const resultat = await creerCommande(coordonnees, panier.lignes);
+      // Le serveur revalide la saisie brute (et non la version déjà transformée ici).
+      const resultat = await creerCommande(getValues(), panier.lignes);
       if (resultat.ok) {
         setRedirection(true);
         panier.vider();
