@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { POLICES_TITRE } from "../lib/polices";
 
 export const articleSchema = z.object({
   titre: z
@@ -18,6 +19,7 @@ export const articleSchema = z.object({
     .min(20, "Le texte de l'article est trop court.")
     .max(20000, "20 000 caractères au maximum."),
   publie: z.boolean(),
+  policeTitre: z.enum(POLICES_TITRE),
 });
 
 export type ArticleSaisi = z.input<typeof articleSchema>;

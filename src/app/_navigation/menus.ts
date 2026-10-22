@@ -51,6 +51,7 @@ export const MENU_ADMIN: LienMenu[] = [
   { libelle: "Livraison", href: "/admin/livraison" },
   { libelle: "Avis", href: "/admin/avis" },
   { libelle: "Conseils", href: "/admin/articles" },
+  { libelle: "Commentaires", href: "/admin/commentaires" },
 ];
 
 export function estActif(lien: LienMenu, chemin: string): boolean {

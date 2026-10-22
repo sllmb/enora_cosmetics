@@ -29,7 +29,7 @@ export async function enregistrerArticle(
     for (const issue of saisie.error.issues) erreurs[String(issue.path[0] ?? "")] ??= issue.message;
     return { ok: false, message: "Certains champs sont à corriger.", erreurs };
   }
-  const { titre, extrait, contenu, publie } = saisie.data;
+  const { titre, extrait, contenu, publie, policeTitre } = saisie.data;
 
   // Date de publication conservée si l'article était déjà en ligne.
   let publieLe: string | null = null;
@@ -39,7 +39,7 @@ export async function enregistrerArticle(
       : null;
     publieLe = existant?.publie_le ?? new Date().toISOString();
   }
-  const ligne = { titre, extrait, contenu, publie_le: publieLe };
+  const ligne = { titre, extrait, contenu, publie_le: publieLe, police_titre: policeTitre };
 
   let resultat;
   if (id) {

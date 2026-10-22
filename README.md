@@ -26,7 +26,9 @@ reçu, annulation qui remet le stock), produits et photos, catégories, zones de
 
 **Avis et conseils (Sprint 5).** Avis réservés aux clientes qui ont reçu le produit, publiés après
 modération. Conseils rédigés en Markdown dans l'administration (aperçu, brouillon, image de
-couverture), page Conseils, articles, section sur l'accueil et plan du site.
+couverture), page Conseils, articles, section sur l'accueil et plan du site. Chaque article a une
+page de garde, un titre en écriture classique ou manuscrite au choix, une barre de mise en forme
+pour rédiger sans connaître le Markdown, et des commentaires de clientes publiés après validation.
 
 Prochaine étape : saisir les vrais produits et les premiers conseils, puis finitions et mise en ligne (Sprint 6).
 
