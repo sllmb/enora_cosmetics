@@ -15,6 +15,7 @@ export type Categorie = {
 export type ImageProduit = { url: string; alt: string };
 
 export type Produit = {
+  id: number;
   slug: string;
   nom: string;
   categorieSlug: string;
