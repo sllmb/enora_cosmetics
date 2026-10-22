@@ -12,9 +12,14 @@ import {
   Quote,
   type LucideIcon,
 } from "lucide-react";
-import type { RefObject } from "react";
+import type { KeyboardEvent, RefObject } from "react";
 import { IconButton } from "@/shared/ui";
-import { appliquerMiseEnForme, type ActionMiseEnForme } from "../../lib/miseEnForme";
+import {
+  appliquerMiseEnForme,
+  ecartMinimal,
+  RACCOURCIS,
+  type ActionMiseEnForme,
+} from "../../lib/miseEnForme";
 
 const BOUTONS: { action: ActionMiseEnForme; libelle: string; Icone: LucideIcon }[][] = [
   [
@@ -22,9 +27,9 @@ const BOUTONS: { action: ActionMiseEnForme; libelle: string; Icone: LucideIcon }
     { action: "sousTitre", libelle: "Sous-titre", Icone: Heading3 },
   ],
   [
-    { action: "gras", libelle: "Gras", Icone: Bold },
-    { action: "italique", libelle: "Italique", Icone: Italic },
-    { action: "lien", libelle: "Lien", Icone: Link2 },
+    { action: "gras", libelle: "Gras (Ctrl+B)", Icone: Bold },
+    { action: "italique", libelle: "Italique (Ctrl+I)", Icone: Italic },
+    { action: "lien", libelle: "Lien (Ctrl+K)", Icone: Link2 },
   ],
   [
     { action: "liste", libelle: "Liste à puces", Icone: List },
@@ -34,13 +39,14 @@ const BOUTONS: { action: ActionMiseEnForme; libelle: string; Icone: LucideIcon }
   ],
 ];
 
-type Props = {
-  zone: RefObject<HTMLTextAreaElement | null>;
-  onChange: (texte: string) => void;
-};
+type Zone = RefObject<HTMLTextAreaElement | null>;
 
-/** Barre d'outils au-dessus du texte : plus besoin de connaître le Markdown. */
-export function BarreMiseEnForme({ zone, onChange }: Props) {
+/**
+ * Applique une mise en forme comme une frappe au clavier (execCommand) : le
+ * navigateur garde son historique, donc Ctrl+Z / Ctrl+Y annulent et rétablissent.
+ * Repli sur une écriture directe si le navigateur ne le permet pas.
+ */
+export function useMiseEnForme(zone: Zone, repli: (texte: string) => void) {
   const appliquer = (action: ActionMiseEnForme) => {
     const champ = zone.current;
     if (!champ) return;
@@ -48,14 +54,34 @@ export function BarreMiseEnForme({ zone, onChange }: Props) {
       { texte: champ.value, debut: champ.selectionStart, fin: champ.selectionEnd },
       action,
     );
-    onChange(resultat.texte);
-    // La valeur est mise à jour au rendu suivant : on replace ensuite la sélection.
-    requestAnimationFrame(() => {
-      champ.focus();
-      champ.setSelectionRange(resultat.debut, resultat.fin);
-    });
+    const { debut, fin, insere } = ecartMinimal(champ.value, resultat.texte);
+    champ.focus();
+    champ.setSelectionRange(debut, fin);
+    const natif = insere
+      ? document.execCommand("insertText", false, insere)
+      : debut === fin || document.execCommand("delete");
+    if (!natif || champ.value !== resultat.texte) repli(resultat.texte);
+    champ.setSelectionRange(resultat.debut, resultat.fin);
   };
 
+  /** Ctrl/Cmd + B, I, K dans la zone de texte. */
+  const surTouche = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!(e.ctrlKey || e.metaKey) || e.altKey || e.shiftKey) return;
+    const action = RACCOURCIS[e.key.toLowerCase()];
+    if (!action) return;
+    e.preventDefault();
+    appliquer(action);
+  };
+
+  return { appliquer, surTouche };
+}
+
+/** Barre d'outils au-dessus du texte : plus besoin de connaître le Markdown. */
+export function BarreMiseEnForme({
+  appliquer,
+}: {
+  appliquer: (action: ActionMiseEnForme) => void;
+}) {
   return (
     <div
       role="toolbar"

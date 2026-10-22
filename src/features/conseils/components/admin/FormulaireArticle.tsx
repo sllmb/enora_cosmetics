@@ -16,7 +16,7 @@ import { articleSchema, type ArticleSaisi, type ArticleValide } from "../../sche
 import type { Article } from "../../types";
 import { ContenuArticle } from "../ContenuArticle";
 import { CLASSES_POLICE } from "../polices";
-import { BarreMiseEnForme } from "./BarreMiseEnForme";
+import { BarreMiseEnForme, useMiseEnForme } from "./BarreMiseEnForme";
 import { useBrouillonArticle } from "./useBrouillonArticle";
 
 export function FormulaireArticle({ article }: { article?: Article }) {
@@ -47,6 +47,10 @@ export function FormulaireArticle({ article }: { article?: Article }) {
   });
   const champContenu = register("contenu");
 
+  const miseEnForme = useMiseEnForme(zoneTexte, (texte) =>
+    setValue("contenu", texte, { shouldDirty: true, shouldValidate: true }),
+  );
+
   const envoyer = handleSubmit(() =>
     demarrer(async () => {
       // Le serveur revalide la saisie brute (et non la version déjà transformée ici).
@@ -68,7 +72,19 @@ export function FormulaireArticle({ article }: { article?: Article }) {
   );
 
   return (
-    <form method="post" onSubmit={envoyer} noValidate className="flex flex-col gap-6">
+    <form
+      method="post"
+      onSubmit={envoyer}
+      noValidate
+      className="flex flex-col gap-6"
+      onKeyDown={(e) => {
+        // Ctrl+S (ou Cmd+S) enregistre l'article au lieu d'enregistrer la page web.
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+          e.preventDefault();
+          if (pret && !envoi) void envoyer();
+        }
+      }}
+    >
       {sauvegarde.brouillon && (
         <div
           role="status"
@@ -163,7 +179,7 @@ export function FormulaireArticle({ article }: { article?: Article }) {
               {apercu ? "Modifier" : "Aperçu"}
             </Button>
           </div>
-          {apercu ? (
+          {apercu && (
             <div className="min-h-64 rounded-controle border border-bordure bg-fond p-5">
               <h2
                 className={cn(
@@ -179,36 +195,33 @@ export function FormulaireArticle({ article }: { article?: Article }) {
                 police={police}
               />
             </div>
-          ) : (
-            <div>
-              <BarreMiseEnForme
-                zone={zoneTexte}
-                onChange={(texte) =>
-                  setValue("contenu", texte, { shouldDirty: true, shouldValidate: true })
-                }
-              />
-              <Textarea
-                rows={16}
-                aria-labelledby="libelle-contenu"
-                aria-invalid={errors.contenu ? true : undefined}
-                className="rounded-t-none"
-                {...champContenu}
-                ref={(element) => {
-                  champContenu.ref(element);
-                  zoneTexte.current = element;
-                }}
-              />
-              {errors.contenu ? (
-                <p role="alert" className="mt-1.5 text-sm text-danger">
-                  {errors.contenu.message}
-                </p>
-              ) : (
-                <p className="mt-1.5 text-xs text-texte-attenue">
-                  Sélectionnez un mot puis cliquez sur un bouton pour le mettre en forme.
-                </p>
-              )}
-            </div>
           )}
+          {/* Toujours présent (masqué pendant l'aperçu) : l'historique Ctrl+Z est conservé. */}
+          <div hidden={apercu}>
+            <BarreMiseEnForme appliquer={miseEnForme.appliquer} />
+            <Textarea
+              rows={16}
+              aria-labelledby="libelle-contenu"
+              aria-invalid={errors.contenu ? true : undefined}
+              className="rounded-t-none"
+              {...champContenu}
+              onKeyDown={miseEnForme.surTouche}
+              ref={(element) => {
+                champContenu.ref(element);
+                zoneTexte.current = element;
+              }}
+            />
+            {errors.contenu ? (
+              <p role="alert" className="mt-1.5 text-sm text-danger">
+                {errors.contenu.message}
+              </p>
+            ) : (
+              <p className="mt-1.5 text-xs text-texte-attenue">
+                Sélectionnez un mot puis cliquez sur un bouton. Raccourcis : Ctrl+B gras, Ctrl+I
+                italique, Ctrl+K lien, Ctrl+Z annuler, Ctrl+S enregistrer.
+              </p>
+            )}
+          </div>
         </div>
 
         <label className="flex items-start gap-3 text-sm">

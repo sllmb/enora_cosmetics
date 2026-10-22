@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { appliquerMiseEnForme, type Edition } from "./miseEnForme";
+import { appliquerMiseEnForme, ecartMinimal, type Edition } from "./miseEnForme";
 
 const sel = (texte: string, choisi: string): Edition => {
   const debut = texte.indexOf(choisi);
@@ -43,5 +43,33 @@ describe("appliquerMiseEnForme", () => {
   it("ajoute un séparateur sur sa propre ligne", () => {
     const r = appliquerMiseEnForme({ texte: "Fin", debut: 3, fin: 3 }, "separateur");
     expect(r.texte).toBe("Fin\n\n---\n\n");
+  });
+});
+
+describe("ecartMinimal", () => {
+  const verifier = (ancien: string, nouveau: string) => {
+    const { debut, fin, insere } = ecartMinimal(ancien, nouveau);
+    expect(ancien.slice(0, debut) + insere + ancien.slice(fin)).toBe(nouveau);
+    return { debut, fin, insere };
+  };
+
+  it("ne remplace que ce qui change", () => {
+    expect(verifier("Une peau douce", "Une peau **douce**")).toEqual({
+      debut: 9,
+      fin: 14,
+      insere: "**douce**",
+    });
+    expect(verifier("ligne\nsuite", "## ligne\nsuite")).toEqual({
+      debut: 0,
+      fin: 0,
+      insere: "## ",
+    });
+  });
+
+  it("gère les suppressions et les textes identiques", () => {
+    expect(verifier("### Titre", "## Titre").insere).toBe("");
+    expect(verifier("abc", "abc")).toEqual({ debut: 3, fin: 3, insere: "" });
+    verifier("aaa", "aaaa");
+    verifier("", "texte");
   });
 });
