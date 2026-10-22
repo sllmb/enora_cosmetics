@@ -30,3 +30,14 @@ export function slugifier(texte: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+/**
+ * Nom affiché publiquement : prénom et initiale du nom (« Awa Ndiaye » ->
+ * « Awa N. »). Les clientes ne sont jamais exposées en entier.
+ */
+export function nomPublic(nomComplet: string): string {
+  const [prenom, ...reste] = nomComplet.trim().split(/\s+/).filter(Boolean);
+  if (!prenom) return "Cliente Énora";
+  const initiale = reste.at(-1)?.[0];
+  return initiale ? `${prenom} ${initiale.toUpperCase()}.` : prenom;
+}

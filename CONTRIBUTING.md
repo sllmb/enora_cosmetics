@@ -83,5 +83,6 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 | 2026-10-22 | Sprint 4 : administration (commandes, produits et photos, catégories, zones, tableau de bord) ; formulaires qui envoient la saisie brute au serveur ; photos supprimées du stockage par le serveur. |
 | 2026-10-22 | Sprint 3 : comptes (Supabase Auth), proxy de session, profil qui pré-remplit la commande, Mes commandes ; formulaires en POST et boutons grisés avant chargement.                                   |
 | 2026-10-22 | Sprint 2 : panier (navigateur), formulaire de commande, Server Action + fonction SQL `creer_commande` (RM-05 à RM-08), confirmation avec clé secrète, WhatsApp, page Livraison.                     |
+| 2026-10-22 | Conseils enrichis : page de garde, polices manuscrites des titres (next/font, non préchargées), barre de mise en forme testée, commentaires modérés (RM-14, migration 20261024000000).              |
 | 2026-10-22 | Sprint 5 : avis clientes (dépôt après livraison, modération, note moyenne) et conseils (Markdown sans HTML brut, aperçu, brouillons, image de couverture, sitemap, JSON-LD Article).                |
 | 2026-10-21 | e2e réparés (titres ambigus, noindex) ; filtres à affichage immédiat (useOptimistic).                                                                                                               |

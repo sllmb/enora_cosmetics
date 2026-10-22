@@ -9,17 +9,33 @@ describe("articleSchema", () => {
         extrait: "",
         contenu: "## Introduction\n\nUn texte suffisamment long pour l'article.",
         publie: true,
+        policeTitre: "princesse",
       }),
     ).toMatchObject({ titre: "Bien choisir son déodorant", extrait: null, publie: true });
   });
 
   it("refuse un titre ou un texte trop courts", () => {
     expect(
-      articleSchema.safeParse({ titre: "A", contenu: "x".repeat(30), publie: false }).success,
+      articleSchema.safeParse({
+        titre: "A",
+        contenu: "x".repeat(30),
+        publie: false,
+        policeTitre: "classique",
+      }).success,
     ).toBe(false);
     expect(
-      articleSchema.safeParse({ titre: "Titre", contenu: "court", publie: false }).success,
+      articleSchema.safeParse({
+        titre: "Titre",
+        contenu: "court",
+        publie: false,
+        policeTitre: "classique",
+      }).success,
     ).toBe(false);
+  });
+
+  it("refuse une police inconnue", () => {
+    const article = { titre: "Titre", contenu: "x".repeat(30), publie: false };
+    expect(articleSchema.safeParse({ ...article, policeTitre: "comic" }).success).toBe(false);
   });
 });
 

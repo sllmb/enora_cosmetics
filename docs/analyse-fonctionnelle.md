@@ -55,6 +55,7 @@ Toutes sont contrôlées **côté serveur** (Server Action et/ou RLS / contraint
 | RM-11 | Un avis est publié uniquement après modération.                                                                                                                               |
 | RM-12 | Paiement Wave / Orange Money (V1) : la commande reste `en_attente` jusqu'à confirmation manuelle du paiement par l'admin.                                                     |
 | RM-13 | Téléphone obligatoire et sénégalais (70/75/76/77/78/33) ; email facultatif.                                                                                                   |
+| RM-14 | Un commentaire d'article est déposé par une cliente connectée et publié uniquement après modération ; 5 commentaires en attente au plus par personne.                         |
 
 ## Paiement
 

@@ -1,14 +1,22 @@
-import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { OPEN_GRAPH_BASE } from "@/app/_seo";
-import { CarteArticle, ContenuArticle, resumeArticle } from "@/features/conseils";
-import { lireArticle, listerArticles } from "@/features/conseils/serveur";
+import {
+  CarteArticle,
+  ContenuArticle,
+  CouvertureArticle,
+  FormulaireCommentaire,
+  ListeCommentaires,
+  resumeArticle,
+} from "@/features/conseils";
+import {
+  estConnectee,
+  lireArticle,
+  listerArticles,
+  listerCommentaires,
+} from "@/features/conseils/serveur";
 import { env } from "@/shared/config/env";
-import { formaterDate } from "@/shared/lib/format";
 import { ButtonLink, JsonLd } from "@/shared/ui";
 
 type Props = PageProps<"/conseils/[slug]">;
@@ -61,7 +69,11 @@ function SqueletteArticle() {
 async function ContenuPage({ params }: Pick<Props, "params">) {
   const article = await lireArticle((await params).slug);
   if (!article) notFound();
-  const autres = (await listerArticles()).filter((a) => a.id !== article.id).slice(0, 3);
+  const [tous, commentaires] = await Promise.all([
+    listerArticles(),
+    listerCommentaires(article.id),
+  ]);
+  const autres = tous.filter((a) => a.id !== article.id).slice(0, 3);
 
   const jsonLd = {
     "@type": "Article",
@@ -78,38 +90,27 @@ async function ContenuPage({ params }: Pick<Props, "params">) {
   return (
     <>
       <JsonLd donnees={jsonLd} />
-      <article className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
-        <Link
-          href="/conseils"
-          className="inline-flex items-center gap-1 text-sm text-texte-attenue hover:text-primaire"
-        >
-          <ArrowLeft aria-hidden className="size-4" /> Tous les conseils
-        </Link>
-        <header className="mt-6 mb-10 flex flex-col gap-4">
-          {article.publieLe && (
-            <p className="titre-espace text-texte-attenue">
-              <time dateTime={article.publieLe}>{formaterDate(article.publieLe)}</time>
-            </p>
-          )}
-          <h1 className="text-4xl leading-tight sm:text-6xl">{article.titre}</h1>
-          {article.extrait && <p className="text-xl text-texte-attenue">{article.extrait}</p>}
-        </header>
-        {article.imageUrl && (
-          <Image
-            src={article.imageUrl}
-            alt=""
-            width={1600}
-            height={1000}
-            priority
-            sizes="(max-width: 768px) 100vw, 768px"
-            className="mb-10 aspect-[16/10] w-full rounded-carte object-cover"
-          />
-        )}
-        <ContenuArticle contenu={article.contenu} />
-        <div className="mt-12 flex flex-col items-start gap-4 rounded-carte bg-surface-douce p-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-titre text-2xl">Envie de passer à la pratique ?</p>
-          <ButtonLink href="/boutique">Découvrir nos produits</ButtonLink>
+      <article>
+        <CouvertureArticle article={article} />
+        <div className="mx-auto max-w-3xl px-4 py-12 sm:py-16">
+          <ContenuArticle contenu={article.contenu} police={article.policeTitre} />
+          <div className="mt-12 flex flex-col items-start gap-4 rounded-carte bg-surface-douce p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="font-titre text-2xl">Envie de passer à la pratique ?</p>
+            <ButtonLink href="/boutique">Découvrir nos produits</ButtonLink>
+          </div>
         </div>
+        <section aria-labelledby="commentaires" className="mx-auto max-w-3xl px-4 pb-16">
+          <h2 id="commentaires" className="mb-6 scroll-mt-28 text-3xl">
+            Commentaires{commentaires.length > 0 && ` (${commentaires.length})`}
+          </h2>
+          <div className="flex flex-col gap-8">
+            <ListeCommentaires commentaires={commentaires} />
+            {/* Lit la session : chargé à part, le reste de l'article reste pré-calculé. */}
+            <Suspense fallback={null}>
+              <DepotCommentaire articleId={article.id} slug={article.slug} />
+            </Suspense>
+          </div>
+        </section>
       </article>
       {autres.length > 0 && (
         <section aria-labelledby="autres-conseils" className="conteneur pb-20">
@@ -126,5 +127,15 @@ async function ContenuPage({ params }: Pick<Props, "params">) {
         </section>
       )}
     </>
+  );
+}
+
+async function DepotCommentaire({ articleId, slug }: { articleId: number; slug: string }) {
+  return (
+    <FormulaireCommentaire
+      articleId={articleId}
+      connectee={await estConnectee()}
+      cheminArticle={`/conseils/${slug}`}
+    />
   );
 }

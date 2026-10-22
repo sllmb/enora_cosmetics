@@ -1,10 +1,18 @@
-import { AlertTriangle, Banknote, Clock, MessageSquareText, ShoppingBag } from "lucide-react";
+import {
+  AlertTriangle,
+  Banknote,
+  Clock,
+  MessageSquareText,
+  MessagesSquare,
+  ShoppingBag,
+} from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 import { EnteteAdmin } from "@/app/_composants/EnteteAdmin";
 import { compterAvisEnAttente } from "@/features/avis/serveur";
 import { listerStocksBas } from "@/features/catalogue/serveur";
+import { compterCommentairesEnAttente } from "@/features/conseils/serveur";
 import { ListeCommandesAdmin } from "@/features/commande/admin";
 import { listerCommandesAdmin, lireStatistiques } from "@/features/commande/serveur";
 import { formaterPrix, pluriel } from "@/shared/lib/format";
@@ -58,11 +66,12 @@ function Indicateur(props: {
 }
 
 async function Contenu() {
-  const [stats, aTraiter, stocksBas, avisEnAttente] = await Promise.all([
+  const [stats, aTraiter, stocksBas, avisEnAttente, commentairesEnAttente] = await Promise.all([
     lireStatistiques(),
     listerCommandesAdmin({ statut: "en_attente" }),
     listerStocksBas(),
     compterAvisEnAttente(),
+    compterCommentairesEnAttente(),
   ]);
 
   return (
@@ -74,6 +83,15 @@ async function Contenu() {
         >
           <MessageSquareText aria-hidden className="size-5" />
           {pluriel(avisEnAttente, "avis", "avis")} à modérer
+        </Link>
+      )}
+      {commentairesEnAttente > 0 && (
+        <Link
+          href="/admin/commentaires"
+          className="flex items-center gap-3 rounded-carte border border-avertissement/30 bg-avertissement-doux p-4 text-sm text-avertissement hover:border-avertissement"
+        >
+          <MessagesSquare aria-hidden className="size-5" />
+          {pluriel(commentairesEnAttente, "commentaire")} à modérer
         </Link>
       )}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

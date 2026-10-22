@@ -7,16 +7,8 @@ export function resumerAvis(avis: Pick<Avis, "note">[]): ResumeAvis {
   return { moyenne: Math.round((somme / avis.length) * 10) / 10, nombre: avis.length };
 }
 
-/**
- * Nom affiché publiquement : prénom et initiale du nom (« Awa Ndiaye » ->
- * « Awa N. »). Les clientes ne sont jamais exposées en entier.
- */
-export function nomPublic(nomComplet: string): string {
-  const [prenom, ...reste] = nomComplet.trim().split(/\s+/).filter(Boolean);
-  if (!prenom) return "Cliente Énora";
-  const initiale = reste.at(-1)?.[0];
-  return initiale ? `${prenom} ${initiale.toUpperCase()}.` : prenom;
-}
+// Partagé avec les commentaires des conseils.
+export { nomPublic } from "@/shared/lib/format";
 
 export function formaterNote(moyenne: number): string {
   return moyenne.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });

@@ -2,25 +2,27 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+import { cn } from "@/shared/lib/cn";
 import { useEstPret } from "@/shared/lib/useEstPret";
 import { Button, FormField, Input, Textarea } from "@/shared/ui";
 import { enregistrerArticle } from "../../actions/conseils";
+import { estManuscrite, LIBELLES_POLICE, POLICES_TITRE } from "../../lib/polices";
 import { articleSchema, type ArticleSaisi, type ArticleValide } from "../../schemas/article";
 import type { Article } from "../../types";
 import { ContenuArticle } from "../ContenuArticle";
-
-const AIDE_MARKDOWN =
-  "## Sous-titre · **gras** · *italique* · - liste · [lien](https://…) · > citation";
+import { CLASSES_POLICE } from "../polices";
+import { BarreMiseEnForme } from "./BarreMiseEnForme";
 
 export function FormulaireArticle({ article }: { article?: Article }) {
   const router = useRouter();
   const pret = useEstPret();
   const [envoi, demarrer] = useTransition();
   const [apercu, setApercu] = useState(false);
-  const { register, handleSubmit, setError, getValues, control, formState } = useForm<
+  const zoneTexte = useRef<HTMLTextAreaElement | null>(null);
+  const { register, handleSubmit, setError, setValue, getValues, control, formState } = useForm<
     ArticleSaisi,
     unknown,
     ArticleValide
@@ -31,10 +33,12 @@ export function FormulaireArticle({ article }: { article?: Article }) {
       extrait: article?.extrait ?? "",
       contenu: article?.contenu ?? "",
       publie: article ? article.publieLe !== null : false,
+      policeTitre: article?.policeTitre ?? "classique",
     },
   });
-  const contenu = useWatch({ control, name: "contenu" });
+  const [titre, contenu, police] = useWatch({ control, name: ["titre", "contenu", "policeTitre"] });
   const { errors } = formState;
+  const champContenu = register("contenu");
 
   const envoyer = handleSubmit(() =>
     demarrer(async () => {
@@ -59,16 +63,52 @@ export function FormulaireArticle({ article }: { article?: Article }) {
         <FormField libelle="Titre" obligatoire erreur={errors.titre?.message}>
           <Input {...register("titre")} />
         </FormField>
+
+        <fieldset>
+          <legend className="mb-2 text-sm font-medium">Écriture du titre</legend>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {POLICES_TITRE.map((p) => (
+              <label
+                key={p}
+                className={cn(
+                  "flex cursor-pointer flex-col gap-1 rounded-controle border p-3 transition-colors",
+                  "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primaire",
+                  police === p
+                    ? "border-primaire bg-primaire-doux"
+                    : "border-bordure hover:border-primaire",
+                )}
+              >
+                <input type="radio" value={p} className="sr-only" {...register("policeTitre")} />
+                <span
+                  aria-hidden
+                  className={cn(
+                    "truncate text-primaire",
+                    CLASSES_POLICE[p],
+                    estManuscrite(p) ? "text-3xl" : "text-2xl",
+                  )}
+                >
+                  {titre || "Bien choisir son parfum"}
+                </span>
+                <span className="text-xs text-texte-attenue">
+                  <span className="font-medium text-texte">{LIBELLES_POLICE[p].libelle}</span> ·{" "}
+                  {LIBELLES_POLICE[p].description}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
         <FormField
           libelle="Résumé"
-          aide="Affiché dans la liste des conseils et sur Google. Facultatif."
+          aide="Affiché sur la couverture, dans la liste des conseils et sur Google. Facultatif."
           erreur={errors.extrait?.message}
         >
           <Textarea rows={2} {...register("extrait")} />
         </FormField>
+
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-sm font-medium">
+            <span id="libelle-contenu" className="text-sm font-medium">
               Texte de l&apos;article <span className="text-danger">*</span>
             </span>
             <Button taille="sm" variante="discret" onClick={() => setApercu((a) => !a)}>
@@ -77,18 +117,52 @@ export function FormulaireArticle({ article }: { article?: Article }) {
           </div>
           {apercu ? (
             <div className="min-h-64 rounded-controle border border-bordure bg-fond p-5">
-              <ContenuArticle contenu={contenu || "*Rien à afficher pour l'instant.*"} />
+              <h2
+                className={cn(
+                  "mb-6 leading-tight text-primaire",
+                  CLASSES_POLICE[police],
+                  estManuscrite(police) ? "text-5xl" : "text-4xl",
+                )}
+              >
+                {titre || "Titre de l'article"}
+              </h2>
+              <ContenuArticle
+                contenu={contenu || "*Rien à afficher pour l'instant.*"}
+                police={police}
+              />
             </div>
           ) : (
-            <FormField
-              libelle="Texte de l'article (Markdown)"
-              aide={AIDE_MARKDOWN}
-              erreur={errors.contenu?.message}
-            >
-              <Textarea rows={16} className="font-mono text-sm" {...register("contenu")} />
-            </FormField>
+            <div>
+              <BarreMiseEnForme
+                zone={zoneTexte}
+                onChange={(texte) =>
+                  setValue("contenu", texte, { shouldDirty: true, shouldValidate: true })
+                }
+              />
+              <Textarea
+                rows={16}
+                aria-labelledby="libelle-contenu"
+                aria-invalid={errors.contenu ? true : undefined}
+                className="rounded-t-none"
+                {...champContenu}
+                ref={(element) => {
+                  champContenu.ref(element);
+                  zoneTexte.current = element;
+                }}
+              />
+              {errors.contenu ? (
+                <p role="alert" className="mt-1.5 text-sm text-danger">
+                  {errors.contenu.message}
+                </p>
+              ) : (
+                <p className="mt-1.5 text-xs text-texte-attenue">
+                  Sélectionnez un mot puis cliquez sur un bouton pour le mettre en forme.
+                </p>
+              )}
+            </div>
           )}
         </div>
+
         <label className="flex items-start gap-3 text-sm">
           <input
             type="checkbox"

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { exigerAdmin } from "@/features/compte/serveur";
 import { supabaseEstConfiguree } from "@/shared/config/env";
 import { creerClientPublic, urlPublique } from "@/shared/supabase/public";
+import { estPoliceTitre } from "../lib/polices";
 import type { Article } from "../types";
 
 export const TAG_ARTICLES = "articles";
@@ -17,9 +18,11 @@ const ligneSchema = z.object({
   image_chemin: z.string().nullable(),
   publie_le: z.string().nullable(),
   updated_at: z.string(),
+  police_titre: z.string(),
 });
 
-const COLONNES = "id, slug, titre, extrait, contenu, image_chemin, publie_le, updated_at";
+const COLONNES =
+  "id, slug, titre, extrait, contenu, image_chemin, publie_le, updated_at, police_titre";
 
 function versArticle(donnees: unknown): Article {
   const a = ligneSchema.parse(donnees);
@@ -33,6 +36,7 @@ function versArticle(donnees: unknown): Article {
     imageUrl: a.image_chemin ? urlPublique("produits", a.image_chemin) : null,
     publieLe: a.publie_le,
     misAJourLe: a.updated_at,
+    policeTitre: estPoliceTitre(a.police_titre) ? a.police_titre : "classique",
   };
 }
 

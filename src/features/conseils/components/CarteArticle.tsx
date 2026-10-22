@@ -1,9 +1,12 @@
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { cn } from "@/shared/lib/cn";
 import { formaterDate } from "@/shared/lib/format";
+import { estManuscrite } from "../lib/polices";
 import { resumeArticle } from "../schemas/article";
 import type { Article } from "../types";
+import { CLASSES_POLICE } from "./polices";
 
 export function CarteArticle({ article }: { article: Article }) {
   return (
@@ -27,7 +30,13 @@ export function CarteArticle({ article }: { article: Article }) {
         {article.publieLe && (
           <p className="text-xs text-texte-attenue">{formaterDate(article.publieLe)}</p>
         )}
-        <h3 className="text-2xl leading-tight">
+        <h3
+          className={cn(
+            "leading-tight",
+            CLASSES_POLICE[article.policeTitre],
+            estManuscrite(article.policeTitre) ? "text-3xl" : "text-2xl",
+          )}
+        >
           <Link
             href={`/conseils/${article.slug}`}
             className="after:absolute after:inset-0 hover:text-primaire"
