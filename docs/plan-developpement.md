@@ -50,14 +50,14 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ terminé
 
 ## Sprint 4 — Administration
 
-| Id    | Tâche                                                                         | État |
-| ----- | ----------------------------------------------------------------------------- | ---- |
-| S4-01 | Garde `/admin` (proxy + `est_admin()`)                                        | ⬜   |
-| S4-02 | Tableau de bord (commandes du jour, à traiter, chiffre d'affaires, stock bas) | ⬜   |
-| S4-03 | Commandes : liste filtrée, détail, changement de statut (RM-09, RM-12)        | ⬜   |
-| S4-04 | Produits : CRUD, images (Storage), stock, promo, activation                   | ⬜   |
-| S4-05 | Catégories et zones de livraison                                              | ⬜   |
-| S4-06 | e2e P4                                                                        | ⬜   |
+| Id    | Tâche                                                                         | État                                                       |
+| ----- | ----------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| S4-01 | Garde `/admin` (proxy + `est_admin()`)                                        | ✅ proxy + exigerAdmin() + RLS                             |
+| S4-02 | Tableau de bord (commandes du jour, à traiter, chiffre d'affaires, stock bas) | ✅                                                         |
+| S4-03 | Commandes : liste filtrée, détail, changement de statut (RM-09, RM-12)        | ✅ statuts, paiement reçu, annulation avec remise en stock |
+| S4-04 | Produits : CRUD, images (Storage), stock, promo, activation                   | ✅ photos réduites dans le navigateur                      |
+| S4-05 | Catégories et zones de livraison                                              | ✅                                                         |
+| S4-06 | e2e P4                                                                        | ✅ accès en e2e ; écritures vérifiées sur la vraie base    |
 
 ## Sprint 5 — Avis et conseils
 

@@ -37,7 +37,7 @@ export function FormulaireProduit({ produit, categories }: Props) {
   const router = useRouter();
   const pret = useEstPret();
   const [envoi, demarrer] = useTransition();
-  const { register, handleSubmit, setError, formState } = useForm<
+  const { register, handleSubmit, setError, getValues, formState } = useForm<
     ProduitAdminSaisi,
     unknown,
     ProduitAdminValide
@@ -64,9 +64,10 @@ export function FormulaireProduit({ produit, categories }: Props) {
   });
   const { errors } = formState;
 
-  const envoyer = handleSubmit((valeurs) =>
+  const envoyer = handleSubmit(() =>
     demarrer(async () => {
-      const resultat = await enregistrerProduit(produit?.id ?? null, valeurs);
+      // Le serveur revalide la saisie brute (et non la version déjà transformée ici).
+      const resultat = await enregistrerProduit(produit?.id ?? null, getValues());
       if (!resultat.ok) {
         for (const [champ, message] of Object.entries(resultat.erreurs ?? {})) {
           if (message) setError(champ as keyof ProduitAdminSaisi, { message });

@@ -4,6 +4,7 @@ import { updateTag } from "next/cache";
 import { z } from "zod";
 import { exigerAdmin } from "@/features/compte/serveur";
 import { slugifier } from "@/shared/lib/format";
+import { creerClientService } from "@/shared/supabase/service";
 import { TAG_CATALOGUE } from "../queries/catalogue";
 import { categorieAdminSchema, produitAdminSchema } from "../schemas/admin";
 
@@ -36,6 +37,16 @@ async function slugLibre(supabase: Supabase, table: "produits" | "categories", n
 }
 
 const idSchema = z.coerce.number().int().positive();
+
+/**
+ * Supprime des photos du bucket. Le Storage exige un droit de lecture en plus
+ * du droit de suppression : l'opération passe par la clé service_role, appelée
+ * uniquement après exigerAdmin(). Un échec est journalisé (fichier orphelin).
+ */
+async function supprimerFichiers(chemins: string[]) {
+  const { error } = await creerClientService().storage.from("produits").remove(chemins);
+  if (error) console.error("Suppression des photos :", chemins, error);
+}
 
 export async function enregistrerProduit(
   id: number | null,
@@ -94,7 +105,7 @@ export async function supprimerProduit(id: number): Promise<ResultatCatalogue> {
     console.error("supprimerProduit :", error);
     return { ok: false, message: "Le produit n'a pas pu être supprimé." };
   }
-  if (images?.length) await supabase.storage.from("produits").remove(images.map((i) => i.chemin));
+  if (images?.length) await supprimerFichiers(images.map((i) => i.chemin));
   updateTag(TAG_CATALOGUE);
   return { ok: true };
 }
@@ -139,7 +150,7 @@ export async function supprimerImage(imageId: number): Promise<ResultatCatalogue
     .select("chemin")
     .single();
   if (error) return { ok: false, message: "La photo n'a pas pu être supprimée." };
-  await supabase.storage.from("produits").remove([data.chemin]);
+  await supprimerFichiers([data.chemin]);
   updateTag(TAG_CATALOGUE);
   return { ok: true };
 }

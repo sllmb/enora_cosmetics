@@ -63,18 +63,22 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
   `169.254.x.x`). Next.js y bloque le JavaScript de développement par sécurité ; pour tester
   depuis un téléphone, ajouter son adresse dans `allowedDevOrigins` (`next.config.ts`).
 
-- **Tests du compte (e2e)** : créer un compte de test confirmé dans Supabase, puis lancer
-  `npm run test:e2e` avec `E2E_COMPTE_EMAIL` et `E2E_COMPTE_MOT_DE_PASSE` définis (ignorés en CI).
+- **Tests du compte et de l'administration (e2e)** : comptes de test confirmés dans Supabase
+  (dont un déclaré dans `admins`), puis `npm run test:e2e` avec `E2E_COMPTE_*` et `E2E_ADMIN_*`
+  définis (ignorés en CI).
+- **Formulaires** : toujours envoyer à la Server Action la saisie brute (`getValues()`), jamais la
+  valeur déjà transformée par Zod : le serveur la revalide avec le même schéma.
 
 ## Journal
 
-| Date       | Changement                                                                                                                                                                              |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-10-21 | Sprint 0 : initialisation Next.js 16, outillage, jetons de design et logo, couche `shared/`, layouts, toutes les routes, documentation, schéma SQL initial + RLS, CI.                   |
-| 2026-10-21 | CI : Node 24, `package-lock.json` complété pour npm 10 et 11 (échec de `npm ci`).                                                                                                       |
-| 2026-10-21 | Maquette catalogue : module features/catalogue (données de démo, règles RM-03/04/05), illustrations produits, accueil, boutique, catégories, fiche produit (notes olfactives, JSON-LD). |
-| 2026-10-21 | Supabase relié (S0-07) : schéma et données installés, RLS vérifiée ; catalogue lu dans Supabase avec cache et repli sur la démo.                                                        |
-| 2026-10-21 | Fin du Sprint 1 : tri et filtres du catalogue (URL partageable), sitemap, URL canoniques, image de partage, JSON-LD boutique / produit / fil d’Ariane.                                  |
-| 2026-10-22 | Sprint 3 : comptes (Supabase Auth), proxy de session, profil qui pré-remplit la commande, Mes commandes ; formulaires en POST et boutons grisés avant chargement.                       |
-| 2026-10-22 | Sprint 2 : panier (navigateur), formulaire de commande, Server Action + fonction SQL `creer_commande` (RM-05 à RM-08), confirmation avec clé secrète, WhatsApp, page Livraison.         |
-| 2026-10-21 | e2e réparés (titres ambigus, noindex) ; filtres à affichage immédiat (useOptimistic).                                                                                                   |
+| Date       | Changement                                                                                                                                                                                          |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-10-21 | Sprint 0 : initialisation Next.js 16, outillage, jetons de design et logo, couche `shared/`, layouts, toutes les routes, documentation, schéma SQL initial + RLS, CI.                               |
+| 2026-10-21 | CI : Node 24, `package-lock.json` complété pour npm 10 et 11 (échec de `npm ci`).                                                                                                                   |
+| 2026-10-21 | Maquette catalogue : module features/catalogue (données de démo, règles RM-03/04/05), illustrations produits, accueil, boutique, catégories, fiche produit (notes olfactives, JSON-LD).             |
+| 2026-10-21 | Supabase relié (S0-07) : schéma et données installés, RLS vérifiée ; catalogue lu dans Supabase avec cache et repli sur la démo.                                                                    |
+| 2026-10-21 | Fin du Sprint 1 : tri et filtres du catalogue (URL partageable), sitemap, URL canoniques, image de partage, JSON-LD boutique / produit / fil d’Ariane.                                              |
+| 2026-10-22 | Sprint 4 : administration (commandes, produits et photos, catégories, zones, tableau de bord) ; formulaires qui envoient la saisie brute au serveur ; photos supprimées du stockage par le serveur. |
+| 2026-10-22 | Sprint 3 : comptes (Supabase Auth), proxy de session, profil qui pré-remplit la commande, Mes commandes ; formulaires en POST et boutons grisés avant chargement.                                   |
+| 2026-10-22 | Sprint 2 : panier (navigateur), formulaire de commande, Server Action + fonction SQL `creer_commande` (RM-05 à RM-08), confirmation avec clé secrète, WhatsApp, page Livraison.                     |
+| 2026-10-21 | e2e réparés (titres ambigus, noindex) ; filtres à affichage immédiat (useOptimistic).                                                                                                               |

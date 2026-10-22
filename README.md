@@ -21,7 +21,10 @@ seule transaction, page de confirmation privée.
 **Comptes clientes (Sprint 3).** Inscription, connexion, mot de passe oublié, coordonnées
 enregistrées qui pré-remplissent la commande, historique « Mes commandes ».
 
-Prochaine étape : administration (Sprint 4).
+**Administration (Sprint 4).** `/admin` réservé aux administrateurs : commandes (statuts, paiement
+reçu, annulation qui remet le stock), produits et photos, catégories, zones de livraison, tableau de bord.
+
+Prochaine étape : saisir les vrais produits dans l'administration, puis avis et conseils (Sprint 5).
 
 ## Démarrage
 
@@ -47,7 +50,8 @@ Le site démarre sans Supabase tant qu'aucune page ne lit de données.
 1. Créer un projet sur [supabase.com](https://supabase.com).
 2. Exécuter **dans l'ordre** les fichiers de `supabase/migrations/` dans le SQL Editor
    (ou `supabase db push` avec la CLI), puis `supabase/seed.sql` pour les données de démo.
-3. Se déclarer administrateur : `insert into admins (user_id) values ('<uuid du compte>');`
+3. Se déclarer administrateur (après s'être inscrit sur le site) :
+   `insert into admins (user_id) select id from auth.users where email = '<email>';`
 4. Générer les types : `npm run db:types` (CLI Supabase liée au projet).
 
 ## Commandes
@@ -82,4 +86,3 @@ Le site démarre sans Supabase tant qu'aucune page ne lit de données.
 ## Limites connues
 
 - Logo en PNG détouré à partir d'un WebP : une version SVG serait préférable.
-- La garde serveur de `/admin` arrive au Sprint 4 (les pages admin ne contiennent aucune donnée d'ici là).

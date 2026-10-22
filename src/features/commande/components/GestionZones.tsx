@@ -44,7 +44,7 @@ export function GestionZones({ zones }: { zones: ZoneAdmin[] }) {
 function FicheZone({ zone, ordreSuivant = 1 }: { zone?: ZoneAdmin; ordreSuivant?: number }) {
   const router = useRouter();
   const [envoi, demarrer] = useTransition();
-  const { register, handleSubmit, reset, formState } = useForm<ZoneAdminSaisie>({
+  const { register, handleSubmit, reset, getValues, formState } = useForm<ZoneAdminSaisie>({
     resolver: zodResolver(zoneAdminSchema),
     defaultValues: {
       nom: zone?.nom ?? "",
@@ -56,9 +56,10 @@ function FicheZone({ zone, ordreSuivant = 1 }: { zone?: ZoneAdmin; ordreSuivant?
   });
   const { errors } = formState;
 
-  const envoyer = handleSubmit((valeurs) =>
+  const envoyer = handleSubmit(() =>
     demarrer(async () => {
-      const resultat = await enregistrerZone(zone?.id ?? null, valeurs);
+      // Le serveur revalide la saisie brute (et non la version déjà transformée ici).
+      const resultat = await enregistrerZone(zone?.id ?? null, getValues());
       if (!resultat.ok) return void toast.error(resultat.message);
       toast.success(zone ? "Zone enregistrée." : "Zone ajoutée.");
       if (!zone) reset();

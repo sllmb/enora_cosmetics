@@ -37,7 +37,7 @@ type Props = { categorie?: CategorieAdmin; ordreSuivant?: number };
 function FicheCategorie({ categorie, ordreSuivant = 1 }: Props) {
   const router = useRouter();
   const [envoi, demarrer] = useTransition();
-  const { register, handleSubmit, reset, formState } = useForm<
+  const { register, handleSubmit, reset, getValues, formState } = useForm<
     CategorieAdminSaisie,
     unknown,
     CategorieAdminValide
@@ -51,9 +51,10 @@ function FicheCategorie({ categorie, ordreSuivant = 1 }: Props) {
     },
   });
 
-  const envoyer = handleSubmit((valeurs) =>
+  const envoyer = handleSubmit(() =>
     demarrer(async () => {
-      const resultat = await enregistrerCategorie(categorie?.id ?? null, valeurs);
+      // Le serveur revalide la saisie brute (et non la version déjà transformée ici).
+      const resultat = await enregistrerCategorie(categorie?.id ?? null, getValues());
       if (!resultat.ok) return void toast.error(resultat.message);
       toast.success(categorie ? "Catégorie enregistrée." : "Catégorie créée.");
       if (!categorie) reset();

@@ -26,12 +26,13 @@ export function useFormulaireCompte<T extends FieldValues>(
   const [erreur, setErreur] = useState<string>();
   const [reussite, setReussite] = useState<string>();
 
-  const envoyer = formulaire.handleSubmit((valeurs) =>
+  const envoyer = formulaire.handleSubmit(() =>
     demarrer(async () => {
       setErreur(undefined);
       setReussite(undefined);
       // Une action qui redirige ne renvoie rien : la navigation prend le relais.
-      const resultat = await action(valeurs);
+      // Le serveur revalide la saisie brute (et non la version déjà transformée ici).
+      const resultat = await action(formulaire.getValues());
       if (!resultat) return;
       if (resultat.ok) {
         setReussite(resultat.message);
