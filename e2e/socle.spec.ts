@@ -35,6 +35,18 @@ test("la navigation mobile s'ouvre et marque la page courante", async ({ page, i
   await expect(menu).toBeHidden();
 });
 
+test("la page Conseils s'affiche, avec ou sans article", async ({ page }) => {
+  await page.goto("/conseils");
+  await expect(page.getByRole("heading", { level: 1, name: "Conseils" })).toBeVisible();
+  await expect(
+    page
+      .getByRole("listitem")
+      .getByRole("link")
+      .or(page.getByRole("heading", { name: "Nos premiers conseils arrivent bientôt" }))
+      .first(),
+  ).toBeVisible();
+});
+
 test("une adresse inconnue affiche la page introuvable", async ({ page }) => {
   const reponse = await page.goto("/cette-page-n-existe-pas");
   expect(reponse?.status()).toBe(404);

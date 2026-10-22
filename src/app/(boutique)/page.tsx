@@ -2,6 +2,8 @@ import { MessageCircle, Truck, Wallet } from "lucide-react";
 import Link from "next/link";
 import { GrilleProduits, VisuelProduit } from "@/features/catalogue";
 import { lireProduit, listerCategories, listerNouveautes } from "@/features/catalogue/serveur";
+import { CarteArticle } from "@/features/conseils";
+import { listerArticles } from "@/features/conseils/serveur";
 import type { Metadata } from "next";
 import { env } from "@/shared/config/env";
 import { ButtonLink, JsonLd } from "@/shared/ui";
@@ -33,7 +35,8 @@ const POSITIONS_HERO = [
 ];
 
 export default async function AccueilPage() {
-  const [categories, nouveautes, huileVedette, ...visuelsHero] = await Promise.all([
+  const [articles, categories, nouveautes, huileVedette, ...visuelsHero] = await Promise.all([
+    listerArticles(),
     listerCategories(),
     listerNouveautes(4),
     lireProduit("huile-parfumee-ambre-oud"),
@@ -181,6 +184,29 @@ export default async function AccueilPage() {
               </Link>
             </div>
           </div>
+        </section>
+      )}
+
+      {articles.length > 0 && (
+        <section aria-labelledby="conseils" className="conteneur py-20">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="titre-espace text-texte-attenue">Le journal Énora</p>
+              <h2 id="conseils" className="mt-3 text-4xl sm:text-5xl">
+                Nos conseils
+              </h2>
+            </div>
+            <Link href="/conseils" className="text-sm font-medium text-primaire hover:underline">
+              Tous les conseils
+            </Link>
+          </div>
+          <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {articles.slice(0, 3).map((article) => (
+              <li key={article.id}>
+                <CarteArticle article={article} />
+              </li>
+            ))}
+          </ul>
         </section>
       )}
     </>

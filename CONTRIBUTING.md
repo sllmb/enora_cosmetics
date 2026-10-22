@@ -24,6 +24,8 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 | `src/features/panier`          | Panier enregistré dans le navigateur, compteur, page panier                 |
 | `src/features/compte`          | Connexion, inscription, mot de passe, profil (Supabase Auth)                |
 | `src/features/commande`        | Formulaire, Server Action `creerCommande`, confirmation, zones de livraison |
+| `src/features/avis`            | Avis clientes : dépôt, étoiles, liste, modération                           |
+| `src/features/conseils`        | Articles en Markdown : lecture, cartes, rédaction et image (admin)          |
 | `src/shared/config/env.ts`     | Variables d'environnement validées                                          |
 | `src/shared/supabase`          | Clients Supabase (session, navigateur, service_role)                        |
 | `src/shared/lib`               | `cn`, format FCFA / dates, validation (téléphone SN, email, mot de passe)   |
@@ -81,4 +83,5 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 | 2026-10-22 | Sprint 4 : administration (commandes, produits et photos, catégories, zones, tableau de bord) ; formulaires qui envoient la saisie brute au serveur ; photos supprimées du stockage par le serveur. |
 | 2026-10-22 | Sprint 3 : comptes (Supabase Auth), proxy de session, profil qui pré-remplit la commande, Mes commandes ; formulaires en POST et boutons grisés avant chargement.                                   |
 | 2026-10-22 | Sprint 2 : panier (navigateur), formulaire de commande, Server Action + fonction SQL `creer_commande` (RM-05 à RM-08), confirmation avec clé secrète, WhatsApp, page Livraison.                     |
+| 2026-10-22 | Sprint 5 : avis clientes (dépôt après livraison, modération, note moyenne) et conseils (Markdown sans HTML brut, aperçu, brouillons, image de couverture, sitemap, JSON-LD Article).                |
 | 2026-10-21 | e2e réparés (titres ambigus, noindex) ; filtres à affichage immédiat (useOptimistic).                                                                                                               |
