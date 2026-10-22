@@ -25,12 +25,20 @@ test("un produit épuisé n'est pas commandable (RM-04)", async ({ page }) => {
 });
 
 test("la quantité reste entre 1 et le stock (RM-05)", async ({ page }) => {
+  // Le stock dépend des commandes réelles : on monte jusqu'au maximum autorisé.
   await page.goto("/produit/huile-parfumee-santal-vanille");
   const moins = page.getByRole("button", { name: "Diminuer la quantité" });
   const plus = page.getByRole("button", { name: "Augmenter la quantité" });
+  const quantite = page.getByRole("group", { name: "Quantité" });
   await expect(moins).toBeDisabled();
-  for (let i = 0; i < 7; i++) await plus.click();
-  await expect(page.getByRole("group", { name: "Quantité" })).toContainText("8");
+  let clics = 0;
+  while ((await plus.isEnabled()) && clics < 50) {
+    await plus.click();
+    clics++;
+  }
+  expect(clics).toBeGreaterThan(0);
+  expect(clics).toBeLessThan(50);
+  await expect(quantite).toContainText(String(clics + 1));
   await expect(plus).toBeDisabled();
 });
 
