@@ -61,11 +61,11 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ terminé
 
 ## Sprint 5 — Avis et conseils
 
-| Id    | Tâche                                                            | État |
-| ----- | ---------------------------------------------------------------- | ---- |
-| S5-01 | Dépôt d'avis (RM-10) et affichage (note moyenne)                 | ⬜   |
-| S5-02 | Modération des avis (RM-11)                                      | ⬜   |
-| S5-03 | Articles : rédaction Markdown (admin), liste et lecture (public) | ⬜   |
+| Id    | Tâche                                                            | État                                                         |
+| ----- | ---------------------------------------------------------------- | ------------------------------------------------------------ |
+| S5-01 | Dépôt d'avis (RM-10) et affichage (note moyenne)                 | ✅ réservé aux clientes livrées, JSON-LD aggregateRating     |
+| S5-02 | Modération des avis (RM-11)                                      | ✅ publier / refuser / supprimer, bandeau au tableau de bord |
+| S5-03 | Articles : rédaction Markdown (admin), liste et lecture (public) | ✅ aperçu, brouillons, image de couverture, sitemap          |
 
 ## Sprint 6 — Finitions et mise en ligne
 

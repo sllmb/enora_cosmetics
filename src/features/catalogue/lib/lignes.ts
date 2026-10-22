@@ -24,6 +24,7 @@ export const ligneCategorieSchema = z.object({
 });
 
 export const ligneProduitSchema = z.object({
+  id: z.number(),
   slug: z.string(),
   nom: z.string(),
   accroche: z.string().nullable(),
@@ -60,6 +61,7 @@ export function versCategorie(ligne: z.infer<typeof ligneCategorieSchema>): Cate
 
 export function versProduit(ligne: LigneProduit, urlImage: (chemin: string) => string): Produit {
   return {
+    id: ligne.id,
     slug: ligne.slug,
     nom: ligne.nom,
     categorieSlug: ligne.categories.slug,

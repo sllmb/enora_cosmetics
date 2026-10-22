@@ -36,6 +36,7 @@ const CONSEILS_SAVON =
 
 export const PRODUITS_DEMO: Produit[] = [
   {
+    id: 1,
     slug: "deodorant-fleur-de-coton",
     nom: "Déodorant Fleur de coton",
     categorieSlug: "deodorants",
@@ -55,6 +56,7 @@ export const PRODUITS_DEMO: Produit[] = [
     images: [],
   },
   {
+    id: 2,
     slug: "deodorant-musc-blanc",
     nom: "Déodorant Musc blanc",
     categorieSlug: "deodorants",
@@ -74,6 +76,7 @@ export const PRODUITS_DEMO: Produit[] = [
     images: [],
   },
   {
+    id: 3,
     slug: "deodorant-brume-fraiche",
     nom: "Déodorant Brume fraîche",
     categorieSlug: "deodorants",
@@ -93,6 +96,7 @@ export const PRODUITS_DEMO: Produit[] = [
     images: [],
   },
   {
+    id: 4,
     slug: "huile-parfumee-ambre-oud",
     nom: "Huile parfumée Ambre & Oud",
     categorieSlug: "huiles-parfumees",
@@ -112,6 +116,7 @@ export const PRODUITS_DEMO: Produit[] = [
     images: [],
   },
   {
+    id: 5,
     slug: "huile-parfumee-jasmin",
     nom: "Huile parfumée Jasmin",
     categorieSlug: "huiles-parfumees",
@@ -131,6 +136,7 @@ export const PRODUITS_DEMO: Produit[] = [
     images: [],
   },
   {
+    id: 6,
     slug: "huile-parfumee-santal-vanille",
     nom: "Huile parfumée Santal & Vanille",
     categorieSlug: "huiles-parfumees",
@@ -150,6 +156,7 @@ export const PRODUITS_DEMO: Produit[] = [
     images: [],
   },
   {
+    id: 7,
     slug: "savon-karite-vanille",
     nom: "Savon Karité & Vanille",
     categorieSlug: "savons",
@@ -170,6 +177,7 @@ export const PRODUITS_DEMO: Produit[] = [
     images: [],
   },
   {
+    id: 8,
     slug: "savon-fleur-oranger",
     nom: "Savon Fleur d'oranger",
     categorieSlug: "savons",
@@ -189,6 +197,7 @@ export const PRODUITS_DEMO: Produit[] = [
     images: [],
   },
   {
+    id: 9,
     slug: "savon-ambre-noir",
     nom: "Savon Ambre noir",
     categorieSlug: "savons",

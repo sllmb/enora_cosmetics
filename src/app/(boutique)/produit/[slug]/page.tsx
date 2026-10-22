@@ -20,6 +20,8 @@ import {
   listerProduits,
   listerProduitsSimilaires,
 } from "@/features/catalogue/serveur";
+import { FormulaireAvis, ListeAvis, resumerAvis } from "@/features/avis";
+import { lireDroitAvis, listerAvisProduit } from "@/features/avis/serveur";
 import { AjoutPanier } from "@/features/panier";
 import { env } from "@/shared/config/env";
 import { JsonLd, Prix } from "@/shared/ui";
@@ -82,10 +84,12 @@ function SqueletteProduit() {
 async function ContenuProduit({ params }: Pick<PageProps<"/produit/[slug]">, "params">) {
   const produit = await lireProduit((await params).slug);
   if (!produit) notFound();
-  const [categorie, similaires] = await Promise.all([
+  const [categorie, similaires, avis] = await Promise.all([
     lireCategorie(produit.categorieSlug),
     listerProduitsSimilaires(produit),
+    listerAvisProduit(produit.id),
   ]);
+  const resume = resumerAvis(avis);
 
   const urlProduit = `${env.siteUrl}/produit/${produit.slug}`;
   const jsonLdProduit = {
@@ -95,6 +99,13 @@ async function ContenuProduit({ params }: Pick<PageProps<"/produit/[slug]">, "pa
     sku: produit.slug,
     ...(produit.images.length > 0 && { image: produit.images.map((i) => i.url) }),
     brand: { "@type": "Brand", name: "Énora Cosmetics" },
+    ...(resume.nombre > 0 && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: resume.moyenne,
+        reviewCount: resume.nombre,
+      },
+    }),
     offers: {
       "@type": "Offer",
       price: prixEffectif(produit),
@@ -201,6 +212,19 @@ async function ContenuProduit({ params }: Pick<PageProps<"/produit/[slug]">, "pa
           </div>
         </div>
 
+        <section aria-labelledby="avis" className="mt-20 grid gap-10 lg:grid-cols-[1fr_24rem]">
+          <div>
+            <h2 id="avis" className="mb-6 text-4xl">
+              Avis clientes
+            </h2>
+            <ListeAvis avis={avis} />
+          </div>
+          {/* Lit la session de la cliente : chargé à part, le reste de la page reste pré-calculé. */}
+          <Suspense fallback={null}>
+            <DepotAvis produitId={produit.id} slug={produit.slug} />
+          </Suspense>
+        </section>
+
         <section aria-labelledby="similaires" className="mt-24">
           <h2 id="similaires" className="mb-10 text-center text-4xl">
             Vous aimerez aussi
@@ -210,4 +234,9 @@ async function ContenuProduit({ params }: Pick<PageProps<"/produit/[slug]">, "pa
       </div>
     </>
   );
+}
+
+async function DepotAvis({ produitId, slug }: { produitId: number; slug: string }) {
+  const droit = await lireDroitAvis(produitId);
+  return <FormulaireAvis produitId={produitId} droit={droit} cheminProduit={`/produit/${slug}`} />;
 }

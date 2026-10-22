@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { ligneProduitSchema, versCategorie, versProduit } from "./lignes";
 
 const ligne = {
+  id: 5,
   slug: "huile-parfumee-jasmin",
   nom: "Huile parfumée Jasmin",
   accroche: null,

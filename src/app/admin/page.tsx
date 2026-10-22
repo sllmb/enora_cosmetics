@@ -1,8 +1,9 @@
-import { AlertTriangle, Banknote, Clock, ShoppingBag } from "lucide-react";
+import { AlertTriangle, Banknote, Clock, MessageSquareText, ShoppingBag } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 import { EnteteAdmin } from "@/app/_composants/EnteteAdmin";
+import { compterAvisEnAttente } from "@/features/avis/serveur";
 import { listerStocksBas } from "@/features/catalogue/serveur";
 import { ListeCommandesAdmin } from "@/features/commande/admin";
 import { listerCommandesAdmin, lireStatistiques } from "@/features/commande/serveur";
@@ -57,14 +58,24 @@ function Indicateur(props: {
 }
 
 async function Contenu() {
-  const [stats, aTraiter, stocksBas] = await Promise.all([
+  const [stats, aTraiter, stocksBas, avisEnAttente] = await Promise.all([
     lireStatistiques(),
     listerCommandesAdmin({ statut: "en_attente" }),
     listerStocksBas(),
+    compterAvisEnAttente(),
   ]);
 
   return (
     <div className="flex flex-col gap-10">
+      {avisEnAttente > 0 && (
+        <Link
+          href="/admin/avis"
+          className="flex items-center gap-3 rounded-carte border border-avertissement/30 bg-avertissement-doux p-4 text-sm text-avertissement hover:border-avertissement"
+        >
+          <MessageSquareText aria-hidden className="size-5" />
+          {pluriel(avisEnAttente, "avis", "avis")} à modérer
+        </Link>
+      )}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Indicateur
           titre="À traiter"

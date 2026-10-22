@@ -24,7 +24,11 @@ enregistrées qui pré-remplissent la commande, historique « Mes commandes ».
 **Administration (Sprint 4).** `/admin` réservé aux administrateurs : commandes (statuts, paiement
 reçu, annulation qui remet le stock), produits et photos, catégories, zones de livraison, tableau de bord.
 
-Prochaine étape : saisir les vrais produits dans l'administration, puis avis et conseils (Sprint 5).
+**Avis et conseils (Sprint 5).** Avis réservés aux clientes qui ont reçu le produit, publiés après
+modération. Conseils rédigés en Markdown dans l'administration (aperçu, brouillon, image de
+couverture), page Conseils, articles, section sur l'accueil et plan du site.
+
+Prochaine étape : saisir les vrais produits et les premiers conseils, puis finitions et mise en ligne (Sprint 6).
 
 ## Démarrage
 
