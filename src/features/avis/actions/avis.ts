@@ -33,6 +33,7 @@ export async function deposerAvis(produitId: number, donnees: unknown): Promise<
   const { error } = await supabase.from("avis").insert({
     produit_id: produitId,
     user_id: user.id,
+    // Provisoire : la base impose le nom affiché (déclencheur imposer_auteur).
     auteur: nomPublic(profil?.nom ?? ""),
     note: saisie.data.note,
     commentaire: saisie.data.commentaire,
