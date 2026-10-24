@@ -1,6 +1,7 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import { lireEnvSupabase } from "@/shared/config/env";
 
 /**
@@ -9,6 +10,9 @@ import { lireEnvSupabase } from "@/shared/config/env";
  */
 export async function creerClientServeur() {
   const { url, cleAnon } = lireEnvSupabase();
+  // Supabase lit l'heure (expiration de la session) : avec Cache Components, cela
+  // n'est permis qu'une fois la requête engagée, ce que signale connection().
+  await connection();
   const magasin = await cookies();
   return createServerClient(url, cleAnon, {
     cookies: {

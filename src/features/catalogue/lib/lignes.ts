@@ -12,7 +12,7 @@ const FORME_PAR_CATEGORIE: Record<string, FormeVisuel> = {
   savons: "savon",
 };
 
-const formeDe = (categorieSlug: string): FormeVisuel =>
+export const formeDe = (categorieSlug: string): FormeVisuel =>
   FORME_PAR_CATEGORIE[categorieSlug] ?? "flacon";
 
 const listeNotes = z.array(z.string()).catch([]);
@@ -24,6 +24,7 @@ export const ligneCategorieSchema = z.object({
 });
 
 export const ligneProduitSchema = z.object({
+  id: z.number(),
   slug: z.string(),
   nom: z.string(),
   accroche: z.string().nullable(),
@@ -35,6 +36,7 @@ export const ligneProduitSchema = z.object({
   prix_promo: z.number().int().nullable(),
   stock: z.number().int(),
   est_nouveaute: z.boolean(),
+  vedette: z.boolean(),
   famille_olfactive: z
     .enum(["floral", "oriental", "frais", "musque", "gourmand", "boise"])
     .nullable()
@@ -60,6 +62,7 @@ export function versCategorie(ligne: z.infer<typeof ligneCategorieSchema>): Cate
 
 export function versProduit(ligne: LigneProduit, urlImage: (chemin: string) => string): Produit {
   return {
+    id: ligne.id,
     slug: ligne.slug,
     nom: ligne.nom,
     categorieSlug: ligne.categories.slug,
@@ -72,6 +75,7 @@ export function versProduit(ligne: LigneProduit, urlImage: (chemin: string) => s
     prixPromo: ligne.prix_promo,
     stock: ligne.stock,
     estNouveaute: ligne.est_nouveaute,
+    vedette: ligne.vedette,
     familleOlfactive: ligne.famille_olfactive,
     notesOlfactives: ligne.notes_olfactives,
     forme: formeDe(ligne.categories.slug),

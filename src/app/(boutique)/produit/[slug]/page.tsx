@@ -2,23 +2,29 @@ import { MessageCircle, Truck, Wallet } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { OPEN_GRAPH_BASE } from "@/app/_seo";
 import {
   BadgesProduit,
-  BlocAchat,
   DetailsProduit,
   estEpuise,
+  GalerieProduit,
   GrilleProduits,
   LIBELLES_FAMILLE,
+  NotesOlfactives,
+  prixEffectif,
+} from "@/features/catalogue";
+import {
   lireCategorie,
   lireProduit,
   listerProduits,
   listerProduitsSimilaires,
-  NotesOlfactives,
-  prixEffectif,
-  VisuelProduit,
-} from "@/features/catalogue";
+} from "@/features/catalogue/serveur";
+import { FormulaireAvis, ListeAvis, resumerAvis } from "@/features/avis";
+import { lireDroitAvis, listerAvisProduit } from "@/features/avis/serveur";
+import { AjoutPanier } from "@/features/panier";
 import { env } from "@/shared/config/env";
-import { Prix } from "@/shared/ui";
+import { JsonLd, Prix } from "@/shared/ui";
 
 export async function generateStaticParams() {
   const produits = await listerProduits();
@@ -29,31 +35,77 @@ export async function generateMetadata({
   params,
 }: PageProps<"/produit/[slug]">): Promise<Metadata> {
   const produit = await lireProduit((await params).slug);
-  return produit
-    ? { title: produit.nom, description: `${produit.accroche}. ${produit.description}` }
-    : {};
+  if (!produit) return {};
+  const description = [produit.accroche, produit.description].filter(Boolean).join(". ");
+  const photo = produit.images[0];
+  return {
+    title: produit.nom,
+    description,
+    alternates: { canonical: `/produit/${produit.slug}` },
+    openGraph: {
+      ...OPEN_GRAPH_BASE,
+      title: produit.nom,
+      description,
+      url: `/produit/${produit.slug}`,
+      images: photo ? [{ url: photo.url, alt: photo.alt }] : OPEN_GRAPH_BASE.images,
+    },
+  };
 }
 
 const REASSURANCE = [
-  { Icone: Truck, texte: "Livraison en 24 h à Dakar, 2 à 5 jours en régions" },
+  { Icone: Truck, texte: "Livraison en 24 h à Dakar, environs selon la zone" },
   { Icone: Wallet, texte: "Paiement à la livraison, Wave ou Orange Money" },
   { Icone: MessageCircle, texte: "Une question ? Écrivez-nous sur WhatsApp" },
 ];
 
-export default async function ProduitPage({ params }: PageProps<"/produit/[slug]">) {
+// L'adresse (slug) n'est lue que sous Suspense : la structure de la page s'affiche
+// tout de suite pendant la navigation, le produit arrive juste après.
+export default function ProduitPage({ params }: PageProps<"/produit/[slug]">) {
+  return (
+    <Suspense fallback={<SqueletteProduit />}>
+      <ContenuProduit params={params} />
+    </Suspense>
+  );
+}
+
+function SqueletteProduit() {
+  return (
+    <div aria-busy className="conteneur grid gap-10 py-8 sm:py-12 md:grid-cols-2 lg:gap-16">
+      <div className="aspect-square animate-pulse rounded-carte bg-surface-douce" />
+      <div className="flex flex-col gap-4 pt-8">
+        <div className="h-4 w-40 animate-pulse rounded-full bg-surface-douce" />
+        <div className="h-12 w-3/4 animate-pulse rounded-controle bg-surface-douce" />
+        <div className="h-8 w-32 animate-pulse rounded-controle bg-surface-douce" />
+      </div>
+    </div>
+  );
+}
+
+async function ContenuProduit({ params }: Pick<PageProps<"/produit/[slug]">, "params">) {
   const produit = await lireProduit((await params).slug);
   if (!produit) notFound();
-  const [categorie, similaires] = await Promise.all([
+  const [categorie, similaires, avis] = await Promise.all([
     lireCategorie(produit.categorieSlug),
     listerProduitsSimilaires(produit),
+    listerAvisProduit(produit.id),
   ]);
+  const resume = resumerAvis(avis);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
+  const urlProduit = `${env.siteUrl}/produit/${produit.slug}`;
+  const jsonLdProduit = {
     "@type": "Product",
     name: produit.nom,
     description: produit.description,
+    sku: produit.slug,
+    ...(produit.images.length > 0 && { image: produit.images.map((i) => i.url) }),
     brand: { "@type": "Brand", name: "Énora Cosmetics" },
+    ...(resume.nombre > 0 && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: resume.moyenne,
+        reviewCount: resume.nombre,
+      },
+    }),
     offers: {
       "@type": "Offer",
       price: prixEffectif(produit),
@@ -61,17 +113,29 @@ export default async function ProduitPage({ params }: PageProps<"/produit/[slug]
       availability: estEpuise(produit)
         ? "https://schema.org/OutOfStock"
         : "https://schema.org/InStock",
-      url: `${env.siteUrl}/produit/${produit.slug}`,
+      url: urlProduit,
     },
+  };
+  const jsonLdFilAriane = {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { name: "Boutique", url: `${env.siteUrl}/boutique` },
+      ...(categorie
+        ? [{ name: categorie.nom, url: `${env.siteUrl}/boutique/${categorie.slug}` }]
+        : []),
+      { name: produit.nom, url: urlProduit },
+    ].map((etape, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: etape.name,
+      item: etape.url,
+    })),
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        // Données structurées pour Google ; « < » échappé pour empêcher toute injection.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
-      />
+      <JsonLd donnees={jsonLdProduit} />
+      <JsonLd donnees={jsonLdFilAriane} />
       <div className="conteneur py-8 sm:py-12">
         <nav aria-label="Fil d'Ariane" className="mb-6 text-sm text-texte-attenue">
           <ol className="flex flex-wrap items-center gap-2">
@@ -99,12 +163,7 @@ export default async function ProduitPage({ params }: PageProps<"/produit/[slug]
 
         <div className="grid gap-10 md:grid-cols-2 lg:gap-16">
           <div className="relative md:sticky md:top-28 md:self-start">
-            <VisuelProduit
-              produit={produit}
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="rounded-carte"
-            />
+            <GalerieProduit produit={produit} className="rounded-carte" />
             <div className="absolute top-4 left-4">
               <BadgesProduit produit={produit} />
             </div>
@@ -131,7 +190,7 @@ export default async function ProduitPage({ params }: PageProps<"/produit/[slug]
               </p>
             )}
 
-            <BlocAchat nom={produit.nom} stock={produit.stock} />
+            <AjoutPanier produit={{ slug: produit.slug, nom: produit.nom, stock: produit.stock }} />
 
             <ul className="flex flex-col gap-3 rounded-carte border border-bordure p-5 text-sm">
               {REASSURANCE.map(({ Icone, texte }) => (
@@ -148,6 +207,19 @@ export default async function ProduitPage({ params }: PageProps<"/produit/[slug]
           </div>
         </div>
 
+        <section aria-labelledby="avis" className="mt-20 grid gap-10 lg:grid-cols-[1fr_24rem]">
+          <div>
+            <h2 id="avis" className="mb-6 text-4xl">
+              Avis clientes
+            </h2>
+            <ListeAvis avis={avis} />
+          </div>
+          {/* Lit la session de la cliente : chargé à part, le reste de la page reste pré-calculé. */}
+          <Suspense fallback={null}>
+            <DepotAvis produitId={produit.id} slug={produit.slug} />
+          </Suspense>
+        </section>
+
         <section aria-labelledby="similaires" className="mt-24">
           <h2 id="similaires" className="mb-10 text-center text-4xl">
             Vous aimerez aussi
@@ -157,4 +229,9 @@ export default async function ProduitPage({ params }: PageProps<"/produit/[slug]
       </div>
     </>
   );
+}
+
+async function DepotAvis({ produitId, slug }: { produitId: number; slug: string }) {
+  const droit = await lireDroitAvis(produitId);
+  return <FormulaireAvis produitId={produitId} droit={droit} cheminProduit={`/produit/${slug}`} />;
 }

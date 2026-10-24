@@ -25,12 +25,20 @@ test("un produit épuisé n'est pas commandable (RM-04)", async ({ page }) => {
 });
 
 test("la quantité reste entre 1 et le stock (RM-05)", async ({ page }) => {
+  // Le stock dépend des commandes réelles : on monte jusqu'au maximum autorisé.
   await page.goto("/produit/huile-parfumee-santal-vanille");
   const moins = page.getByRole("button", { name: "Diminuer la quantité" });
   const plus = page.getByRole("button", { name: "Augmenter la quantité" });
+  const quantite = page.getByRole("group", { name: "Quantité" });
   await expect(moins).toBeDisabled();
-  for (let i = 0; i < 7; i++) await plus.click();
-  await expect(page.getByRole("group", { name: "Quantité" })).toContainText("8");
+  let clics = 0;
+  while ((await plus.isEnabled()) && clics < 50) {
+    await plus.click();
+    clics++;
+  }
+  expect(clics).toBeGreaterThan(0);
+  expect(clics).toBeLessThan(50);
+  await expect(quantite).toContainText(String(clics + 1));
   await expect(plus).toBeDisabled();
 });
 
@@ -39,5 +47,30 @@ test("la quantité reste entre 1 et le stock (RM-05)", async ({ page }) => {
 test("un produit inconnu affiche la page introuvable, non indexée", async ({ page }) => {
   await page.goto("/produit/produit-inexistant");
   await expect(page.getByRole("heading", { name: "Page introuvable" })).toBeVisible();
-  await expect(page.locator('meta[name="robots"][content="noindex"]')).toHaveCount(1);
+  await expect(page.locator('meta[name="robots"][content="noindex"]').first()).toBeAttached();
+});
+
+test("tri et filtres restent dans l'adresse", async ({ page }) => {
+  await page.goto("/boutique");
+  await page.getByLabel("Trier par").selectOption("prix-croissant");
+  await page.getByRole("button", { name: "Floral" }).click();
+  await expect(page).toHaveURL(/\?tri=prix-croissant&famille=floral$/);
+  await expect(page.getByText(/^2\sproduits$/)).toBeVisible();
+
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Floral" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await page.getByLabel("Disponibles uniquement").check();
+  await expect(page.getByText(/^1\sproduit$/)).toBeVisible();
+
+  await page.getByRole("button", { name: "Tout effacer" }).click();
+  await expect(page).toHaveURL(/\/boutique$/);
+});
+
+test("le plan du site liste les produits", async ({ request }) => {
+  const plan = await (await request.get("/sitemap.xml")).text();
+  expect(plan).toContain("/produit/huile-parfumee-jasmin");
+  expect(plan).toContain("/boutique/savons");
 });

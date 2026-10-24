@@ -7,15 +7,17 @@ const eslintConfig = defineConfig([
   ...nextTs,
   {
     rules: {
-      // Un module de features/ ne s'importe que par son index.ts (API publique).
+      // Un module de features/ ne s'importe que par son index.ts (API publique)
+      // ou par ses points d’entrée dédiés : serveur.ts (lectures serveur), admin.ts
+      // (écrans d’administration).
       "no-restricted-imports": [
         "error",
         {
           patterns: [
             {
-              regex: "^@/features/[^/]+/.+",
+              regex: "^@/features/[^/]+/(?!(serveur|admin)$).+",
               message:
-                "Importer un module features/ uniquement via son index (@/features/<module>).",
+                "Importer un module features/ via son index, son serveur.ts ou son admin.ts.",
             },
           ],
         },

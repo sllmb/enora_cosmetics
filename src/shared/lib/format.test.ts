@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formaterPrix, pluriel, slugifier } from "./format";
+import { formaterPrix, formaterTelephone, pluriel, slugifier } from "./format";
 
 describe("formaterPrix", () => {
   it("formate en FCFA sans décimales", () => {
@@ -19,5 +19,16 @@ describe("pluriel", () => {
 describe("slugifier", () => {
   it("retire accents et ponctuation", () => {
     expect(slugifier("Huile parfumée — Ambre & Oud")).toBe("huile-parfumee-ambre-oud");
+  });
+});
+
+describe("formaterTelephone", () => {
+  it("met en forme un numéro sénégalais", () => {
+    expect(formaterTelephone("221771234567")).toBe("+221 77 123 45 67");
+    expect(formaterTelephone("+221 77 123 45 67")).toBe("+221 77 123 45 67");
+  });
+
+  it("laisse un numéro étranger lisible", () => {
+    expect(formaterTelephone("33612345678")).toBe("+33612345678");
   });
 });

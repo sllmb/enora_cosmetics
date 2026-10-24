@@ -30,3 +30,22 @@ export function slugifier(texte: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+/**
+ * Nom affiché publiquement : prénom et initiale du nom (« Awa Ndiaye » ->
+ * « Awa N. »). Les clientes ne sont jamais exposées en entier.
+ */
+export function nomPublic(nomComplet: string): string {
+  const [prenom, ...reste] = nomComplet.trim().split(/\s+/).filter(Boolean);
+  if (!prenom) return "Cliente Énora";
+  const initiale = reste.at(-1)?.[0];
+  return initiale ? `${prenom} ${initiale.toUpperCase()}.` : prenom;
+}
+
+/** Numéro international sans « + » (221771234567) -> « +221 77 123 45 67 ». */
+export function formaterTelephone(numero: string): string {
+  const chiffres = numero.replace(/\D/g, "");
+  const local = chiffres.startsWith("221") ? chiffres.slice(3) : chiffres;
+  if (!/^\d{9}$/.test(local)) return `+${chiffres}`;
+  return `+221 ${local.replace(/^(\d{2})(\d{3})(\d{2})(\d{2})$/, "$1 $2 $3 $4")}`;
+}

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { ligneProduitSchema, versCategorie, versProduit } from "./lignes";
 
 const ligne = {
+  id: 5,
   slug: "huile-parfumee-jasmin",
   nom: "Huile parfumée Jasmin",
   accroche: null,
@@ -13,6 +14,7 @@ const ligne = {
   prix_promo: null,
   stock: 25,
   est_nouveaute: false,
+  vedette: false,
   famille_olfactive: "floral",
   notes_olfactives: { tete: ["Néroli"], coeur: ["Jasmin"], fond: ["Musc"] },
   categories: { slug: "huiles-parfumees" },

@@ -15,6 +15,7 @@ export type Categorie = {
 export type ImageProduit = { url: string; alt: string };
 
 export type Produit = {
+  id: number;
   slug: string;
   nom: string;
   categorieSlug: string;
@@ -27,6 +28,8 @@ export type Produit = {
   prixPromo: number | null;
   stock: number;
   estNouveaute: boolean;
+  /** Produit présenté dans la grande bande de l'accueil (un seul). */
+  vedette: boolean;
   familleOlfactive: FamilleOlfactive | null;
   notesOlfactives: NotesOlfactives | null;
   forme: FormeVisuel;

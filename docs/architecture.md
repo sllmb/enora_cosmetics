@@ -41,7 +41,7 @@ src/
 ├── app/                 ASSEMBLAGE : seul dossier qui connaît les routes
 │   ├── (boutique)/      pages publiques et compte (en-tête + pied de page)
 │   ├── admin/           back-office (layout dédié, noindex)
-│   ├── _composants/     en-tête, pied de page, ListeLiens, PageAVenir…
+│   ├── _composants/     en-tête, pied de page, ListeLiens, PageTexte…
 │   └── _navigation/     menus.ts : SOURCE UNIQUE des menus
 ├── features/<module>/   UN DOSSIER PAR DOMAINE (catalogue, panier, commande, compte, avis, conseils, admin)
 │   ├── actions/         Server Actions ("use server") : validation Zod -> règles -> écriture
@@ -50,7 +50,8 @@ src/
 │   ├── schemas/         schémas Zod (un par formulaire)
 │   ├── lib/             fonctions pures du domaine (calcul du total…)
 │   ├── types.ts
-│   └── index.ts         API PUBLIQUE du module (seul point d'import externe)
+│   ├── index.ts         API PUBLIQUE du module, utilisable dans le navigateur
+│   └── serveur.ts       lectures réservées au serveur (import "server-only")
 ├── shared/              SANS LOGIQUE MÉTIER
 │   ├── config/env.ts    seule lecture de process.env (validée par Zod)
 │   ├── lib/             cn, format (FCFA, dates), validation (téléphone SN…)
@@ -66,8 +67,9 @@ supabase/
 ### Règles de dépendance (vérifiées par ESLint)
 
 - `shared/` n'importe ni `features/` ni `app/`.
-- Un module de `features/` n'est importé que via son `index.ts` (`@/features/panier`, jamais
-  `@/features/panier/lib/...`). À l'intérieur d'un module : imports relatifs.
+- Un module de `features/` n'est importé que via son `index.ts` (`@/features/panier`) ou, pour
+  les lectures serveur, son `serveur.ts` (`@/features/catalogue/serveur`) — jamais
+  `@/features/panier/lib/...`. À l'intérieur d'un module : imports relatifs.
 - Découpage par **domaine**, pas par rôle : une seule `CarteProduit` pour la boutique et l'admin.
 
 ## Flux

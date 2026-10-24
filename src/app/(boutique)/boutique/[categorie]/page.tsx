@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  GrilleProduits,
-  lireCategorie,
-  listerCategories,
-  listerProduits,
-} from "@/features/catalogue";
+import { Suspense } from "react";
 import { FiltresCategories } from "@/app/_composants/FiltresCategories";
+import { CatalogueFiltrable } from "@/features/catalogue";
+import { lireCategorie, listerCategories, listerProduits } from "@/features/catalogue/serveur";
 
 export async function generateStaticParams() {
   const categories = await listerCategories();
@@ -17,10 +14,24 @@ export async function generateMetadata({
   params,
 }: PageProps<"/boutique/[categorie]">): Promise<Metadata> {
   const categorie = await lireCategorie((await params).categorie);
-  return categorie ? { title: categorie.nom, description: categorie.description } : {};
+  if (!categorie) return {};
+  return {
+    title: categorie.nom,
+    description: categorie.description,
+    alternates: { canonical: `/boutique/${categorie.slug}` },
+  };
 }
 
-export default async function CategoriePage({ params }: PageProps<"/boutique/[categorie]">) {
+// L'adresse n'est lue que sous Suspense (navigation instantanée, voir la fiche produit).
+export default function CategoriePage({ params }: PageProps<"/boutique/[categorie]">) {
+  return (
+    <Suspense fallback={<div aria-busy className="conteneur h-96 animate-pulse py-12 sm:py-16" />}>
+      <ContenuCategorie params={params} />
+    </Suspense>
+  );
+}
+
+async function ContenuCategorie({ params }: Pick<PageProps<"/boutique/[categorie]">, "params">) {
   const { categorie: slug } = await params;
   const [categorie, categories, produits] = await Promise.all([
     lireCategorie(slug),
@@ -37,7 +48,7 @@ export default async function CategoriePage({ params }: PageProps<"/boutique/[ca
         <p className="max-w-lg text-texte-attenue">{categorie.description}</p>
       </header>
       <FiltresCategories categories={categories} />
-      <GrilleProduits produits={produits} />
+      <CatalogueFiltrable produits={produits} />
     </div>
   );
 }

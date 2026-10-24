@@ -1,16 +1,18 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { Menu, ShoppingBag, User, X } from "lucide-react";
+import { Menu, User, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { cn } from "@/shared/lib/cn";
+import { CompteurPanier } from "@/features/panier";
 import { IconButton, Logo } from "@/shared/ui";
-import { MENU_PRINCIPAL } from "../_navigation/menus";
+import { menuPrincipal, type CategorieMenu } from "../_navigation/menus";
 import { ListeLiens } from "./ListeLiens";
+import { NavPrincipale } from "./NavPrincipale";
 
-export function EnTete() {
+export function EnTete({ categories }: { categories: CategorieMenu[] }) {
   const [menuOuvert, setMenuOuvert] = useState(false);
+  const liens = menuPrincipal(categories);
 
   return (
     <header className="sticky top-0 z-40 border-b border-bordure bg-fond/90 backdrop-blur-md">
@@ -37,10 +39,12 @@ export function EnTete() {
               </Dialog.Description>
               <nav aria-label="Navigation mobile" className="mt-8">
                 <ListeLiens
-                  liens={MENU_PRINCIPAL}
+                  liens={liens}
                   onNavigate={() => setMenuOuvert(false)}
                   classeListe="flex flex-col gap-1"
                   classeLien="block rounded-controle py-3 font-titre text-2xl aria-[current=page]:text-primaire"
+                  classeSousListe="mb-2 ml-1 flex flex-col border-l border-bordure pl-4"
+                  classeSousLien="block py-2 text-base text-texte-attenue aria-[current=page]:font-medium aria-[current=page]:text-primaire"
                 />
               </nav>
               <Link
@@ -56,19 +60,11 @@ export function EnTete() {
         </Dialog.Root>
 
         <Link href="/" className="shrink-0" aria-label="Énora Cosmetics, accueil">
-          <Logo priority className="w-28 lg:w-36" />
+          <Logo forme="complet" priority className="w-32 lg:w-40" />
         </Link>
 
         <nav aria-label="Navigation principale" className="hidden lg:block">
-          <ListeLiens
-            liens={MENU_PRINCIPAL}
-            classeListe="flex items-center gap-8"
-            classeLien={cn(
-              "relative py-2 text-sm tracking-wide transition-colors duration-220 hover:text-primaire",
-              "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-primaire after:transition-transform after:duration-220",
-              "aria-[current=page]:text-primaire aria-[current=page]:after:scale-x-100",
-            )}
-          />
+          <NavPrincipale liens={liens} />
         </nav>
 
         <div className="-mr-2 flex items-center">
@@ -79,13 +75,7 @@ export function EnTete() {
           >
             <User aria-hidden className="size-5" strokeWidth={1.5} />
           </Link>
-          <Link
-            href="/panier"
-            aria-label="Panier"
-            className="inline-flex size-11 items-center justify-center rounded-full hover:bg-surface-douce"
-          >
-            <ShoppingBag aria-hidden className="size-5" strokeWidth={1.5} />
-          </Link>
+          <CompteurPanier />
         </div>
       </div>
     </header>

@@ -23,8 +23,8 @@ export const TAG_CATALOGUE = "catalogue";
 
 // RM-02 : seuls les produits actifs d'une catégorie active sont publics
 // (la RLS filtre les produits, la jointure !inner filtre les catégories).
-const COLONNES_PRODUIT = `slug, nom, accroche, description, conseils_utilisation, composition,
-  contenance, prix, prix_promo, stock, est_nouveaute, famille_olfactive, notes_olfactives,
+const COLONNES_PRODUIT = `id, slug, nom, accroche, description, conseils_utilisation, composition,
+  contenance, prix, prix_promo, stock, est_nouveaute, vedette, famille_olfactive, notes_olfactives,
   categories!inner(slug), produit_images(chemin, alt, ordre)`;
 
 async function lireToutLeCatalogue(): Promise<{ categories: Categorie[]; produits: Produit[] }> {

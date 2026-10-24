@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { PageAVenir } from "@/app/_composants/PageAVenir";
+import { CadreCompte } from "@/app/_composants/CadreCompte";
+import { FormulaireInscription } from "@/features/compte";
 
-export const metadata: Metadata = { title: "Inscription" };
+export const metadata: Metadata = { title: "Créer un compte" };
 
-export default function Page() {
+export default function InscriptionPage() {
   return (
-    <PageAVenir
-      titre="Créer un compte"
-      description="Créez votre compte Énora."
-      sprint="Sprint 3 — Comptes"
-    />
+    <CadreCompte titre="Créer un compte" description="Commandez plus vite et suivez vos commandes.">
+      <FormulaireInscription />
+    </CadreCompte>
   );
 }

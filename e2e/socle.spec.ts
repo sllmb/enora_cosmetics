@@ -18,7 +18,7 @@ test("l'accueil présente la marque et mène à la boutique", async ({ page }) =
 
   await page.getByRole("link", { name: "Découvrir la boutique" }).click();
   await expect(page).toHaveURL(/\/boutique$/);
-  await expect(page.getByRole("heading", { name: "Boutique" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Boutique" })).toBeVisible();
 });
 
 test("la navigation mobile s'ouvre et marque la page courante", async ({ page, isMobile }) => {
@@ -33,6 +33,18 @@ test("la navigation mobile s'ouvre et marque la page courante", async ({ page, i
   await menu.getByRole("link", { name: "Savons" }).click();
   await expect(page).toHaveURL(/\/boutique\/savons$/);
   await expect(menu).toBeHidden();
+});
+
+test("la page Conseils s'affiche, avec ou sans article", async ({ page }) => {
+  await page.goto("/conseils");
+  await expect(page.getByRole("heading", { level: 1, name: "Conseils" })).toBeVisible();
+  await expect(
+    page
+      .getByRole("listitem")
+      .getByRole("link")
+      .or(page.getByRole("heading", { name: "Nos premiers conseils arrivent bientôt" }))
+      .first(),
+  ).toBeVisible();
 });
 
 test("une adresse inconnue affiche la page introuvable", async ({ page }) => {
