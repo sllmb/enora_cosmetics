@@ -5,7 +5,7 @@ import { listerCategories, listerProduits } from "@/features/catalogue/serveur";
 
 export const metadata: Metadata = {
   title: "Boutique",
-  description: "Déodorants, huiles parfumées et savons Énora, livrés partout au Sénégal.",
+  description: "Déodorants, huiles parfumées et savons Énora, livrés à Dakar et environs.",
   alternates: { canonical: "/boutique" },
 };
 

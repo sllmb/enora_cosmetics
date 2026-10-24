@@ -53,7 +53,7 @@ export async function generateMetadata({
 }
 
 const REASSURANCE = [
-  { Icone: Truck, texte: "Livraison en 24 h à Dakar, 2 à 5 jours en régions" },
+  { Icone: Truck, texte: "Livraison en 24 h à Dakar, environs selon la zone" },
   { Icone: Wallet, texte: "Paiement à la livraison, Wave ou Orange Money" },
   { Icone: MessageCircle, texte: "Une question ? Écrivez-nous sur WhatsApp" },
 ];

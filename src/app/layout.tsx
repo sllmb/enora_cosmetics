@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(env.siteUrl),
   title: { default: "Énora Cosmetics — Hygiène corporelle", template: "%s · Énora Cosmetics" },
   description:
-    "Déodorants, huiles parfumées et savons Énora : l'hygiène corporelle raffinée, livrée à Dakar et partout au Sénégal.",
+    "Déodorants, huiles parfumées et savons Énora : l'hygiène corporelle raffinée, livrée à Dakar et environs.",
   openGraph: OPEN_GRAPH_BASE,
   twitter: { card: "summary_large_image" },
 };

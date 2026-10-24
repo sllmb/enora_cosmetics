@@ -1,7 +1,8 @@
 import { NotebookPen } from "lucide-react";
 import type { Metadata } from "next";
 import { OPEN_GRAPH_BASE } from "@/app/_seo";
-import { CarteArticle } from "@/features/conseils";
+import { CarteArticle, CLASSES_POLICE } from "@/features/conseils";
+import { cn } from "@/shared/lib/cn";
 import { listerArticles } from "@/features/conseils/serveur";
 import { ButtonLink, EmptyState } from "@/shared/ui";
 
@@ -21,7 +22,9 @@ export default async function ConseilsPage() {
     <div className="conteneur py-12 sm:py-16">
       <header className="mx-auto mb-12 max-w-2xl text-center">
         <p className="titre-espace text-texte-attenue">Le journal Énora</p>
-        <h1 className="mt-3 text-5xl sm:text-6xl">Conseils</h1>
+        <h1 className={cn(CLASSES_POLICE.princesse, "mt-3 text-6xl text-primaire sm:text-7xl")}>
+          Conseils
+        </h1>
         <p className="mt-4 text-lg text-texte-attenue">{DESCRIPTION}</p>
       </header>
       {articles.length === 0 ? (

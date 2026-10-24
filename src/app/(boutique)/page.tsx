@@ -2,7 +2,8 @@ import { MessageCircle, Truck, Wallet } from "lucide-react";
 import Link from "next/link";
 import { GrilleProduits, VisuelProduit } from "@/features/catalogue";
 import { lireProduit, listerCategories, listerNouveautes } from "@/features/catalogue/serveur";
-import { CarteArticle } from "@/features/conseils";
+import { CarteArticle, CLASSES_POLICE } from "@/features/conseils";
+import { cn } from "@/shared/lib/cn";
 import { listerArticles } from "@/features/conseils/serveur";
 import type { Metadata } from "next";
 import { env } from "@/shared/config/env";
@@ -16,14 +17,14 @@ const JSON_LD_BOUTIQUE = {
   url: env.siteUrl,
   logo: `${env.siteUrl}/icon.png`,
   description: "Déodorants, huiles parfumées et savons : l'hygiène corporelle raffinée.",
-  areaServed: { "@type": "Country", name: "Sénégal" },
+  areaServed: { "@type": "City", name: "Dakar" },
   currenciesAccepted: "XOF",
   paymentAccepted: "Espèces à la livraison, Wave, Orange Money",
   ...(env.whatsappNumero && { telephone: `+${env.whatsappNumero}` }),
 };
 
 const ENGAGEMENTS = [
-  { Icone: Truck, titre: "Livraison partout au Sénégal", texte: "En 24 h à Dakar." },
+  { Icone: Truck, titre: "Livraison à Dakar et environs", texte: "En 24 h à Dakar." },
   { Icone: Wallet, titre: "Paiement à la livraison", texte: "Ou par Wave et Orange Money." },
   { Icone: MessageCircle, titre: "Commande sur WhatsApp", texte: "Un conseil, une question ?" },
 ];
@@ -192,7 +193,10 @@ export default async function AccueilPage() {
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="titre-espace text-texte-attenue">Le journal Énora</p>
-              <h2 id="conseils" className="mt-3 text-4xl sm:text-5xl">
+              <h2
+                id="conseils"
+                className={cn(CLASSES_POLICE.princesse, "mt-3 text-5xl text-primaire sm:text-6xl")}
+              >
                 Nos conseils
               </h2>
             </div>
