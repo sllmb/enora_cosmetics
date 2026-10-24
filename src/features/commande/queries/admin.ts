@@ -117,6 +117,17 @@ export type Statistiques = {
   commandesDuMois: number;
 };
 
+/** Nombre de commandes en attente (pastille du menu d'administration). */
+export async function compterCommandesEnAttente(): Promise<number> {
+  const { supabase } = await exigerAdmin();
+  const { count, error } = await supabase
+    .from("commandes")
+    .select("id", { count: "exact", head: true })
+    .eq("statut", "en_attente");
+  if (error) throw new Error(`Lecture des commandes en attente : ${error.message}`);
+  return count ?? 0;
+}
+
 /** Chiffres du tableau de bord (fuseau de Dakar = UTC, pas d'heure d'été). */
 export async function lireStatistiques(): Promise<Statistiques> {
   const { supabase } = await exigerAdmin();
