@@ -175,7 +175,7 @@ export default async function AccueilPage() {
             Tout voir
           </Link>
         </div>
-        <GrilleProduits produits={nouveautes} />
+        <GrilleProduits produits={nouveautes} defilantMobile libelle="Nouveautés" />
       </section>
 
       {vedette && (
