@@ -1,6 +1,6 @@
 import { ChevronRight, Inbox } from "lucide-react";
 import Link from "next/link";
-import { formaterDate, formaterPrix } from "@/shared/lib/format";
+import { formaterDate, formaterPrix, formaterTelephone } from "@/shared/lib/format";
 import { Badge, EmptyState } from "@/shared/ui";
 import { STATUTS } from "../lib/statuts";
 import { MODES_PAIEMENT } from "../schemas/commande";
@@ -36,9 +36,13 @@ export function ListeCommandesAdmin({ commandes }: { commandes: CommandeAdmin[] 
                   <Badge ton={statut.ton}>{statut.libelle}</Badge>
                   {paiementAttendu && <Badge ton="avertissement">Paiement à vérifier</Badge>}
                 </p>
-                <p className="truncate text-sm text-texte-attenue">
-                  {commande.nom} · {commande.zoneNom} ·{" "}
-                  {MODES_PAIEMENT[commande.modePaiement].libelle}
+                {/* Rien de coupé : nom, téléphone, zone et paiement servent à traiter la commande. */}
+                <p className="text-sm">
+                  {commande.nom} ·{" "}
+                  <span className="whitespace-nowrap">{formaterTelephone(commande.telephone)}</span>
+                </p>
+                <p className="text-sm text-texte-attenue">
+                  {commande.zoneNom} · {MODES_PAIEMENT[commande.modePaiement].libelle}
                 </p>
                 <p className="text-xs text-texte-attenue">{formaterDate(commande.creeLe)}</p>
               </div>

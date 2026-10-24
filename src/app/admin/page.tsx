@@ -15,7 +15,7 @@ import { listerStocksBas } from "@/features/catalogue/serveur";
 import { compterCommentairesEnAttente } from "@/features/conseils/serveur";
 import { ListeCommandesAdmin } from "@/features/commande/admin";
 import { listerCommandesAdmin, lireStatistiques } from "@/features/commande/serveur";
-import { formaterPrix, pluriel } from "@/shared/lib/format";
+import { formaterMontant, pluriel } from "@/shared/lib/format";
 import { Badge } from "@/shared/ui";
 
 export const metadata: Metadata = { title: "Tableau de bord" };
@@ -36,6 +36,8 @@ export default function TableauDeBordPage() {
 function Indicateur(props: {
   titre: string;
   valeur: string;
+  /** Unité affichée en petit après la valeur (ex. FCFA) : le montant tient dans la carte. */
+  unite?: string;
   detail?: string;
   icone: ReactNode;
   href?: string;
@@ -50,12 +52,15 @@ function Indicateur(props: {
         {props.icone}
       </span>
       <span className="text-sm text-texte-attenue">{props.titre}</span>
-      <span className="font-titre text-4xl">{props.valeur}</span>
+      <span className="font-titre text-3xl sm:text-4xl">
+        {props.valeur}
+        {props.unite && <span className="ml-1.5 font-sans text-sm">{props.unite}</span>}
+      </span>
       {props.detail && <span className="text-xs text-texte-attenue">{props.detail}</span>}
     </>
   );
   const classe =
-    "flex flex-col gap-2 rounded-carte border border-bordure bg-surface p-5 shadow-carte";
+    "flex min-w-0 flex-col gap-2 rounded-carte border border-bordure bg-surface p-4 shadow-carte sm:p-5";
   return props.href ? (
     <Link href={props.href} className={`${classe} hover:border-primaire`}>
       {contenu}
@@ -94,7 +99,7 @@ async function Contenu() {
           {pluriel(commentairesEnAttente, "commentaire")} à modérer
         </Link>
       )}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <Indicateur
           titre="À traiter"
           valeur={String(stats.aTraiter)}
@@ -118,13 +123,15 @@ async function Contenu() {
         />
         <Indicateur
           titre="Ce mois-ci"
-          valeur={formaterPrix(stats.chiffreDuMois)}
+          valeur={formaterMontant(stats.chiffreDuMois)}
+          unite="FCFA"
           detail={`${pluriel(stats.commandesDuMois, "commande")}, hors annulées`}
           icone={<Banknote className="size-5" />}
         />
       </div>
 
-      <div className="grid gap-10 xl:grid-cols-[1fr_22rem] xl:items-start">
+      {/* grid-cols-1 = minmax(0, 1fr) : les longues lignes se coupent au lieu d'élargir la page. */}
+      <div className="grid grid-cols-1 gap-10 xl:grid-cols-[1fr_22rem] xl:items-start">
         <section aria-labelledby="a-traiter" className="flex flex-col gap-4">
           <h2 id="a-traiter" className="text-3xl">
             Commandes en attente

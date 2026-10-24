@@ -13,6 +13,8 @@ export type LienMenu = {
   enfants?: LienMenu[];
   /** Autres chemins qui rendent l'entrée active (ex. les fiches produit). */
   aussi?: string[];
+  /** Éléments en attente (pastille de l'administration) ; rien n'est affiché à 0. */
+  compteur?: number;
 };
 
 export type CategorieMenu = { nom: string; slug: string };

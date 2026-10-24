@@ -54,6 +54,12 @@ function Liste({
               className={classeLien}
             >
               {lien.libelle}
+              {Boolean(lien.compteur) && (
+                <span className="ml-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-avertissement px-1.5 text-[11px] font-medium text-white">
+                  {lien.compteur}
+                  <span className="sr-only"> en attente</span>
+                </span>
+              )}
             </Link>
           </li>
         ),
