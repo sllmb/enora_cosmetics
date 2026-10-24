@@ -179,12 +179,14 @@ export default async function AccueilPage() {
       </section>
 
       {vedette && (
-        <section aria-labelledby="vedette" className="bg-primaire text-sur-primaire">
-          <div className="conteneur grid items-center gap-10 py-16 md:grid-cols-2 md:py-24">
+        <section aria-labelledby="vedette" className="tissu-soie py-3 text-sur-primaire">
+          {/* Galons brodés en haut et en bas, comme le bord d'une étoffe de soie. */}
+          <div aria-hidden className="broderie" />
+          <div className="conteneur grid items-center gap-10 py-14 md:grid-cols-2 md:py-20">
             <VisuelProduit
               produit={vedette}
               // Fond clair : le fond blanc d'une photo s'y fond (et non dans le bordeaux).
-              className="mx-auto w-full max-w-sm rounded-carte"
+              className="mx-auto w-full max-w-sm rounded-carte ring-1 ring-accent-clair/70 ring-offset-6 ring-offset-primaire"
             />
             <div className="flex flex-col items-start gap-5">
               <p className="titre-espace text-sur-primaire/70">Notre coup de cœur</p>
@@ -220,6 +222,7 @@ export default async function AccueilPage() {
               </Link>
             </div>
           </div>
+          <div aria-hidden className="broderie rotate-180" />
         </section>
       )}
 
