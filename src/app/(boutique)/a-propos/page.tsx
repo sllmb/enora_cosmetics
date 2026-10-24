@@ -1,6 +1,8 @@
 import { MessageCircle, ShieldCheck, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import { OPEN_GRAPH_BASE } from "@/app/_seo";
+import { CLASSES_POLICE } from "@/features/conseils";
+import { cn } from "@/shared/lib/cn";
 import { ENTREPRISE } from "@/shared/config/entreprise";
 import { ButtonLink } from "@/shared/ui";
 
@@ -46,7 +48,14 @@ export default function AProposPage() {
       <section className="bg-surface-douce">
         <div className="conteneur flex max-w-3xl flex-col items-center gap-5 py-16 text-center sm:py-24">
           <p className="titre-espace text-texte-attenue">Notre histoire</p>
-          <h1 className="text-5xl leading-tight sm:text-6xl">Pour que chaque femme sente bon</h1>
+          <h1
+            className={cn(
+              CLASSES_POLICE.princesse,
+              "text-6xl leading-tight text-primaire sm:text-7xl lg:text-8xl",
+            )}
+          >
+            Pour que chaque femme sente bon
+          </h1>
           <p className="text-lg text-texte-attenue">{DESCRIPTION}</p>
         </div>
       </section>
@@ -68,7 +77,12 @@ export default function AProposPage() {
             faciles à commander et à recevoir.
           </p>
         </div>
-        <blockquote className="mt-10 border-l-2 border-primaire pl-5 font-titre text-3xl text-primaire italic">
+        <blockquote
+          className={cn(
+            CLASSES_POLICE.princesse,
+            "mt-10 border-l-2 border-primaire pl-5 text-4xl leading-snug text-primaire sm:text-5xl",
+          )}
+        >
           Notre promesse : que toutes les femmes sentent bon, chaque jour.
         </blockquote>
       </section>
@@ -96,7 +110,9 @@ export default function AProposPage() {
       </section>
 
       <section className="conteneur flex flex-col items-center gap-5 py-16 text-center sm:py-20">
-        <p className="font-titre text-3xl">Envie de nous découvrir ?</p>
+        <p className={cn(CLASSES_POLICE.princesse, "text-5xl text-primaire")}>
+          Envie de nous découvrir ?
+        </p>
         <div className="flex flex-wrap justify-center gap-3">
           <ButtonLink href="/boutique" taille="lg">
             Voir la boutique

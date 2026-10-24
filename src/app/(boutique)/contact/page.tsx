@@ -2,6 +2,8 @@ import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { OPEN_GRAPH_BASE } from "@/app/_seo";
+import { CLASSES_POLICE } from "@/features/conseils";
+import { cn } from "@/shared/lib/cn";
 import { env } from "@/shared/config/env";
 import { ENTREPRISE } from "@/shared/config/entreprise";
 import { formaterTelephone } from "@/shared/lib/format";
@@ -74,7 +76,9 @@ export default function ContactPage() {
     <div className="conteneur py-12 sm:py-16">
       <header className="mx-auto mb-12 flex max-w-2xl flex-col gap-3 text-center">
         <p className="titre-espace text-texte-attenue">Contact</p>
-        <h1 className="text-5xl sm:text-6xl">Écrivez-nous</h1>
+        <h1 className={cn(CLASSES_POLICE.princesse, "text-6xl text-primaire sm:text-7xl")}>
+          Écrivez-nous
+        </h1>
         <p className="text-lg text-texte-attenue">{DESCRIPTION}</p>
       </header>
       <div className="grid gap-10 lg:grid-cols-[1fr_22rem]">
