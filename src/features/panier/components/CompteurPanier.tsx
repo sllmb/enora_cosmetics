@@ -17,7 +17,7 @@ export function CompteurPanier() {
       {nombreArticles > 0 && (
         <span
           aria-hidden
-          className="absolute top-1 right-0.5 flex h-5 min-w-5 animate-apparition items-center justify-center rounded-full bg-primaire px-1 text-[11px] font-medium text-sur-primaire"
+          className="absolute top-1 right-0.5 flex h-5 min-w-5 animate-apparition items-center justify-center rounded-full tissu-soie px-1 text-[11px] font-medium text-sur-primaire"
         >
           {nombreArticles > 99 ? "99+" : nombreArticles}
         </span>

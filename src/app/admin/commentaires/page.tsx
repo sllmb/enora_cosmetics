@@ -55,7 +55,7 @@ async function Contenu({ searchParams }: Pick<Props, "searchParams">) {
                   className={cn(
                     "inline-flex h-9 items-center rounded-full border px-4 text-sm",
                     actif
-                      ? "border-primaire bg-primaire text-sur-primaire"
+                      ? "border-primaire tissu-soie text-sur-primaire"
                       : "border-bordure hover:border-primaire",
                   )}
                 >

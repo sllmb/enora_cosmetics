@@ -3,7 +3,7 @@ import type { ComponentProps } from "react";
 import { cn } from "@/shared/lib/cn";
 
 const VARIANTES = {
-  primaire: "bg-primaire text-sur-primaire hover:bg-primaire-survol shadow-carte",
+  primaire: "tissu-soie text-sur-primaire hover:bg-primaire-survol shadow-carte",
   secondaire: "border border-primaire text-primaire hover:bg-primaire-doux",
   discret: "text-texte hover:bg-surface-douce",
   whatsapp: "bg-whatsapp text-sur-whatsapp hover:bg-whatsapp-survol shadow-carte",

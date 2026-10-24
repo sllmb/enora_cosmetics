@@ -84,7 +84,7 @@ export function BarreFiltres({ selection, familles, nombre, changer }: Props) {
                   className={cn(
                     "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm transition-colors duration-150",
                     actif
-                      ? "border-primaire bg-primaire-doux text-primaire"
+                      ? "border-primaire tissu-soie text-sur-primaire"
                       : "border-bordure hover:border-primaire",
                   )}
                 >

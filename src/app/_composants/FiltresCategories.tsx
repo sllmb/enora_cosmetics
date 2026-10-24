@@ -15,7 +15,7 @@ export function FiltresCategories({ categories }: { categories: Categorie[] }) {
       <ListeLiens
         liens={liens}
         classeListe="flex gap-2 overflow-x-auto px-4 pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 sm:pb-0"
-        classeLien="inline-flex h-10 shrink-0 items-center rounded-full border border-bordure px-5 text-sm whitespace-nowrap transition-colors duration-150 hover:border-primaire aria-[current=page]:border-primaire aria-[current=page]:bg-primaire aria-[current=page]:text-sur-primaire"
+        classeLien="inline-flex h-10 shrink-0 items-center rounded-full border border-bordure px-5 text-sm whitespace-nowrap transition-colors duration-150 hover:border-primaire aria-[current=page]:border-primaire aria-[current=page]:tissu-soie aria-[current=page]:text-sur-primaire"
       />
     </nav>
   );
