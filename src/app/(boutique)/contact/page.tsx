@@ -1,4 +1,4 @@
-import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { OPEN_GRAPH_BASE } from "@/app/_seo";
@@ -7,6 +7,7 @@ import { cn } from "@/shared/lib/cn";
 import { env } from "@/shared/config/env";
 import { ENTREPRISE } from "@/shared/config/entreprise";
 import { formaterTelephone } from "@/shared/lib/format";
+import { LogoWhatsApp } from "@/shared/ui";
 import { FormulaireContact } from "./FormulaireContact";
 
 const DESCRIPTION =
@@ -29,7 +30,7 @@ export default function ContactPage() {
   const telephone = whatsapp ? formaterTelephone(whatsapp) : null;
   const coordonnees = [
     whatsapp && {
-      Icone: MessageCircle,
+      Icone: LogoWhatsApp,
       titre: "WhatsApp",
       contenu: (
         <a
@@ -70,7 +71,11 @@ export default function ContactPage() {
         </span>
       ),
     },
-  ].filter((c) => Boolean(c)) as { Icone: typeof Mail; titre: string; contenu: React.ReactNode }[];
+  ].filter((c) => Boolean(c)) as {
+    Icone: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+    titre: string;
+    contenu: React.ReactNode;
+  }[];
 
   return (
     <div className="conteneur py-12 sm:py-16">

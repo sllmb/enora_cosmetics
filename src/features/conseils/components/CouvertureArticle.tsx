@@ -75,7 +75,8 @@ export function CouvertureArticle({ article }: { article: Article }) {
         {article.extrait && (
           <p
             className={cn(
-              "max-w-2xl text-lg sm:text-xl",
+              // Mobile : 3 lignes sur la photo, le texte complet reste lisible plus bas.
+              "line-clamp-3 max-w-2xl text-lg sm:line-clamp-none sm:text-xl",
               avecImage ? "text-sur-primaire/90" : "text-texte-attenue",
             )}
           >

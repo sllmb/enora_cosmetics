@@ -32,7 +32,7 @@ export function BarreFiltres({ selection, familles, nombre, changer }: Props) {
   return (
     <section
       aria-label="Trier et filtrer"
-      className="flex flex-col gap-4 border-y border-bordure py-4"
+      className="flex flex-col gap-3 border-y border-bordure py-3 sm:gap-4 sm:py-4"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p aria-live="polite" className="text-sm text-texte-attenue">
@@ -66,7 +66,12 @@ export function BarreFiltres({ selection, familles, nombre, changer }: Props) {
 
       <div className="flex flex-wrap items-center gap-2">
         {familles.length > 1 && (
-          <div role="group" aria-label="Famille olfactive" className="flex flex-wrap gap-2">
+          <div
+            role="group"
+            aria-label="Famille olfactive"
+            // Mobile : une ligne qui défile au doigt.
+            className="-mx-4 flex w-[calc(100%+2rem)] gap-2 overflow-x-auto px-4 sm:mx-0 sm:w-auto sm:flex-wrap sm:overflow-visible sm:px-0"
+          >
             {familles.map((famille) => {
               const actif = selection.familles.includes(famille);
               return (
@@ -77,7 +82,7 @@ export function BarreFiltres({ selection, familles, nombre, changer }: Props) {
                   disabled={inactif}
                   onClick={() => basculerFamille(famille)}
                   className={cn(
-                    "inline-flex h-9 items-center gap-1.5 rounded-full border px-4 text-sm transition-colors duration-150",
+                    "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm transition-colors duration-150",
                     actif
                       ? "border-primaire bg-primaire-doux text-primaire"
                       : "border-bordure hover:border-primaire",

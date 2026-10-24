@@ -10,7 +10,10 @@ export default async function BoutiqueLayout({ children }: LayoutProps<"/">) {
   return (
     <>
       <p className="bg-primaire py-2 text-center text-xs tracking-wide text-sur-primaire">
-        Livraison à Dakar et environs · Paiement à la livraison, Wave ou Orange Money
+        <span className="sm:hidden">Livraison à Dakar · Paiement à la livraison</span>
+        <span className="hidden sm:inline">
+          Livraison à Dakar et environs · Paiement à la livraison, Wave ou Orange Money
+        </span>
       </p>
       <EnTete categories={categoriesMenu} />
       <main id="contenu" className="flex-1">

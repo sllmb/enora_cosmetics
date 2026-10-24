@@ -137,7 +137,14 @@ async function ContenuProduit({ params }: Pick<PageProps<"/produit/[slug]">, "pa
       <JsonLd donnees={jsonLdProduit} />
       <JsonLd donnees={jsonLdFilAriane} />
       <div className="conteneur py-8 sm:py-12">
-        <nav aria-label="Fil d'Ariane" className="mb-6 text-sm text-texte-attenue">
+        {/* Mobile : un simple retour vers la catégorie ; grands écrans : fil d'Ariane complet. */}
+        <Link
+          href={categorie ? `/boutique/${categorie.slug}` : "/boutique"}
+          className="mb-5 inline-flex items-center gap-1 text-sm text-texte-attenue hover:text-primaire sm:hidden"
+        >
+          <span aria-hidden>←</span> {categorie?.nom ?? "Boutique"}
+        </Link>
+        <nav aria-label="Fil d'Ariane" className="mb-6 hidden text-sm text-texte-attenue sm:block">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link href="/boutique" className="hover:text-primaire">

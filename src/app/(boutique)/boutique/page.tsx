@@ -12,15 +12,18 @@ export const metadata: Metadata = {
 export default async function BoutiquePage() {
   const [categories, produits] = await Promise.all([listerCategories(), listerProduits()]);
   return (
-    <div className="conteneur py-12 sm:py-16">
-      <header className="flex flex-col items-center gap-3 text-center">
+    <div className="conteneur py-6 sm:py-16">
+      {/* Mobile : en-tête compact pour voir les produits plus vite. */}
+      <header className="flex flex-col items-center gap-1.5 text-center sm:gap-3">
         <p className="titre-espace text-texte-attenue">Hygiène corporelle</p>
-        <h1 className="text-5xl sm:text-6xl">Boutique</h1>
-        <p className="max-w-lg text-texte-attenue">
+        <h1 className="text-4xl sm:text-6xl">Boutique</h1>
+        <p className="max-w-lg text-sm text-texte-attenue sm:text-base">
           Tous nos produits pour prendre soin de vous, de la douche au dernier sillage.
         </p>
       </header>
-      <FiltresCategories categories={categories} />
+      <FiltresCategories
+        categories={categories.filter((c) => produits.some((p) => p.categorieSlug === c.slug))}
+      />
       <CatalogueFiltrable produits={produits} />
     </div>
   );
