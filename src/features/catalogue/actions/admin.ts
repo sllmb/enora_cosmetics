@@ -26,10 +26,20 @@ function erreursDe(erreur: z.ZodError): ResultatCatalogue {
   return { ok: false, message: "Certains champs sont à corriger.", erreurs };
 }
 
-/** Slug unique : « savon-ambre-noir », sinon « savon-ambre-noir-2 », etc. */
-async function slugLibre(supabase: Supabase, table: "produits" | "categories", nom: string) {
+/**
+ * Slug unique : « savon-ambre-noir », sinon « savon-ambre-noir-2 », etc.
+ * « exclureId » : la fiche elle-même, quand on recalcule son adresse.
+ */
+async function slugLibre(
+  supabase: Supabase,
+  table: "produits" | "categories",
+  nom: string,
+  exclureId?: number,
+) {
   const base = slugifier(nom) || "produit";
-  const { data } = await supabase.from(table).select("slug").like("slug", `${base}%`);
+  let requete = supabase.from(table).select("slug").like("slug", `${base}%`);
+  if (exclureId) requete = requete.neq("id", exclureId);
+  const { data } = await requete;
   const pris = new Set((data ?? []).map((l: { slug: string }) => l.slug));
   let slug = base;
   for (let n = 2; pris.has(slug); n++) slug = `${base}-${n}`;
@@ -71,13 +81,29 @@ export async function enregistrerProduit(
     famille_olfactive: p.familleOlfactive,
     notes_olfactives: notes.tete.length + notes.coeur.length + notes.fond.length ? notes : null,
     est_nouveaute: p.estNouveaute,
+    vedette: p.vedette,
     actif: p.actif,
   };
 
-  // Le slug (adresse de la fiche) est fixé à la création et ne change plus :
-  // les liens partagés restent valables même si le nom évolue.
+  // Un seul produit vedette : les autres perdent ce rôle (index unique en base).
+  if (p.vedette) {
+    let autres = supabase.from("produits").update({ vedette: false }).eq("vedette", true);
+    if (id) autres = autres.neq("id", id);
+    const { error } = await autres;
+    if (error) console.error("enregistrerProduit (vedette) :", error);
+  }
+
+  // Le slug (adresse de la fiche) est fixé à la création : les liens partagés restent
+  // valables si le nom évolue. Il n'est recalculé que sur demande explicite.
+  const majSlug =
+    id && p.majAdresse ? { slug: await slugLibre(supabase, "produits", p.nom, id) } : {};
   const requete = id
-    ? supabase.from("produits").update(ligne).eq("id", id).select("id").single()
+    ? supabase
+        .from("produits")
+        .update({ ...ligne, ...majSlug })
+        .eq("id", id)
+        .select("id")
+        .single()
     : supabase
         .from("produits")
         .insert({ ...ligne, slug: await slugLibre(supabase, "produits", p.nom) })

@@ -29,6 +29,7 @@ export type ProduitAdmin = {
   familleOlfactive: FamilleOlfactive | null;
   notesOlfactives: { tete: string[]; coeur: string[]; fond: string[] } | null;
   estNouveaute: boolean;
+  vedette: boolean;
   actif: boolean;
   forme: FormeVisuel;
   images: ImageAdmin[];
@@ -65,6 +66,7 @@ const produitSchema = z.object({
     .catch(null),
   notes_olfactives: z.object({ tete: notes, coeur: notes, fond: notes }).nullable().catch(null),
   est_nouveaute: z.boolean(),
+  vedette: z.boolean(),
   actif: z.boolean(),
   categories: z.object({ nom: z.string(), slug: z.string() }),
   produit_images: z.array(
@@ -74,7 +76,7 @@ const produitSchema = z.object({
 
 const COLONNES = `id, slug, nom, categorie_id, accroche, contenance, prix, prix_promo, stock,
   description, conseils_utilisation, composition, famille_olfactive, notes_olfactives,
-  est_nouveaute, actif, categories(nom, slug), produit_images(id, chemin, alt, ordre)`;
+  est_nouveaute, vedette, actif, categories(nom, slug), produit_images(id, chemin, alt, ordre)`;
 
 function versProduitAdmin(donnees: unknown): ProduitAdmin {
   const p = produitSchema.parse(donnees);
@@ -95,6 +97,7 @@ function versProduitAdmin(donnees: unknown): ProduitAdmin {
     familleOlfactive: p.famille_olfactive,
     notesOlfactives: p.notes_olfactives,
     estNouveaute: p.est_nouveaute,
+    vedette: p.vedette,
     actif: p.actif,
     forme: formeDe(p.categories.slug),
     images: [...p.produit_images]
