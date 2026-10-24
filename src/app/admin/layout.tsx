@@ -2,8 +2,11 @@ import { ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { compterAvisEnAttente } from "@/features/avis/serveur";
+import { compterCommandesEnAttente } from "@/features/commande/serveur";
 import { BoutonDeconnexion } from "@/features/compte";
 import { exigerAdmin } from "@/features/compte/serveur";
+import { compterCommentairesEnAttente } from "@/features/conseils/serveur";
 import { Logo } from "@/shared/ui";
 import { NavAdmin } from "../_composants/NavAdmin";
 
@@ -23,7 +26,9 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
           </Link>
           <span className="titre-espace text-texte-attenue">Admin</span>
         </div>
-        <NavAdmin />
+        <Suspense fallback={<NavAdmin />}>
+          <NavAvecCompteurs />
+        </Suspense>
         <div className="mt-auto hidden flex-col gap-2 border-t border-bordure p-4 lg:flex">
           <Suspense fallback={null}>
             <CompteAdmin />
@@ -34,6 +39,23 @@ export default function AdminLayout({ children }: LayoutProps<"/admin">) {
         {children}
       </main>
     </div>
+  );
+}
+
+async function NavAvecCompteurs() {
+  const [commandes, avis, commentaires] = await Promise.all([
+    compterCommandesEnAttente(),
+    compterAvisEnAttente(),
+    compterCommentairesEnAttente(),
+  ]);
+  return (
+    <NavAdmin
+      compteurs={{
+        "/admin/commandes": commandes,
+        "/admin/avis": avis,
+        "/admin/commentaires": commentaires,
+      }}
+    />
   );
 }
 

@@ -29,11 +29,14 @@ export function ListeProduitsAdmin({ produits }: { produits: ProduitAdmin[] }) {
               className="w-14 shrink-0 rounded-controle"
             />
             <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <p className="flex flex-wrap items-center gap-2">
-                <span className="truncate font-medium">{produit.nom}</span>
-                {!produit.actif && <Badge>Masqué</Badge>}
-                {produit.estNouveaute && <Badge ton="doux">Nouveau</Badge>}
-              </p>
+              {/* Nom en entier : plusieurs produits commencent pareil (« Déodorant Dove … »). */}
+              <p className="font-medium text-pretty">{produit.nom}</p>
+              {(!produit.actif || produit.estNouveaute) && (
+                <p className="flex flex-wrap items-center gap-2">
+                  {!produit.actif && <Badge>Masqué</Badge>}
+                  {produit.estNouveaute && <Badge ton="doux">Nouveau</Badge>}
+                </p>
+              )}
               <p className="text-sm text-texte-attenue">
                 {produit.categorieNom} · {formaterPrix(produit.prixPromo ?? produit.prix)}
                 {produit.prixPromo !== null && " (promo)"}

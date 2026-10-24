@@ -1,6 +1,7 @@
 import "server-only";
 
 export {
+  compterCommandesEnAttente,
   lireCommandeAdmin,
   lireFiltreCommandes,
   listerCommandesAdmin,

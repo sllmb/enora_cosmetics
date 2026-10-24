@@ -1,5 +1,10 @@
 const formateurFcfa = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 });
 
+/** 12500 -> « 12 500 » (sans l'unité, pour l'afficher à part). */
+export function formaterMontant(montant: number): string {
+  return formateurFcfa.format(Math.round(montant));
+}
+
 /** 12500 -> « 12 500 FCFA » (espace insécable fine entre milliers, comme fr-FR). */
 export function formaterPrix(montant: number): string {
   return `${formateurFcfa.format(Math.round(montant))}\u00a0FCFA`;
