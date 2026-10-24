@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 import { cn } from "@/shared/lib/cn";
-import { estActif, MENU_PRINCIPAL, type LienMenu } from "../_navigation/menus";
+import { estActif, type LienMenu } from "../_navigation/menus";
 
 const CLASSE_LIEN = cn(
   "relative inline-flex items-center gap-1 py-2 text-sm tracking-wide transition-colors duration-220 hover:text-primaire",
@@ -56,10 +56,10 @@ function SousMenu({ lien, chemin }: { lien: LienMenu; chemin: string | null }) {
   );
 }
 
-function Nav({ chemin }: { chemin: string | null }) {
+function Nav({ liens, chemin }: { liens: LienMenu[]; chemin: string | null }) {
   return (
     <ul className="flex items-center gap-8">
-      {MENU_PRINCIPAL.map((lien) => (
+      {liens.map((lien) => (
         <li key={lien.libelle}>
           {lien.enfants ? (
             <SousMenu lien={lien} chemin={chemin} />
@@ -78,15 +78,15 @@ function Nav({ chemin }: { chemin: string | null }) {
   );
 }
 
-function NavActive() {
-  return <Nav chemin={usePathname()} />;
+function NavActive({ liens }: { liens: LienMenu[] }) {
+  return <Nav liens={liens} chemin={usePathname()} />;
 }
 
 /** Navigation de l'en-tête (grands écrans). Même principe que ListeLiens pour la page courante. */
-export function NavPrincipale() {
+export function NavPrincipale({ liens }: { liens: LienMenu[] }) {
   return (
-    <Suspense fallback={<Nav chemin={null} />}>
-      <NavActive />
+    <Suspense fallback={<Nav liens={liens} chemin={null} />}>
+      <NavActive liens={liens} />
     </Suspense>
   );
 }

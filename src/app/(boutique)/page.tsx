@@ -51,6 +51,7 @@ export default async function AccueilPage() {
   const vedette = choisirVedette(produits);
   const visuelsHero = choisirVisuelsAccueil(produits, 3);
   // « Nos univers » : la photo d'un produit de chaque catégorie (sinon son illustration).
+  const univers = categories.filter((c) => produits.some((p) => p.categorieSlug === c.slug));
   const visuelUnivers = (slug: string) =>
     choisirVisuelsAccueil(
       produits.filter((p) => p.categorieSlug === slug && p.images.length),
@@ -75,8 +76,8 @@ export default async function AccueilPage() {
               <ButtonLink href="/boutique" taille="lg">
                 Découvrir la boutique
               </ButtonLink>
-              <ButtonLink href="/boutique/huiles-parfumees" taille="lg" variante="secondaire">
-                Nos huiles parfumées
+              <ButtonLink href="/conseils" taille="lg" variante="secondaire">
+                Nos conseils
               </ButtonLink>
             </div>
           </div>
@@ -118,8 +119,13 @@ export default async function AccueilPage() {
         <h2 id="univers" className="mt-3 text-center text-4xl sm:text-5xl">
           Prendre soin de soi, simplement
         </h2>
-        <ul className="mt-12 grid gap-6 sm:grid-cols-3">
-          {categories.map((categorie) => (
+        <ul
+          className={cn(
+            "mt-12 grid gap-6",
+            univers.length === 2 ? "mx-auto max-w-4xl sm:grid-cols-2" : "sm:grid-cols-3",
+          )}
+        >
+          {univers.map((categorie) => (
             <li key={categorie.slug}>
               <Link
                 href={`/boutique/${categorie.slug}`}

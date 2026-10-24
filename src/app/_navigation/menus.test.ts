@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { estActif, MENU_PRINCIPAL } from "./menus";
+import { estActif, menuPrincipal } from "./menus";
+
+const MENU = menuPrincipal([{ nom: "Savons", slug: "savons" }]);
 
 describe("estActif", () => {
   it("compare exactement si demandé", () => {
@@ -15,7 +17,8 @@ describe("estActif", () => {
   });
 
   it("garde le catalogue actif sur les catégories et les fiches produit", () => {
-    const catalogue = MENU_PRINCIPAL.find((l) => l.libelle === "Catalogue")!;
+    const catalogue = MENU.find((l) => l.libelle === "Catalogue")!;
+    expect(catalogue.enfants?.map((e) => e.href)).toEqual(["/boutique", "/boutique/savons"]);
     expect(estActif(catalogue, "/boutique")).toBe(true);
     expect(estActif(catalogue, "/boutique/savons")).toBe(true);
     expect(estActif(catalogue, "/produit/savon-dove")).toBe(true);
@@ -23,7 +26,7 @@ describe("estActif", () => {
   });
 
   it("n'active l'accueil que sur la page d'accueil", () => {
-    const accueil = MENU_PRINCIPAL[0]!;
+    const accueil = MENU[0]!;
     expect(accueil.libelle).toBe("Accueil");
     expect(estActif(accueil, "/")).toBe(true);
     expect(estActif(accueil, "/boutique")).toBe(false);

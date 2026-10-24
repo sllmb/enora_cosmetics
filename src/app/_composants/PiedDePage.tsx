@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Logo } from "@/shared/ui";
-import { MENU_PIED } from "../_navigation/menus";
+import { menuPied, type CategorieMenu } from "../_navigation/menus";
 
-export function PiedDePage() {
+export function PiedDePage({ categories }: { categories: CategorieMenu[] }) {
   return (
     <footer className="mt-24 bg-primaire text-sur-primaire">
       <div className="conteneur grid gap-12 py-16 md:grid-cols-[1.4fr_repeat(3,1fr)]">
@@ -13,7 +13,7 @@ export function PiedDePage() {
             Dakar et environs.
           </p>
         </div>
-        {MENU_PIED.map((colonne) => (
+        {menuPied(categories).map((colonne) => (
           <nav key={colonne.titre} aria-label={colonne.titre}>
             <h2 className="font-sans titre-espace text-sur-primaire/70">{colonne.titre}</h2>
             <ul className="mt-4 flex flex-col gap-2.5 text-sm">

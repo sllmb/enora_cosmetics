@@ -1,7 +1,8 @@
 /*
  * Source unique des menus : en-tête, tiroir mobile, pied de page et
- * administration en sont dérivés. Ajouter une catégorie ici suffit à
- * l'afficher partout (en attendant qu'elles viennent de la base, Sprint 1).
+ * administration en sont dérivés. Les catégories viennent de la base (actives
+ * et non vides) : en créer, désactiver ou vider une dans l'administration
+ * met les menus à jour.
  */
 
 export type LienMenu = {
@@ -14,28 +15,32 @@ export type LienMenu = {
   aussi?: string[];
 };
 
-export const CATEGORIES_MENU: LienMenu[] = [
-  { libelle: "Déodorants", href: "/boutique/deodorants" },
-  { libelle: "Huiles parfumées", href: "/boutique/huiles-parfumees" },
-  { libelle: "Savons", href: "/boutique/savons" },
-];
+export type CategorieMenu = { nom: string; slug: string };
 
-export const MENU_PRINCIPAL: LienMenu[] = [
-  { libelle: "Accueil", href: "/", exact: true },
-  {
-    libelle: "Catalogue",
-    href: "/boutique",
-    aussi: ["/produit"],
-    enfants: [{ libelle: "Tous les produits", href: "/boutique", exact: true }, ...CATEGORIES_MENU],
-  },
-  { libelle: "Conseils", href: "/conseils" },
-  { libelle: "À propos", href: "/a-propos" },
-];
+const liensCategories = (categories: CategorieMenu[]): LienMenu[] =>
+  categories.map((c) => ({ libelle: c.nom, href: `/boutique/${c.slug}` }));
 
-export const MENU_PIED: { titre: string; liens: LienMenu[] }[] = [
+export function menuPrincipal(categories: CategorieMenu[]): LienMenu[] {
+  return [
+    { libelle: "Accueil", href: "/", exact: true },
+    {
+      libelle: "Catalogue",
+      href: "/boutique",
+      aussi: ["/produit"],
+      enfants: [
+        { libelle: "Tous les produits", href: "/boutique", exact: true },
+        ...liensCategories(categories),
+      ],
+    },
+    { libelle: "Conseils", href: "/conseils" },
+    { libelle: "À propos", href: "/a-propos" },
+  ];
+}
+
+export const menuPied = (categories: CategorieMenu[]): { titre: string; liens: LienMenu[] }[] => [
   {
     titre: "Boutique",
-    liens: [{ libelle: "Tous les produits", href: "/boutique" }, ...CATEGORIES_MENU],
+    liens: [{ libelle: "Tous les produits", href: "/boutique" }, ...liensCategories(categories)],
   },
   {
     titre: "Aide",

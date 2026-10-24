@@ -6,12 +6,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { CompteurPanier } from "@/features/panier";
 import { IconButton, Logo } from "@/shared/ui";
-import { MENU_PRINCIPAL } from "../_navigation/menus";
+import { menuPrincipal, type CategorieMenu } from "../_navigation/menus";
 import { ListeLiens } from "./ListeLiens";
 import { NavPrincipale } from "./NavPrincipale";
 
-export function EnTete() {
+export function EnTete({ categories }: { categories: CategorieMenu[] }) {
   const [menuOuvert, setMenuOuvert] = useState(false);
+  const liens = menuPrincipal(categories);
 
   return (
     <header className="sticky top-0 z-40 border-b border-bordure bg-fond/90 backdrop-blur-md">
@@ -38,7 +39,7 @@ export function EnTete() {
               </Dialog.Description>
               <nav aria-label="Navigation mobile" className="mt-8">
                 <ListeLiens
-                  liens={MENU_PRINCIPAL}
+                  liens={liens}
                   onNavigate={() => setMenuOuvert(false)}
                   classeListe="flex flex-col gap-1"
                   classeLien="block rounded-controle py-3 font-titre text-2xl aria-[current=page]:text-primaire"
@@ -63,7 +64,7 @@ export function EnTete() {
         </Link>
 
         <nav aria-label="Navigation principale" className="hidden lg:block">
-          <NavPrincipale />
+          <NavPrincipale liens={liens} />
         </nav>
 
         <div className="-mr-2 flex items-center">
