@@ -40,22 +40,23 @@ Marché : Sénégal (Dakar et régions), site en français, prix en FCFA (entier
 
 Toutes sont contrôlées **côté serveur** (Server Action et/ou RLS / contraintes SQL) ; l'interface ne fait que les refléter.
 
-| Id    | Règle                                                                                                                                                                         |
-| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| RM-01 | Seuls les comptes présents dans `admins` accèdent à `/admin` et aux écritures du catalogue (`est_admin()`).                                                                   |
-| RM-02 | Un produit inactif ou d'une catégorie inactive n'est pas visible du public.                                                                                                   |
-| RM-03 | Un prix promo est strictement inférieur au prix normal ; sinon il est ignoré.                                                                                                 |
-| RM-04 | Le stock ne peut pas être négatif ; un produit à stock 0 reste visible mais « Épuisé », non commandable.                                                                      |
-| RM-05 | Quantité par ligne : 1 à 20 ; quantité demandée ≤ stock disponible.                                                                                                           |
-| RM-06 | Les lignes de commande copient nom et prix au moment de l'achat (l'historique ne change pas).                                                                                 |
-| RM-07 | Chaque commande reçoit une référence lisible unique `ENR-AAAA-NNNNN`.                                                                                                         |
-| RM-08 | Le navigateur n'insère jamais une commande : le serveur relit prix, promos, stock et frais de livraison, recalcule le total et décrémente le stock dans une même transaction. |
-| RM-09 | Statuts : `en_attente → confirmee → expediee → livree` ; `annulee` possible avant `livree` (le stock est alors restitué).                                                     |
-| RM-10 | Un avis ne peut être déposé que par un client dont une commande livrée contient le produit ; un seul avis par produit.                                                        |
-| RM-11 | Un avis est publié uniquement après modération.                                                                                                                               |
-| RM-12 | Paiement Wave / Orange Money (V1) : la commande reste `en_attente` jusqu'à confirmation manuelle du paiement par l'admin.                                                     |
-| RM-13 | Téléphone obligatoire et sénégalais (70/75/76/77/78/33) ; email facultatif.                                                                                                   |
-| RM-14 | Un commentaire d'article est déposé par une cliente connectée et publié uniquement après modération ; 5 commentaires en attente au plus par personne.                         |
+| Id    | Règle                                                                                                                                                                                              |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RM-01 | Seuls les comptes présents dans `admins` accèdent à `/admin` et aux écritures du catalogue (`est_admin()`).                                                                                        |
+| RM-02 | Un produit inactif ou d'une catégorie inactive n'est pas visible du public.                                                                                                                        |
+| RM-03 | Un prix promo est strictement inférieur au prix normal ; sinon il est ignoré.                                                                                                                      |
+| RM-04 | Le stock ne peut pas être négatif ; un produit à stock 0 reste visible mais « Épuisé », non commandable.                                                                                           |
+| RM-05 | Quantité par ligne : 1 à 20 ; quantité demandée ≤ stock disponible.                                                                                                                                |
+| RM-06 | Les lignes de commande copient nom et prix au moment de l'achat (l'historique ne change pas).                                                                                                      |
+| RM-07 | Chaque commande reçoit une référence lisible unique `ENR-AAAA-NNNNN`.                                                                                                                              |
+| RM-08 | Le navigateur n'insère jamais une commande : le serveur relit prix, promos, stock et frais de livraison, recalcule le total et décrémente le stock dans une même transaction.                      |
+| RM-09 | Statuts : `en_attente → confirmee → expediee → livree` ; `annulee` possible avant `livree` (le stock est alors restitué).                                                                          |
+| RM-10 | Un avis ne peut être déposé que par un client dont une commande livrée contient le produit ; un seul avis par produit.                                                                             |
+| RM-11 | Un avis est publié uniquement après modération.                                                                                                                                                    |
+| RM-12 | Paiement Wave / Orange Money (V1) : la commande reste `en_attente` jusqu'à confirmation manuelle du paiement par l'admin.                                                                          |
+| RM-13 | Téléphone obligatoire et sénégalais (70/75/76/77/78/33) ; email facultatif.                                                                                                                        |
+| RM-14 | Un commentaire d'article est déposé par une cliente connectée et publié uniquement après modération ; 5 commentaires en attente au plus par personne.                                              |
+| RM-15 | Au plus 3 commandes en attente par numéro de téléphone sur 24 h et 5 commandes par connexion (empreinte non réversible de l'IP) par heure ; au-delà, la cliente est invitée à écrire sur WhatsApp. |
 
 ## Paiement
 
