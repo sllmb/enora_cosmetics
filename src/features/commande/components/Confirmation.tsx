@@ -1,7 +1,7 @@
-import { CheckCircle2, MessageCircle } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { env } from "@/shared/config/env";
 import { formaterDate, formaterPrix } from "@/shared/lib/format";
-import { Badge, ButtonLink } from "@/shared/ui";
+import { Badge, ButtonLink, LogoWhatsApp } from "@/shared/ui";
 import { lienWhatsApp, messageCommande } from "../lib/whatsapp";
 import { STATUTS } from "../lib/statuts";
 import { MODES_PAIEMENT } from "../schemas/commande";
@@ -112,11 +112,11 @@ export function Confirmation({ commande, contexte = "confirmation" }: Props) {
               rel="noopener noreferrer"
               className={
                 whatsappPrincipal
-                  ? "inline-flex h-13 items-center justify-center gap-2 rounded-full bg-primaire px-8 font-medium text-sur-primaire hover:bg-primaire-survol"
+                  ? "inline-flex h-13 items-center justify-center gap-2 rounded-full bg-whatsapp px-8 font-medium text-sur-whatsapp hover:bg-whatsapp-survol"
                   : "inline-flex items-center gap-2 text-sm font-medium text-primaire hover:underline"
               }
             >
-              <MessageCircle aria-hidden className="size-5" strokeWidth={1.5} />
+              <LogoWhatsApp />
               {libelleWhatsapp}
             </a>
           )}

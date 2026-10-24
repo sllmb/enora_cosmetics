@@ -1,13 +1,13 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 import { env } from "@/shared/config/env";
+import { LogoWhatsApp } from "@/shared/ui";
 
 // Pas de bouton flottant là où il masquerait l'action principale (« Passer la commande »,
-// « Valider la commande ») : ces pages rappellent déjà le contact WhatsApp.
-const SANS_BOUTON = ["/panier", "/commande"];
+// « Valider la commande », « Envoyer sur WhatsApp ») : ces pages proposent déjà WhatsApp.
+const SANS_BOUTON = ["/panier", "/commande", "/contact"];
 
 function Bouton() {
   const chemin = usePathname();
@@ -19,10 +19,13 @@ function Bouton() {
       href={`https://wa.me/${env.whatsappNumero}?text=${message}`}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Nous écrire sur WhatsApp"
-      className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 inline-flex size-14 items-center justify-center rounded-full bg-primaire text-sur-primaire shadow-flottant transition-transform duration-220 hover:scale-105"
+      className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 inline-flex h-12 items-center gap-2 rounded-full bg-whatsapp pr-5 pl-4 text-sm font-medium text-sur-whatsapp shadow-flottant transition-transform duration-220 hover:scale-105 hover:bg-whatsapp-survol"
     >
-      <MessageCircle aria-hidden className="size-6" strokeWidth={1.5} />
+      <LogoWhatsApp className="size-6" />
+      {/* Libellé visible : la bulle seule ne dit pas qu'elle ouvre WhatsApp. */}
+      <span>
+        Écrivez-nous<span className="sr-only sm:not-sr-only"> sur WhatsApp</span>
+      </span>
     </a>
   );
 }

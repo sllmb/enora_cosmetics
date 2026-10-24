@@ -27,6 +27,10 @@
   --color-danger-doux: #fbeae8;
   --color-avertissement: #8a5a00;
   --color-avertissement-doux: #fbf1dc;
+  /* Vert WhatsApp : reconnaissable d'un coup d'œil ; texte foncé pour rester lisible. */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-survol: #1ebe5b;
+  --color-sur-whatsapp: #06331d;
 
   /* Teintes des illustrations produits (par famille olfactive), décoratives. */
   --color-teinte-floral: #e9c4c8;

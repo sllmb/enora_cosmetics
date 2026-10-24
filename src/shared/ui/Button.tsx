@@ -6,6 +6,7 @@ const VARIANTES = {
   primaire: "bg-primaire text-sur-primaire hover:bg-primaire-survol shadow-carte",
   secondaire: "border border-primaire text-primaire hover:bg-primaire-doux",
   discret: "text-texte hover:bg-surface-douce",
+  whatsapp: "bg-whatsapp text-sur-whatsapp hover:bg-whatsapp-survol shadow-carte",
 } as const;
 
 const TAILLES = {
