@@ -62,7 +62,7 @@ async function Contenu({ searchParams }: Pick<Props, "searchParams">) {
                     className={cn(
                       "inline-flex h-9 items-center rounded-full border px-4 text-sm",
                       actif
-                        ? "border-primaire bg-primaire text-sur-primaire"
+                        ? "border-primaire tissu-soie text-sur-primaire"
                         : "border-bordure hover:border-primaire",
                     )}
                   >
@@ -88,7 +88,7 @@ async function Contenu({ searchParams }: Pick<Props, "searchParams">) {
           <button
             type="submit"
             aria-label="Rechercher"
-            className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-primaire text-sur-primaire"
+            className="inline-flex size-11 shrink-0 items-center justify-center rounded-full tissu-soie text-sur-primaire"
           >
             <Search aria-hidden className="size-4" />
           </button>

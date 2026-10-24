@@ -68,7 +68,7 @@ export function FormulaireContact({ whatsapp, email }: Props) {
                 "cursor-pointer rounded-full border px-4 py-2 text-sm transition-colors",
                 "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primaire",
                 sujet === s
-                  ? "border-primaire bg-primaire text-sur-primaire"
+                  ? "border-primaire tissu-soie text-sur-primaire"
                   : "border-bordure hover:border-primaire",
               )}
             >
