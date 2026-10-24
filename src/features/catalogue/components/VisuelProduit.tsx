@@ -16,6 +16,8 @@ type Props = {
   className?: string;
   sizes?: string;
   priority?: boolean;
+  /** Photo à montrer (galerie) ; la principale par défaut. */
+  indexPhoto?: number;
 };
 
 /**
@@ -25,8 +27,8 @@ type Props = {
  * une marge ; un fond blanc se fond dans le fond doux du cadre (multiply), et
  * une photo détourée (fond transparent) s'y pose naturellement.
  */
-export function VisuelProduit({ produit, className, sizes, priority }: Props) {
-  const photo = produit.images[0];
+export function VisuelProduit({ produit, className, sizes, priority, indexPhoto = 0 }: Props) {
+  const photo = produit.images[indexPhoto] ?? produit.images[0];
   return (
     <div className={cn("relative aspect-square overflow-hidden bg-surface-douce", className)}>
       {photo ? (

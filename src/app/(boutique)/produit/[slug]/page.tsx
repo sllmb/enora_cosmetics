@@ -8,11 +8,11 @@ import {
   BadgesProduit,
   DetailsProduit,
   estEpuise,
+  GalerieProduit,
   GrilleProduits,
   LIBELLES_FAMILLE,
   NotesOlfactives,
   prixEffectif,
-  VisuelProduit,
 } from "@/features/catalogue";
 import {
   lireCategorie,
@@ -163,12 +163,7 @@ async function ContenuProduit({ params }: Pick<PageProps<"/produit/[slug]">, "pa
 
         <div className="grid gap-10 md:grid-cols-2 lg:gap-16">
           <div className="relative md:sticky md:top-28 md:self-start">
-            <VisuelProduit
-              produit={produit}
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="rounded-carte"
-            />
+            <GalerieProduit produit={produit} className="rounded-carte" />
             <div className="absolute top-4 left-4">
               <BadgesProduit produit={produit} />
             </div>
