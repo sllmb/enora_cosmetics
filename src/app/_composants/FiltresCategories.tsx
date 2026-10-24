@@ -11,7 +11,7 @@ export function FiltresCategories({ categories }: { categories: Categorie[] }) {
     ...categories.map((c) => ({ libelle: c.nom, href: `/boutique/${c.slug}` })),
   ];
   return (
-    <nav aria-label="Catégories" className="-mx-4 my-8 sm:mx-0 sm:my-10">
+    <nav aria-label="Catégories" className="-mx-4 my-5 sm:mx-0 sm:my-10">
       <ListeLiens
         liens={liens}
         classeListe="flex gap-2 overflow-x-auto px-4 pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0 sm:pb-0"

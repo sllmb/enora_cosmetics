@@ -42,11 +42,12 @@ async function ContenuCategorie({ params }: Pick<PageProps<"/boutique/[categorie
   if (!categorie) notFound();
 
   return (
-    <div className="conteneur py-12 sm:py-16">
-      <header className="flex flex-col items-center gap-3 text-center">
+    <div className="conteneur py-6 sm:py-16">
+      {/* Mobile : en-tête compact pour voir les produits plus vite. */}
+      <header className="flex flex-col items-center gap-1.5 text-center sm:gap-3">
         <p className="titre-espace text-texte-attenue">Boutique</p>
-        <h1 className="text-5xl sm:text-6xl">{categorie.nom}</h1>
-        <p className="max-w-lg text-texte-attenue">{categorie.description}</p>
+        <h1 className="text-4xl sm:text-6xl">{categorie.nom}</h1>
+        <p className="max-w-lg text-sm text-texte-attenue sm:text-base">{categorie.description}</p>
       </header>
       <FiltresCategories
         categories={categories.filter((c) => tous.some((p) => p.categorieSlug === c.slug))}

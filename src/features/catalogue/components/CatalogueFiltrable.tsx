@@ -63,7 +63,7 @@ function Vue({
   const visibles = appliquerSelection(produits, selection);
   const filtrage = produits.length > 0 && visibles.length === 0;
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6 sm:gap-8">
       {produits.length > 0 && (
         <BarreFiltres
           selection={selection}
