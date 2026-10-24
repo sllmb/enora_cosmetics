@@ -33,11 +33,12 @@ export default function CategoriePage({ params }: PageProps<"/boutique/[categori
 
 async function ContenuCategorie({ params }: Pick<PageProps<"/boutique/[categorie]">, "params">) {
   const { categorie: slug } = await params;
-  const [categorie, categories, produits] = await Promise.all([
+  const [categorie, categories, tous] = await Promise.all([
     lireCategorie(slug),
     listerCategories(),
-    listerProduits({ categorieSlug: slug }),
+    listerProduits(),
   ]);
+  const produits = tous.filter((p) => p.categorieSlug === slug);
   if (!categorie) notFound();
 
   return (
@@ -47,7 +48,9 @@ async function ContenuCategorie({ params }: Pick<PageProps<"/boutique/[categorie
         <h1 className="text-5xl sm:text-6xl">{categorie.nom}</h1>
         <p className="max-w-lg text-texte-attenue">{categorie.description}</p>
       </header>
-      <FiltresCategories categories={categories} />
+      <FiltresCategories
+        categories={categories.filter((c) => tous.some((p) => p.categorieSlug === c.slug))}
+      />
       <CatalogueFiltrable produits={produits} />
     </div>
   );

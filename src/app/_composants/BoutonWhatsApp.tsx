@@ -1,9 +1,18 @@
+"use client";
+
 import { MessageCircle } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 import { env } from "@/shared/config/env";
 
-/** Bouton flottant de contact WhatsApp ; masqué tant que le numéro n'est pas configuré. */
-export function BoutonWhatsApp() {
+// Pas de bouton flottant là où il masquerait l'action principale (« Passer la commande »,
+// « Valider la commande ») : ces pages rappellent déjà le contact WhatsApp.
+const SANS_BOUTON = ["/panier", "/commande"];
+
+function Bouton() {
+  const chemin = usePathname();
   if (!env.whatsappNumero) return null;
+  if (SANS_BOUTON.some((c) => chemin === c || chemin.startsWith(`${c}/`))) return null;
   const message = encodeURIComponent("Bonjour Énora, j'ai une question sur vos produits.");
   return (
     <a
@@ -15,5 +24,15 @@ export function BoutonWhatsApp() {
     >
       <MessageCircle aria-hidden className="size-6" strokeWidth={1.5} />
     </a>
+  );
+}
+
+/** Bouton flottant de contact WhatsApp ; masqué tant que le numéro n'est pas configuré. */
+export function BoutonWhatsApp() {
+  // Le chemin n'est connu qu'à l'exécution : rien n'est affiché pendant le pré-rendu.
+  return (
+    <Suspense fallback={null}>
+      <Bouton />
+    </Suspense>
   );
 }

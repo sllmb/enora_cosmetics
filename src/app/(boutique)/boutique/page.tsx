@@ -20,7 +20,9 @@ export default async function BoutiquePage() {
           Tous nos produits pour prendre soin de vous, de la douche au dernier sillage.
         </p>
       </header>
-      <FiltresCategories categories={categories} />
+      <FiltresCategories
+        categories={categories.filter((c) => produits.some((p) => p.categorieSlug === c.slug))}
+      />
       <CatalogueFiltrable produits={produits} />
     </div>
   );
