@@ -3,7 +3,7 @@ import { cn } from "@/shared/lib/cn";
 
 const TONS = {
   neutre: "bg-surface-douce text-texte",
-  primaire: "bg-primaire text-sur-primaire",
+  primaire: "tissu-soie text-sur-primaire",
   doux: "bg-primaire-doux text-primaire",
   succes: "bg-succes-doux text-succes",
   danger: "bg-danger-doux text-danger",
