@@ -41,7 +41,7 @@ src/
 ├── app/                 ASSEMBLAGE : seul dossier qui connaît les routes
 │   ├── (boutique)/      pages publiques et compte (en-tête + pied de page)
 │   ├── admin/           back-office (layout dédié, noindex)
-│   ├── _composants/     en-tête, pied de page, ListeLiens, PageAVenir…
+│   ├── _composants/     en-tête, pied de page, ListeLiens, PageTexte…
 │   └── _navigation/     menus.ts : SOURCE UNIQUE des menus
 ├── features/<module>/   UN DOSSIER PAR DOMAINE (catalogue, panier, commande, compte, avis, conseils, admin)
 │   ├── actions/         Server Actions ("use server") : validation Zod -> règles -> écriture

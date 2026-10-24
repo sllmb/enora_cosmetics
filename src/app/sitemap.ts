@@ -27,6 +27,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       images: p.images.map((i) => i.url),
     })),
     { url: url("/conseils"), changeFrequency: "weekly", priority: 0.6 },
+    { url: url("/a-propos"), changeFrequency: "yearly", priority: 0.4 },
+    { url: url("/contact"), changeFrequency: "yearly", priority: 0.4 },
+    { url: url("/livraison"), changeFrequency: "monthly", priority: 0.4 },
+    { url: url("/cgv"), changeFrequency: "yearly", priority: 0.2 },
+    { url: url("/mentions-legales"), changeFrequency: "yearly", priority: 0.2 },
     ...articles.map((a) => ({
       url: url(`/conseils/${a.slug}`),
       lastModified: a.misAJourLe,

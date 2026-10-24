@@ -14,7 +14,6 @@ const ZONES_DEMO: ZoneLivraison[] = [
   { id: 1, nom: "Dakar (centre et Plateau)", frais: 1500, delai: "24 h" },
   { id: 2, nom: "Dakar banlieue (Pikine, Guédiawaye, Rufisque)", frais: 2500, delai: "24 à 48 h" },
   { id: 3, nom: "Thiès, Mbour, Saly", frais: 3500, delai: "2 à 3 jours" },
-  { id: 4, nom: "Autres régions", frais: 5000, delai: "3 à 5 jours" },
 ];
 
 const zoneSchema = z.object({

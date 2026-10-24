@@ -70,11 +70,11 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ terminé
 
 ## Sprint 6 — Finitions et mise en ligne
 
-| Id    | Tâche                                                             | État |
-| ----- | ----------------------------------------------------------------- | ---- |
-| S6-01 | Pages À propos, Contact, CGV, Mentions légales                    | ⬜   |
-| S6-02 | Audit accessibilité (axe) et performances (images, LCP)           | ⬜   |
-| S6-03 | Déploiement Vercel, domaine, variables d'environnement, analytics | ⬜   |
+| Id    | Tâche                                                             | État                                                                  |
+| ----- | ----------------------------------------------------------------- | --------------------------------------------------------------------- |
+| S6-01 | Pages À propos, Contact, CGV, Mentions légales                    | ✅ contact par WhatsApp ou e-mail, infos centralisées (entreprise.ts) |
+| S6-02 | Audit accessibilité (axe) et performances (images, LCP)           | ⬜                                                                    |
+| S6-03 | Déploiement Vercel, domaine, variables d'environnement, analytics | ⬜                                                                    |
 
 ## V2 (idées)
 

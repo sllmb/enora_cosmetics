@@ -9,8 +9,8 @@ export function PiedDePage() {
         <div className="flex flex-col gap-4">
           <Logo forme="complet" clair className="w-44" />
           <p className="max-w-xs text-sm text-sur-primaire/80">
-            L&apos;hygiène corporelle raffinée : déodorants, huiles parfumées et savons, livrés
-            partout au Sénégal.
+            L&apos;hygiène corporelle raffinée : déodorants, huiles parfumées et savons, livrés à
+            Dakar et environs.
           </p>
         </div>
         {MENU_PIED.map((colonne) => (

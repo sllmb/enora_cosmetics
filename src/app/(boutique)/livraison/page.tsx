@@ -7,7 +7,7 @@ import { ButtonLink } from "@/shared/ui";
 export const metadata: Metadata = {
   title: "Livraison et paiement",
   description:
-    "Zones, délais et frais de livraison Énora au Sénégal, et moyens de paiement acceptés.",
+    "Zones, délais et frais de livraison Énora à Dakar et environs, retrait à Yoff et moyens de paiement acceptés.",
   alternates: { canonical: "/livraison" },
 };
 
@@ -52,7 +52,8 @@ export default async function LivraisonPage() {
         </table>
         <p className="mt-4 text-sm text-texte-attenue">
           Le livreur vous appelle avant de passer. Les délais courent à partir de la confirmation de
-          la commande.
+          la commande. Vous préférez passer récupérer votre colis ? Le retrait à Yoff est possible
+          sur rendez-vous : écrivez-nous sur WhatsApp.
         </p>
       </section>
 

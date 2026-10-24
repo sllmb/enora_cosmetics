@@ -18,7 +18,7 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 | ------------------------------ | --------------------------------------------------------------------------- |
 | `src/app/(boutique)`           | Pages publiques et compte client                                            |
 | `src/app/admin`                | Back-office                                                                 |
-| `src/app/_composants`          | En-tête, pied de page, `ListeLiens`, `PageAVenir`, `BoutonWhatsApp`         |
+| `src/app/_composants`          | En-tête, pied de page, `ListeLiens`, `PageTexte`, `BoutonWhatsApp`          |
 | `src/app/_navigation/menus.ts` | Source unique des menus                                                     |
 | `src/features/catalogue`       | Catalogue : lectures, cartes produit, fiche produit, illustrations          |
 | `src/features/panier`          | Panier enregistré dans le navigateur, compteur, page panier                 |
@@ -37,7 +37,7 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 1. Vérifier la règle dans `docs/analyse-fonctionnelle.md` (ajouter un RM-xx si nouveau).
 2. SQL : nouvelle migration (table, contraintes, RLS) → `npm run db:types`.
 3. Module `features/<m>` : `queries/` → `schemas/` → `actions/` → `components/` → `index.ts` → tests.
-4. Page mince dans `src/app/…` qui assemble le module (remplace la `PageAVenir`).
+4. Page mince dans `src/app/…` qui assemble le module (`PageTexte` pour un texte long à sommaire).
 5. Vérifier 375 / 1280 px, états vides et erreurs ; mettre à jour plan, README, journal.
 
 ## Problèmes fréquents
@@ -83,6 +83,7 @@ Avant chaque commit : `npm run lint && npm run typecheck && npm test`. Avant de 
 | 2026-10-22 | Sprint 4 : administration (commandes, produits et photos, catégories, zones, tableau de bord) ; formulaires qui envoient la saisie brute au serveur ; photos supprimées du stockage par le serveur.                                 |
 | 2026-10-22 | Sprint 3 : comptes (Supabase Auth), proxy de session, profil qui pré-remplit la commande, Mes commandes ; formulaires en POST et boutons grisés avant chargement.                                                                   |
 | 2026-10-22 | Sprint 2 : panier (navigateur), formulaire de commande, Server Action + fonction SQL `creer_commande` (RM-05 à RM-08), confirmation avec clé secrète, WhatsApp, page Livraison.                                                     |
+| 2026-10-24 | Sprint 6 : pages À propos, Contact (message préparé pour WhatsApp ou e-mail), CGV et Mentions légales ; livraison annoncée à Dakar et environs (et non plus tout le Sénégal).                                                       |
 | 2026-10-22 | Articles : images dans le texte (code court image:…, stockage articles/contenu, nettoyées à l'enregistrement et à la suppression) et cartes produit « Voir en boutique » ; article lu par son adresse (visible dès sa publication). |
 | 2026-10-22 | Éditeur : barre et raccourcis (Ctrl+B/I/K/S) qui gardent l'historique Ctrl+Z ; exigerAdmin mis en cache par requête et vérifié localement (getClaims).                                                                              |
 | 2026-10-22 | Brouillon d'article sauvegardé automatiquement dans le navigateur, bandeau Restaurer / Ignorer, alerte avant de quitter une saisie non enregistrée.                                                                                 |

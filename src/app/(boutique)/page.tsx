@@ -16,14 +16,14 @@ const JSON_LD_BOUTIQUE = {
   url: env.siteUrl,
   logo: `${env.siteUrl}/icon.png`,
   description: "Déodorants, huiles parfumées et savons : l'hygiène corporelle raffinée.",
-  areaServed: { "@type": "Country", name: "Sénégal" },
+  areaServed: { "@type": "City", name: "Dakar" },
   currenciesAccepted: "XOF",
   paymentAccepted: "Espèces à la livraison, Wave, Orange Money",
   ...(env.whatsappNumero && { telephone: `+${env.whatsappNumero}` }),
 };
 
 const ENGAGEMENTS = [
-  { Icone: Truck, titre: "Livraison partout au Sénégal", texte: "En 24 h à Dakar." },
+  { Icone: Truck, titre: "Livraison à Dakar et environs", texte: "En 24 h à Dakar." },
   { Icone: Wallet, titre: "Paiement à la livraison", texte: "Ou par Wave et Orange Money." },
   { Icone: MessageCircle, titre: "Commande sur WhatsApp", texte: "Un conseil, une question ?" },
 ];
