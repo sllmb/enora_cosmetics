@@ -119,14 +119,21 @@ export default async function AccueilPage() {
         <h2 id="univers" className="mt-3 text-center text-4xl sm:text-5xl">
           Prendre soin de soi, simplement
         </h2>
+        {/* Mobile : une rangée qui défile au doigt (la carte suivante dépasse pour l'indiquer).
+            Grands écrans : grille. */}
         <ul
+          aria-label="Nos univers"
           className={cn(
-            "mt-12 grid gap-6",
-            univers.length === 2 ? "mx-auto max-w-4xl sm:grid-cols-2" : "sm:grid-cols-3",
+            "-mx-4 mt-12 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-3",
+            "sm:mx-auto sm:grid sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0",
+            univers.length === 2 ? "sm:max-w-4xl sm:grid-cols-2" : "sm:grid-cols-3",
           )}
         >
           {univers.map((categorie) => (
-            <li key={categorie.slug}>
+            <li
+              key={categorie.slug}
+              className="w-[78%] max-w-80 shrink-0 snap-start sm:w-auto sm:max-w-none"
+            >
               <Link
                 href={`/boutique/${categorie.slug}`}
                 className="group flex h-full flex-col overflow-hidden rounded-carte border border-bordure bg-surface shadow-carte"
