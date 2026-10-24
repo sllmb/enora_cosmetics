@@ -1,4 +1,5 @@
 import { listerCategories, listerProduits } from "@/features/catalogue/serveur";
+import { BandeauAnnonces } from "../_composants/BandeauAnnonces";
 import { BoutonWhatsApp } from "../_composants/BoutonWhatsApp";
 import { EnTete } from "../_composants/EnTete";
 import { PiedDePage } from "../_composants/PiedDePage";
@@ -9,12 +10,7 @@ export default async function BoutiqueLayout({ children }: LayoutProps<"/">) {
   const categoriesMenu = categories.filter((c) => produits.some((p) => p.categorieSlug === c.slug));
   return (
     <>
-      <p className="bg-primaire py-2 text-center text-xs tracking-wide text-sur-primaire">
-        <span className="sm:hidden">Livraison à Dakar · Paiement à la livraison</span>
-        <span className="hidden sm:inline">
-          Livraison à Dakar et environs · Paiement à la livraison, Wave ou Orange Money
-        </span>
-      </p>
+      <BandeauAnnonces />
       <EnTete categories={categoriesMenu} />
       <main id="contenu" className="flex-1">
         {children}
