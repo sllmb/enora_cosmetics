@@ -19,13 +19,10 @@ function Bouton() {
       href={`https://wa.me/${env.whatsappNumero}?text=${message}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 inline-flex h-12 items-center gap-2 rounded-full bg-whatsapp pr-5 pl-4 text-sm font-medium text-sur-whatsapp shadow-flottant transition-transform duration-220 hover:scale-105 hover:bg-whatsapp-survol"
+      aria-label="Nous écrire sur WhatsApp"
+      className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 inline-flex size-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-flottant transition-transform duration-220 hover:scale-105 hover:bg-whatsapp-survol"
     >
-      <LogoWhatsApp className="size-6" />
-      {/* Libellé visible : la bulle seule ne dit pas qu'elle ouvre WhatsApp. */}
-      <span>
-        Écrivez-nous<span className="sr-only sm:not-sr-only"> sur WhatsApp</span>
-      </span>
+      <LogoWhatsApp className="size-8" />
     </a>
   );
 }
