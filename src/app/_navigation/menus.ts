@@ -4,7 +4,15 @@
  * l'afficher partout (en attendant qu'elles viennent de la base, Sprint 1).
  */
 
-export type LienMenu = { libelle: string; href: string; exact?: boolean };
+export type LienMenu = {
+  libelle: string;
+  href: string;
+  exact?: boolean;
+  /** Sous-menu dépliable (ex. le catalogue et ses catégories). */
+  enfants?: LienMenu[];
+  /** Autres chemins qui rendent l'entrée active (ex. les fiches produit). */
+  aussi?: string[];
+};
 
 export const CATEGORIES_MENU: LienMenu[] = [
   { libelle: "Déodorants", href: "/boutique/deodorants" },
@@ -13,8 +21,13 @@ export const CATEGORIES_MENU: LienMenu[] = [
 ];
 
 export const MENU_PRINCIPAL: LienMenu[] = [
-  { libelle: "Boutique", href: "/boutique", exact: true },
-  ...CATEGORIES_MENU,
+  { libelle: "Accueil", href: "/", exact: true },
+  {
+    libelle: "Catalogue",
+    href: "/boutique",
+    aussi: ["/produit"],
+    enfants: [{ libelle: "Tous les produits", href: "/boutique", exact: true }, ...CATEGORIES_MENU],
+  },
   { libelle: "Conseils", href: "/conseils" },
   { libelle: "À propos", href: "/a-propos" },
 ];
@@ -55,7 +68,7 @@ export const MENU_ADMIN: LienMenu[] = [
 ];
 
 export function estActif(lien: LienMenu, chemin: string): boolean {
-  return lien.exact
-    ? chemin === lien.href
-    : chemin === lien.href || chemin.startsWith(`${lien.href}/`);
+  const dans = (racine: string) => chemin === racine || chemin.startsWith(`${racine}/`);
+  if (lien.exact) return chemin === lien.href;
+  return dans(lien.href) || (lien.aussi ?? []).some(dans);
 }

@@ -5,10 +5,10 @@ import { Menu, User, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { CompteurPanier } from "@/features/panier";
-import { cn } from "@/shared/lib/cn";
 import { IconButton, Logo } from "@/shared/ui";
 import { MENU_PRINCIPAL } from "../_navigation/menus";
 import { ListeLiens } from "./ListeLiens";
+import { NavPrincipale } from "./NavPrincipale";
 
 export function EnTete() {
   const [menuOuvert, setMenuOuvert] = useState(false);
@@ -42,6 +42,8 @@ export function EnTete() {
                   onNavigate={() => setMenuOuvert(false)}
                   classeListe="flex flex-col gap-1"
                   classeLien="block rounded-controle py-3 font-titre text-2xl aria-[current=page]:text-primaire"
+                  classeSousListe="mb-2 ml-1 flex flex-col border-l border-bordure pl-4"
+                  classeSousLien="block py-2 text-base text-texte-attenue aria-[current=page]:font-medium aria-[current=page]:text-primaire"
                 />
               </nav>
               <Link
@@ -57,19 +59,11 @@ export function EnTete() {
         </Dialog.Root>
 
         <Link href="/" className="shrink-0" aria-label="Énora Cosmetics, accueil">
-          <Logo priority className="w-28 lg:w-36" />
+          <Logo forme="complet" priority className="w-32 lg:w-40" />
         </Link>
 
         <nav aria-label="Navigation principale" className="hidden lg:block">
-          <ListeLiens
-            liens={MENU_PRINCIPAL}
-            classeListe="flex items-center gap-8"
-            classeLien={cn(
-              "relative py-2 text-sm tracking-wide transition-colors duration-220 hover:text-primaire",
-              "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-primaire after:transition-transform after:duration-220",
-              "aria-[current=page]:text-primaire aria-[current=page]:after:scale-x-100",
-            )}
-          />
+          <NavPrincipale />
         </nav>
 
         <div className="-mr-2 flex items-center">

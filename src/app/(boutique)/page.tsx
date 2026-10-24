@@ -50,6 +50,12 @@ export default async function AccueilPage() {
   // Choisis dans le catalogue : la vedette désignée dans l'administration, puis les nouveautés.
   const vedette = choisirVedette(produits);
   const visuelsHero = choisirVisuelsAccueil(produits, 3);
+  // « Nos univers » : la photo d'un produit de chaque catégorie (sinon son illustration).
+  const visuelUnivers = (slug: string) =>
+    choisirVisuelsAccueil(
+      produits.filter((p) => p.categorieSlug === slug && p.images.length),
+      1,
+    )[0];
 
   return (
     <>
@@ -120,12 +126,15 @@ export default async function AccueilPage() {
                 className="group flex h-full flex-col overflow-hidden rounded-carte border border-bordure bg-surface shadow-carte"
               >
                 <VisuelProduit
-                  produit={{
-                    nom: categorie.nom,
-                    forme: categorie.forme,
-                    familleOlfactive: null,
-                    images: [],
-                  }}
+                  produit={
+                    visuelUnivers(categorie.slug) ?? {
+                      nom: categorie.nom,
+                      forme: categorie.forme,
+                      familleOlfactive: null,
+                      images: [],
+                    }
+                  }
+                  sizes="(max-width: 640px) 100vw, 33vw"
                   className="transition-transform duration-280 ease-douce group-hover:scale-[1.03]"
                 />
                 <div className="flex flex-1 flex-col gap-2 p-6">
