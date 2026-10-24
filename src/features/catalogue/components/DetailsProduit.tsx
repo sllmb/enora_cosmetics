@@ -21,7 +21,7 @@ export function DetailsProduit({ produit }: Props) {
               className="size-5 text-texte-attenue transition-transform duration-220 group-open:rotate-180"
             />
           </summary>
-          <p className="pb-5 leading-relaxed text-texte-attenue">{texte}</p>
+          <p className="pb-5 leading-relaxed whitespace-pre-line text-texte-attenue">{texte}</p>
         </details>
       ))}
     </div>

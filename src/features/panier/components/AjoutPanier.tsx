@@ -49,16 +49,19 @@ export function AjoutPanier({ produit }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row">
+    // Toujours sur une ligne, même hauteur : quantité à gauche, bouton qui prend le reste.
+    <div className="flex items-stretch gap-3">
       <SelecteurQuantite
         valeur={quantite}
         max={Math.min(QUANTITE_MAX, produit.stock)}
         onChange={setQuantite}
-        className="w-full sm:w-36"
+        className="w-32 shrink-0 sm:w-36"
       />
-      <Button taille="lg" className="flex-1" onClick={ajouter}>
-        <ShoppingBag aria-hidden className="size-5" strokeWidth={1.5} />
-        Ajouter au panier
+      <Button taille="lg" className="min-w-0 flex-1 px-4 sm:px-8" onClick={ajouter}>
+        <ShoppingBag aria-hidden className="size-5 shrink-0" strokeWidth={1.5} />
+        <span>
+          Ajouter<span className="max-[379px]:sr-only"> au panier</span>
+        </span>
       </Button>
     </div>
   );
