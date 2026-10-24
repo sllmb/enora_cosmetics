@@ -1,9 +1,9 @@
 "use client";
 
-import { Mail, MessageCircle } from "lucide-react";
+import { Mail } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/shared/lib/cn";
-import { Button, FormField, Input, Textarea } from "@/shared/ui";
+import { Button, FormField, Input, LogoWhatsApp, Textarea } from "@/shared/ui";
 
 const SUJETS = ["Une question sur un produit", "Le suivi de ma commande", "Autre chose"] as const;
 
@@ -103,8 +103,8 @@ export function FormulaireContact({ whatsapp, email }: Props) {
       </FormField>
       <div className="flex flex-wrap items-center gap-3">
         {whatsapp && (
-          <Button type="submit">
-            <MessageCircle aria-hidden className="size-4" /> Envoyer sur WhatsApp
+          <Button type="submit" variante="whatsapp">
+            <LogoWhatsApp className="size-4" /> Envoyer sur WhatsApp
           </Button>
         )}
         <Button

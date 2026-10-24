@@ -5,8 +5,9 @@ import { menuPied, type CategorieMenu } from "../_navigation/menus";
 export function PiedDePage({ categories }: { categories: CategorieMenu[] }) {
   return (
     <footer className="mt-24 bg-primaire text-sur-primaire">
-      <div className="conteneur grid gap-12 py-16 md:grid-cols-[1.4fr_repeat(3,1fr)]">
-        <div className="flex flex-col gap-4">
+      {/* Mobile : liens sur deux colonnes sous le logo ; grands écrans : quatre colonnes. */}
+      <div className="conteneur grid grid-cols-2 gap-x-6 gap-y-10 py-14 md:grid-cols-[1.4fr_repeat(3,1fr)] md:gap-12 md:py-16">
+        <div className="col-span-2 flex flex-col gap-4 md:col-span-1">
           <Logo forme="complet" clair className="w-44" />
           <p className="max-w-xs text-sm text-sur-primaire/80">
             L&apos;hygiène corporelle raffinée : déodorants, huiles parfumées et savons, livrés à

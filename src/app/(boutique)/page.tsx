@@ -191,9 +191,17 @@ export default async function AccueilPage() {
               <h2 id="vedette" className="text-4xl sm:text-5xl">
                 {vedette.nom}
               </h2>
-              <p className="max-w-md text-sur-primaire/85">
-                {vedette.description || vedette.accroche}
-              </p>
+              {vedette.accroche && (
+                <p className="font-titre text-2xl text-sur-primaire/90 italic">
+                  {vedette.accroche}
+                </p>
+              )}
+              {vedette.description && (
+                // Un aperçu seulement (3 lignes) : le détail est sur la fiche produit.
+                <p className="line-clamp-3 max-w-md text-sur-primaire/85">
+                  {vedette.description.replace(/[*_#>]+/g, "").replace(/\s+/g, " ")}
+                </p>
+              )}
               {vedette.notesOlfactives && (
                 <p className="text-sm text-sur-primaire/85">
                   Notes :{" "}

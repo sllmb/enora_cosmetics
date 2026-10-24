@@ -8,6 +8,7 @@ export { IconButton } from "./IconButton";
 export { Input } from "./Input";
 export { JsonLd } from "./JsonLd";
 export { Logo } from "./Logo";
+export { LogoWhatsApp } from "./LogoWhatsApp";
 export { Prix } from "./Prix";
 export { SelecteurQuantite } from "./SelecteurQuantite";
 export { Textarea } from "./Textarea";
