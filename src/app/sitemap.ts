@@ -15,11 +15,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: url("/"), changeFrequency: "weekly", priority: 1 },
     { url: url("/boutique"), changeFrequency: "weekly", priority: 0.9 },
-    ...categories.map((c) => ({
-      url: url(`/boutique/${c.slug}`),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    })),
+    // Catégories actives et non vides, comme dans les menus.
+    ...categories
+      .filter((c) => produits.some((p) => p.categorieSlug === c.slug))
+      .map((c) => ({
+        url: url(`/boutique/${c.slug}`),
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      })),
     ...produits.map((p) => ({
       url: url(`/produit/${p.slug}`),
       changeFrequency: "weekly" as const,
