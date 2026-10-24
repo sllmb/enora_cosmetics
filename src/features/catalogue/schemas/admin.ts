@@ -58,6 +58,9 @@ export const produitAdminSchema = z
     notesCoeur: listeNotes,
     notesFond: listeNotes,
     estNouveaute: z.boolean(),
+    vedette: z.boolean().optional().default(false),
+    /** Recalcule l'adresse de la fiche d'après le nom (avant la mise en ligne surtout). */
+    majAdresse: z.boolean().optional().default(false),
     actif: z.boolean(),
   })
   // RM-03 : la promotion doit être inférieure au prix.

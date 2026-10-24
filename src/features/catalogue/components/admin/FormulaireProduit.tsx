@@ -3,8 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useTransition, type ReactNode } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
+import { slugifier } from "@/shared/lib/format";
 import { useEstPret } from "@/shared/lib/useEstPret";
 import { Button, FormField, Input, Textarea } from "@/shared/ui";
 import { enregistrerProduit } from "../../actions/admin";
@@ -37,7 +38,7 @@ export function FormulaireProduit({ produit, categories }: Props) {
   const router = useRouter();
   const pret = useEstPret();
   const [envoi, demarrer] = useTransition();
-  const { register, handleSubmit, setError, getValues, formState } = useForm<
+  const { register, handleSubmit, setError, getValues, control, formState } = useForm<
     ProduitAdminSaisi,
     unknown,
     ProduitAdminValide
@@ -59,10 +60,16 @@ export function FormulaireProduit({ produit, categories }: Props) {
       notesCoeur: produit?.notesOlfactives?.coeur.join(", ") ?? "",
       notesFond: produit?.notesOlfactives?.fond.join(", ") ?? "",
       estNouveaute: produit?.estNouveaute ?? true,
+      vedette: produit?.vedette ?? false,
+      majAdresse: false,
       actif: produit?.actif ?? true,
     },
   });
   const { errors } = formState;
+  // Adresse de la fiche : fixée à la création, proposée à la mise à jour si le nom a changé.
+  const nom = useWatch({ control, name: "nom" });
+  const nouvelleAdresse = slugifier(nom ?? "");
+  const adresseDifferente = Boolean(produit && nouvelleAdresse && nouvelleAdresse !== produit.slug);
 
   const envoyer = handleSubmit(() =>
     demarrer(async () => {
@@ -201,7 +208,49 @@ export function FormulaireProduit({ produit, categories }: Props) {
             </span>
           </span>
         </label>
+        <label className="flex items-start gap-3 text-sm">
+          <input
+            type="checkbox"
+            className="mt-0.5 size-4 accent-primaire"
+            {...register("vedette")}
+          />
+          <span>
+            <span className="font-medium">Produit vedette de l&apos;accueil</span>
+            <span className="block text-texte-attenue">
+              Présenté dans la grande bande de l&apos;accueil. Un seul à la fois : cocher ici le
+              retire du produit précédent.
+            </span>
+          </span>
+        </label>
       </Bloc>
+
+      {produit && (
+        <Bloc titre="Adresse de la page">
+          <p className="text-sm">
+            Adresse actuelle :{" "}
+            <span className="font-medium break-all">/produit/{produit.slug}</span>
+          </p>
+          {adresseDifferente && (
+            <label className="flex items-start gap-3 rounded-controle bg-avertissement-doux p-4 text-sm">
+              <input
+                type="checkbox"
+                className="mt-0.5 size-4 accent-primaire"
+                {...register("majAdresse")}
+              />
+              <span>
+                <span className="font-medium">
+                  Mettre l&apos;adresse à jour d&apos;après le nom :{" "}
+                  <span className="break-all">/produit/{nouvelleAdresse}</span>
+                </span>
+                <span className="block text-texte-attenue">
+                  Utile avant l&apos;ouverture. Une fois le site en ligne, les liens déjà partagés
+                  vers l&apos;ancienne adresse ne fonctionneraient plus.
+                </span>
+              </span>
+            </label>
+          )}
+        </Bloc>
+      )}
 
       <div className="sticky bottom-0 -mx-4 flex justify-end border-t border-bordure bg-fond/95 px-4 py-4 backdrop-blur sm:mx-0 sm:rounded-carte sm:border">
         <Button type="submit" taille="lg" disabled={envoi || !pret}>

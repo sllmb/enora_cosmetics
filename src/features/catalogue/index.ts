@@ -8,5 +8,6 @@ export { GalerieProduit } from "./components/GalerieProduit";
 export { GrilleProduits } from "./components/GrilleProduits";
 export { NotesOlfactives } from "./components/NotesOlfactives";
 export { VisuelProduit } from "./components/VisuelProduit";
+export { choisirVedette, choisirVisuelsAccueil } from "./lib/accueil";
 export { estEnPromo, estEpuise, LIBELLES_FAMILLE, prixEffectif } from "./lib/produit";
 export type { Categorie, Produit } from "./types";

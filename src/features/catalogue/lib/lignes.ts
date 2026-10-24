@@ -36,6 +36,7 @@ export const ligneProduitSchema = z.object({
   prix_promo: z.number().int().nullable(),
   stock: z.number().int(),
   est_nouveaute: z.boolean(),
+  vedette: z.boolean(),
   famille_olfactive: z
     .enum(["floral", "oriental", "frais", "musque", "gourmand", "boise"])
     .nullable()
@@ -74,6 +75,7 @@ export function versProduit(ligne: LigneProduit, urlImage: (chemin: string) => s
     prixPromo: ligne.prix_promo,
     stock: ligne.stock,
     estNouveaute: ligne.est_nouveaute,
+    vedette: ligne.vedette,
     familleOlfactive: ligne.famille_olfactive,
     notesOlfactives: ligne.notes_olfactives,
     forme: formeDe(ligne.categories.slug),

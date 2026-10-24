@@ -1,7 +1,12 @@
 import { MessageCircle, Truck, Wallet } from "lucide-react";
 import Link from "next/link";
-import { GrilleProduits, VisuelProduit } from "@/features/catalogue";
-import { lireProduit, listerCategories, listerNouveautes } from "@/features/catalogue/serveur";
+import {
+  choisirVedette,
+  choisirVisuelsAccueil,
+  GrilleProduits,
+  VisuelProduit,
+} from "@/features/catalogue";
+import { listerCategories, listerNouveautes, listerProduits } from "@/features/catalogue/serveur";
 import { CarteArticle, CLASSES_POLICE } from "@/features/conseils";
 import { cn } from "@/shared/lib/cn";
 import { listerArticles } from "@/features/conseils/serveur";
@@ -36,15 +41,15 @@ const POSITIONS_HERO = [
 ];
 
 export default async function AccueilPage() {
-  const [articles, categories, nouveautes, huileVedette, ...visuelsHero] = await Promise.all([
+  const [articles, categories, nouveautes, produits] = await Promise.all([
     listerArticles(),
     listerCategories(),
     listerNouveautes(4),
-    lireProduit("huile-parfumee-ambre-oud"),
-    lireProduit("huile-parfumee-jasmin"),
-    lireProduit("deodorant-fleur-de-coton"),
-    lireProduit("savon-karite-vanille"),
+    listerProduits(),
   ]);
+  // Choisis dans le catalogue : la vedette désignée dans l'administration, puis les nouveautés.
+  const vedette = choisirVedette(produits);
+  const visuelsHero = choisirVisuelsAccueil(produits, 3);
 
   return (
     <>
@@ -57,8 +62,8 @@ export default async function AccueilPage() {
               Le soin du corps, <em className="text-primaire">en toute élégance</em>
             </h1>
             <p className="max-w-md text-lg text-texte-attenue">
-              Déodorants, huiles parfumées et savons pensés pour vous accompagner chaque jour, de la
-              douche au dernier sillage.
+              Déodorants, huiles parfumées et savons sélectionnés pour vous accompagner chaque jour,
+              de la douche au dernier sillage.
             </p>
             <div className="flex flex-wrap gap-3">
               <ButtonLink href="/boutique" taille="lg">
@@ -71,17 +76,14 @@ export default async function AccueilPage() {
           </div>
           <div aria-hidden className="relative mx-auto aspect-square w-full max-w-md">
             <div className="absolute inset-[8%] rounded-full bg-surface-poudre" />
-            {visuelsHero.map(
-              (produit, i) =>
-                produit && (
-                  <VisuelProduit
-                    key={produit.slug}
-                    produit={produit}
-                    priority
-                    className={POSITIONS_HERO[i]}
-                  />
-                ),
-            )}
+            {visuelsHero.map((produit, i) => (
+              <VisuelProduit
+                key={produit.slug}
+                produit={produit}
+                priority
+                className={POSITIONS_HERO[i]}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -154,31 +156,34 @@ export default async function AccueilPage() {
         <GrilleProduits produits={nouveautes} />
       </section>
 
-      {huileVedette && (
+      {vedette && (
         <section aria-labelledby="vedette" className="bg-primaire text-sur-primaire">
           <div className="conteneur grid items-center gap-10 py-16 md:grid-cols-2 md:py-24">
             <VisuelProduit
-              produit={huileVedette}
-              className="mx-auto w-full max-w-sm rounded-carte bg-sur-primaire/10"
+              produit={vedette}
+              // Fond clair : le fond blanc d'une photo s'y fond (et non dans le bordeaux).
+              className="mx-auto w-full max-w-sm rounded-carte"
             />
             <div className="flex flex-col items-start gap-5">
-              <p className="titre-espace text-sur-primaire/70">Le parfum en petit flacon</p>
+              <p className="titre-espace text-sur-primaire/70">Notre coup de cœur</p>
               <h2 id="vedette" className="text-4xl sm:text-5xl">
-                {huileVedette.nom}
+                {vedette.nom}
               </h2>
-              <p className="max-w-md text-sur-primaire/85">{huileVedette.description}</p>
-              {huileVedette.notesOlfactives && (
+              <p className="max-w-md text-sur-primaire/85">
+                {vedette.description || vedette.accroche}
+              </p>
+              {vedette.notesOlfactives && (
                 <p className="text-sm text-sur-primaire/85">
                   Notes :{" "}
                   {[
-                    ...huileVedette.notesOlfactives.tete,
-                    ...huileVedette.notesOlfactives.coeur,
-                    ...huileVedette.notesOlfactives.fond,
+                    ...vedette.notesOlfactives.tete,
+                    ...vedette.notesOlfactives.coeur,
+                    ...vedette.notesOlfactives.fond,
                   ].join(" · ")}
                 </p>
               )}
               <Link
-                href={`/produit/${huileVedette.slug}`}
+                href={`/produit/${vedette.slug}`}
                 className="inline-flex h-13 items-center rounded-full bg-sur-primaire px-8 font-medium text-primaire transition-opacity duration-150 hover:opacity-90"
               >
                 Découvrir

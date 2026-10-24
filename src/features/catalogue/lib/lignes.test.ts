@@ -14,6 +14,7 @@ const ligne = {
   prix_promo: null,
   stock: 25,
   est_nouveaute: false,
+  vedette: false,
   famille_olfactive: "floral",
   notes_olfactives: { tete: ["Néroli"], coeur: ["Jasmin"], fond: ["Musc"] },
   categories: { slug: "huiles-parfumees" },
